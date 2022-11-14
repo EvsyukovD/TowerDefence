@@ -2,16 +2,17 @@
 #define __CELL_H__
 #include "TowerDefence.h"
 namespace TowerDefence{
-	enum CellType {
-		PALACE,
-		TOWER,
-		LAIR,
-		ROAD,
-		NONE,
-		TOWER_PLACE,
-		TRAP
-	};
 	class Cell {
+	public:
+		enum CellType {
+			PALACE,
+			TOWER,
+			LAIR,
+			ROAD,
+			NONE,
+			TOWER_PLACE,
+			TRAP
+		};
 	private:
 		CellType type = CellType::NONE;
 		Building* objectPtr = nullptr;
@@ -31,6 +32,7 @@ namespace TowerDefence{
 		@return указатель на строение 
 		**/
 		Building* getObject();
+	
 	};
 }
 #endif

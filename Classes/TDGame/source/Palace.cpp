@@ -17,6 +17,9 @@ namespace TowerDefence {
     unsigned int Palace::getStrength() const {
         return currentStrength;
     }
+    void Palace::addGold(unsigned int g) {
+        this->gold += g;
+    }
     void Palace::takeGold(unsigned int gold) {
         if (gold <= this->gold) {
             this->gold -= gold;

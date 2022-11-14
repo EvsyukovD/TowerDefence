@@ -7,6 +7,9 @@ namespace TowerDefence {
 	включая карту уровня
 	**/
 	class TDObject {
+	private:
+		static long count;
+		long id = 0;
 	protected:
 		Sprite* object = nullptr;
 		/*
@@ -14,6 +17,10 @@ namespace TowerDefence {
 		**/
 		virtual void kill();
 	public:
+		/*
+		@returns ID объекта
+		**/
+		long getObjectID()const;
 		/*
 		Создание экзнмпляра класса TDObject на основе\n
 		файла с текстурой

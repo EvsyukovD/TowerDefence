@@ -4,16 +4,16 @@
 USING_NS_CC;
 namespace TowerDefence {
 	template<class Base, class T>
-	bool instanceof(T*);
+	bool instanceof(T* p) {
+		return dynamic_cast<Base*>(p) != nullptr;
+	}
 	
 	class TDObject;
 	class Effect;
-	enum EffectType;
 	class PoisonEffect;
 	class WeaknessEffect;
 	class DecelerationEffect;
 	class Cell;
-	enum CellType;
 	class MagicObject;
 
 	class Building;

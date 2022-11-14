@@ -114,6 +114,34 @@ bool HelloWorld::init()
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }
+    auto ghost = Sprite::create("Enemies/Ghost/frame_00001.png");
+    float x = origin.x + visibleSize.width / 2;
+    float y = origin.y + visibleSize.height / 2;
+    ghost->setPosition(x, y);
+    ghost->setScale(0.2);
+    ghost->setAnchorPoint(Point(0, 0));
+    cocos2d::Vector<SpriteFrame*> frames;
+    frames.reserve(13);
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00001.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00002.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00003.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00004.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00005.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00006.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00007.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00008.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00009.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00010.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00011.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00012.png", Rect(0, 0, 1280, 720)));
+    frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00013.png", Rect(0, 0, 1280, 720)));
+    auto animation = Animation::createWithSpriteFrames(frames,0.2);
+    Animate* animate = Animate::create(animation);
+    ghost->runAction(RepeatForever::create(animate));
+    this->addChild(ghost,0,1);
+    Node* n = this->getChildByTag(1);
+    auto moveBy = MoveBy::create(3, Vec2(30, 0));
+    n->runAction(moveBy);
     return true;
 }
 

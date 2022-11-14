@@ -2,11 +2,9 @@
 #include "../include/Enemy.h"
 namespace TowerDefence {
 	Effect::Effect() {
-		this->duration = 0;
-		this->value = 0;
-		this->type = EffectType::NONE;
+		
 	}
-	Effect::Effect(int duration, float value, EffectType type) {
+	Effect::Effect(int duration, float value, Effect::EffectType type) {
 		if (duration < 0) {
 			throw std::invalid_argument("duration can't be negative");
 		}
@@ -14,7 +12,7 @@ namespace TowerDefence {
 		this->value = value;
 		this->type = type;
 	}
-	EffectType Effect::getType() const {
+	Effect::EffectType Effect::getType() const {
 		return type;
 	}
 	int Effect::getDuration()const {

@@ -39,10 +39,26 @@ namespace TowerDefence {
 		Tower(const Point& palacePos,const std::string& name,const std::string& filename);
 		unsigned int getLevel()const;
 		void updateLevel();
+		/*
+		@returns Cвойства башни
+
+		**/
 		TowerProperties getProperties()const;
+		/*
+		—бросить цель башни (у башни не будет цели дл€ атаки)
+		**/
 		void dropTarget();
+		/*
+		÷ель атаки дл€ данной башни
+		@return ”казатель на врага
+		**/
 		Enemy* getTarget();
-		virtual bool fire(std::map<Point, Enemy>&);
+		/*
+		‘ункци€ атаки
+		@param enemies - живые враги на карте
+		@return true если враги были атакованы и false иначе
+		**/
+		virtual bool fire(std::list<Enemy*>& enemies);
 	};
 	class MagicTower: public Tower, public MagicObject {
 	public:
@@ -50,7 +66,12 @@ namespace TowerDefence {
 			const Point& palacePos,
 			const std::string& name,
 			const std::string& filename);
-		virtual bool fire(std::map<Point, Enemy>&);
+		/*
+		‘ункци€ атаки
+		@param enemies - живые враги на карте
+		@return true если враги были атакованы и false иначе
+		**/
+		virtual bool fire(std::list<Enemy*>& enemies);
 	};
 }
 #endif

@@ -9,8 +9,9 @@ namespace TowerDefence {
 		/*
 		Функция атаки
 		@param enemies - живые враги на карте
+		@return true если враги были атакованы и false иначе 
 		**/
-		virtual bool fire(std::map<Point,Enemy> & enemies) = 0;
+		virtual bool fire(std::list<Enemy*> & enemies) = 0;
 	};
 }
 #endif // !__ABSTRACT_ATTACKING_OBJECT_H__

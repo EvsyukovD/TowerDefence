@@ -10,13 +10,17 @@ namespace TowerDefence {
         this->radius = radius;
         this->cost = cost;
     }
-    
-    bool Trap::fire(std::map<Point, Enemy>& m) {
+    /*
+    Атаковать врагов в определённом радиусе\n
+    Если враги были атакованы, ловушка уничтожается
+    **/
+    bool Trap::fire(std::list<Enemy*>& m) {
         bool isExploded = false;
         for (auto iter = m.begin(); iter != m.end(); ++iter) {
-            if ((double)((Point)(iter->first)).distance(this->object->getPosition()) - (double)radius < 1E-32) {
-                Enemy& e = (Enemy)(iter->second);
-                e.addEffect(this->getEffect());
+            const Point& p = (*iter)->getSprite()->getPosition();
+            if ((double)p.distance(this->object->getPosition()) - (double)radius < 1E-32) {
+                
+                (*iter)->addEffect(this->getEffect());
                 isExploded = true;
             }
         }

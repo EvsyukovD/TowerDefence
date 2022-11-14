@@ -1,6 +1,6 @@
 #include "../include/Cell.h"
 namespace TowerDefence {
-	Cell::Cell(CellType type, Building* objectPtr, float height, float length): 
+	Cell::Cell(Cell::CellType type, Building* objectPtr, float height, float length):
 		type(type),
 		objectPtr(objectPtr), 
 		height(height), 
@@ -8,10 +8,10 @@ namespace TowerDefence {
 	Building* Cell::getObject() {
 		return objectPtr;
 	}
-	CellType Cell::getType() const {
+	Cell::CellType Cell::getType() const {
 		return type;
 	}
-	void Cell::setType(CellType type, Building* objectPtr) {
+	void Cell::setType(Cell::CellType type, Building* objectPtr) {
 		this->type = type;
 		this->objectPtr = objectPtr;
 	}

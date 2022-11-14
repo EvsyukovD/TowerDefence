@@ -2,18 +2,19 @@
 #define __EFFECT_H__
 #include "TowerDefence.h"
 namespace TowerDefence {
-	enum EffectType {
-		POISON, //Отравление
-		WEAKNESS, //Слабость
-		DECELERATION, //Замедление
-		NONE //Ничего не происходит
-	};
 	class Effect {
+	public:
+		enum EffectType {
+			POISON, //Отравление
+			WEAKNESS, //Слабость
+			DECELERATION, //Замедление
+			NONE //Ничего не происходит
+		};
 	protected:
 		//длительность эффекта (число ходов)
-		int duration; 
-		float value;
-		EffectType type;
+		int duration = 0; 
+		float value = 0;
+		EffectType type = Effect::EffectType::NONE;
 	public:
 		/*
 		Конструктор эффекта
@@ -21,7 +22,7 @@ namespace TowerDefence {
 		@param value - значение эффекта
 		@throws std::invalid_argument - При отрицательном duration
 		**/
-		Effect(int duration, float value, EffectType type);
+		Effect(int duration, float value, Effect::EffectType type);
 		Effect();
 		/*
 		Оказать воздействие на врага
@@ -44,7 +45,7 @@ namespace TowerDefence {
 
 	class PoisonEffect : public Effect {
 	public:
-		PoisonEffect(int duration, float value) : Effect(duration, value, EffectType::POISON) {}
+		PoisonEffect(int duration, float value) : Effect(duration, value, Effect::EffectType::POISON) {}
 		/*
 		Отравить на врага
 		@param e - враг
@@ -53,7 +54,7 @@ namespace TowerDefence {
 	};
 	class WeaknessEffect : public Effect {
 	public:
-		WeaknessEffect(int duration, float value) : Effect(duration, value, EffectType::WEAKNESS) {}
+		WeaknessEffect(int duration, float value) : Effect(duration, value, Effect::EffectType::WEAKNESS) {}
 		/*
 		Ослабить врага
 		@param e - враг
@@ -62,7 +63,7 @@ namespace TowerDefence {
 	};
 	class DecelerationEffect : public Effect {
 	public:
-		DecelerationEffect(int duration, float value) : Effect(duration, value, EffectType::DECELERATION) {}
+		DecelerationEffect(int duration, float value) : Effect(duration, value, Effect::EffectType::DECELERATION) {}
 		/*
 		Замедлить врага
 		@param e - враг

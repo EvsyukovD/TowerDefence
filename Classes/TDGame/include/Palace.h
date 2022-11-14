@@ -14,6 +14,12 @@ namespace TowerDefence {
 		@return Текущее количество золота
 		**/
 		unsigned int getGold()const;
+
+		/*
+		Дать замку золота
+		@param g - добавочное значение золота
+		**/
+		void addGold(unsigned int g);
 		/*
 		Забрать у замка данное количество золота
 		@param Новое количество золота

@@ -3,10 +3,12 @@
 namespace TowerDefence {
     Enemy::Enemy(int maxHealth,
         float speed,
+        unsigned int award,
         const std::string& name,
         const std::vector<Point>& path, const std::string& filename): TDObject(filename),MAX_HEALTH(maxHealth) {
         this->health = MAX_HEALTH;
         this->speed = speed;
+        this->award = award;
         this->name = name;
         this->path = path;
         this->currentPos = 0;
@@ -18,11 +20,14 @@ namespace TowerDefence {
     float Enemy::getSpeed()const {
         return speed;
     }
+    unsigned int Enemy::getAward()const {
+        return award;
+    }
     std::string Enemy::getName()const {
         return name;
     }
     int Enemy::getNumOfEffects()const {
-        this->effects.size();
+        return this->effects.size();
     }
     void Enemy::setHealth(int health) {
         this->health = health;
@@ -31,7 +36,7 @@ namespace TowerDefence {
         double damage = d;
         for (auto iter = effects.begin(); iter != effects.end(); ++iter) {
             Effect& e = *iter;
-            if (e.getType() == EffectType::WEAKNESS) {
+            if (e.getType() == Effect::EffectType::WEAKNESS) {
                 damage += d * (1.0 - e.getValue() / 100.0);
             }
         }
@@ -56,6 +61,7 @@ namespace TowerDefence {
         name = e.name;
         path = e.path;
         effects = e.effects;
+        award = e.award;
     }
     bool Enemy::isDead()const {
         return health <= 0 || !object;
@@ -64,6 +70,10 @@ namespace TowerDefence {
         return currentPos == path.size() - 1;
     }
     void Enemy::tick() {
+        if (health <= 0) {
+            kill();
+            return;
+        }
         for (auto iter = effects.begin(); iter != effects.end();++iter) {
              Effect& e = *iter;
              e.apply(*this);
@@ -84,5 +94,8 @@ namespace TowerDefence {
              currentPos++;
         }
     }
-    
+    Enemy::~Enemy() {
+        this->effects.clear();
+        this->path.clear();
+    }
 }

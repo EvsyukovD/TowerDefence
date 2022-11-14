@@ -8,9 +8,9 @@ namespace TowerDefence {
     Enemy* Lair::getNextEnemy(unsigned int t) {
         auto res = enemyMap.find(t);
         if (res != enemyMap.end()) {
-            Enemy& e = res->second;
+            Enemy* e = res->second;
             enemyMap.erase(res);
-            return &e;
+            return e;
         }
         else {
             return nullptr;

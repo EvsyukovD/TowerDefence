@@ -10,11 +10,12 @@ namespace TowerDefence {
 		  std::string name;
 		  std::vector<Point> path;
 		  int currentPos;
-		  
+		  unsigned int award = 0;
 	public:
 		const int MAX_HEALTH;
 		Enemy(int maxHealth,
 			float speed,
+			unsigned int award,
 			const std::string& name,
 			const std::vector<Point>& path, const std::string& filename);
 		
@@ -31,6 +32,10 @@ namespace TowerDefence {
 		/*
 		Установить текущее здоровье врага
 		**/
+		/*
+		@return награда за уничтожение врага
+		**/
+		unsigned int getAward() const;
 		void setHealth(int);
 		/*
 		Нанести урон врагу. Если враг имеет эффект\n
@@ -69,13 +74,17 @@ namespace TowerDefence {
 		**/
 		int getNumOfEffects()const;
 		/*
-		Сделать ход и рассчитать здоровье
+		Сделать ход и рассчитать здоровье\n
+		Если здоровье врага не положительно то\n
+		он уничтожается
 		**/
 		void tick();
 		/*
-		@return Флаг того, что враг дошёл до финиша
+		@return Флаг того, что враг дошёл до конца пути
 		**/
 		bool isOnFinish() const;
+
+		virtual ~Enemy();
 	};
 }
 #endif // !__ENEMY_H__
