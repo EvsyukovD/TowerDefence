@@ -85,7 +85,7 @@ bool HelloWorld::init()
     // add a label shows "Hello World"
     // create and initialize a label
 
-    auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
+    auto label = Label::createWithTTF("Tower Defence", "fonts/Marker Felt.ttf", 24);
     if (label == nullptr)
     {
         problemLoading("'fonts/Marker Felt.ttf'");
@@ -101,10 +101,10 @@ bool HelloWorld::init()
     }
 
     // add "HelloWorld" splash screen"
-    auto sprite = Sprite::create("HelloWorld.png");
+    auto sprite = Sprite::create("Level_1.png");
     if (sprite == nullptr)
     {
-        problemLoading("'HelloWorld.png'");
+        problemLoading("'Level_1.png'");
     }
     else
     {
@@ -114,12 +114,20 @@ bool HelloWorld::init()
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
     }
-    auto ghost = Sprite::create("Enemies/Ghost/frame_00001.png");
+    /*auto ghost = Sprite::create("Enemies/Ghost/frame_00001.png");
+    auto simpleTower = Sprite::create("SimpleTower.png");
+    auto magicTower = Sprite::create("MagicTower.png");
     float x = origin.x + visibleSize.width / 2;
     float y = origin.y + visibleSize.height / 2;
     ghost->setPosition(x, y);
+    simpleTower->setPosition(x - 20, y);
+    simpleTower->setScale(0.65);
+    magicTower->setScale(0.65);
+    magicTower->setPosition(x, y - 20);
+    this->addChild(simpleTower);
+    this->addChild(magicTower);
     ghost->setScale(0.2);
-    ghost->setAnchorPoint(Point(0, 0));
+    //ghost->setAnchorPoint(Point(0, 0));
     cocos2d::Vector<SpriteFrame*> frames;
     frames.reserve(13);
     frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00001.png", Rect(0, 0, 1280, 720)));
@@ -135,13 +143,15 @@ bool HelloWorld::init()
     frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00011.png", Rect(0, 0, 1280, 720)));
     frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00012.png", Rect(0, 0, 1280, 720)));
     frames.pushBack(SpriteFrame::create("Enemies/Ghost/frame_00013.png", Rect(0, 0, 1280, 720)));
-    auto animation = Animation::createWithSpriteFrames(frames,0.2);
+    auto animation = Animation::createWithSpriteFrames(frames,0.1);
     Animate* animate = Animate::create(animation);
     ghost->runAction(RepeatForever::create(animate));
     this->addChild(ghost,0,1);
-    Node* n = this->getChildByTag(1);
-    auto moveBy = MoveBy::create(3, Vec2(30, 0));
-    n->runAction(moveBy);
+    const Point& p = ghost->getPosition();
+    //Node* n = this->getChildByTag(1);
+    auto moveBy = MoveBy::create(3, Vec2(30, 20));
+    auto moveTo = MoveTo::create(3, Vec2(30, 20));
+    ghost->runAction(moveBy);*/
     return true;
 }
 
