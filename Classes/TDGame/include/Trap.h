@@ -6,8 +6,11 @@ namespace TowerDefence {
     class Trap: public MagicObject,public AbstractAttackingObject{
     protected:
         float radius;
+        int cost;
     public:
-        Trap(float radius, const Effect& e, const std::string& name, const std::string& filename);
+        Trap(float radius,int cost, const Effect& e, const std::string& name, const std::string& filename);
+        int getCost() const;
+        float getRadius() const;
         /*
         Атаковать врагов в радиусе действия
         @param m - таблица всех живых врагов на карте

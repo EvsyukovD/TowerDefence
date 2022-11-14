@@ -20,6 +20,9 @@ namespace TowerDefence {
 	int Effect::getDuration()const {
 		return duration;
 	}
+	float Effect::getValue()const {
+		return value;
+	}
 	void Effect::apply(Enemy&) {
 		if (duration > 0) {
 			duration--;
@@ -37,7 +40,6 @@ namespace TowerDefence {
 		if (duration <= 0) {
 			return;
 		}
-		e.setHealth(e.getHealth() - value);
 		duration--;
 	}
 	void DecelerationEffect::apply(Enemy& e) {

@@ -3,6 +3,9 @@
 #include "cocos2d.h"
 USING_NS_CC;
 namespace TowerDefence {
+	template<class Base, class T>
+	bool instanceof(T*);
+	
 	class TDObject;
 	class Effect;
 	enum EffectType;

@@ -25,7 +25,17 @@ namespace TowerDefence {
         this->effects.size();
     }
     void Enemy::setHealth(int health) {
-        this->health;
+        this->health = health;
+    }
+    void Enemy::getDamage(int d) {
+        double damage = d;
+        for (auto iter = effects.begin(); iter != effects.end(); ++iter) {
+            Effect& e = *iter;
+            if (e.getType() == EffectType::WEAKNESS) {
+                damage += d * (1.0 - e.getValue() / 100.0);
+            }
+        }
+        health -= (int)floor(damage);
     }
     void Enemy::setName(const std::string& name) {
         this->name = name;
@@ -50,6 +60,9 @@ namespace TowerDefence {
     bool Enemy::isDead()const {
         return health <= 0 || !object;
     }
+    bool Enemy::isOnFinish()const {
+        return currentPos == path.size() - 1;
+    }
     void Enemy::tick() {
         for (auto iter = effects.begin(); iter != effects.end();++iter) {
              Effect& e = *iter;
@@ -61,8 +74,8 @@ namespace TowerDefence {
                  kill();
              }
         }
-        if (currentPos == path.size() - 1) {
-            kill();
+        if (isOnFinish()) {
+            return;
         }
         else {
             double dist = this->object->getPosition().distance(path[currentPos + 1]);

@@ -1,12 +1,14 @@
 #include "../include/Trap.h"
 namespace TowerDefence {
     Trap::Trap(float radius, 
+        int cost,
         const Effect& e, 
         const std::string& name, 
         const std::string& filename) : 
         MagicObject(e),
         AbstractAttackingObject(name, filename) {
         this->radius = radius;
+        this->cost = cost;
     }
     
     bool Trap::fire(std::map<Point, Enemy>& m) {
@@ -18,6 +20,15 @@ namespace TowerDefence {
                 isExploded = true;
             }
         }
+        if (isExploded) {
+            kill();
+        }
         return isExploded;
+    }
+    int Trap::getCost()const {
+        return cost;
+    }
+    float Trap::getRadius() const {
+        return radius;
     }
 }

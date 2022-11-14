@@ -7,14 +7,22 @@ namespace TowerDefence {
         s(palacePos,object->getPosition()) {
     
        //загрузка из конфига
+        TowerProperties p(100, 100, 5, 1);
+        for (int i = 1; i <= MAX_LEVEL;i++) {
+            this->properties.insert({ i, TowerProperties(p.damage * i, p.cost + 2 * i, p.radius + (float)i, i) });
+        }
     }
 
     TowerProperties Tower::getProperties()const {
         return properties.at(level);
     }
-    Tower::TargetSheduler::TargetSheduler(const Point& palacePos,const Point& towerPos): palacePos(palacePos),towerPos(towerPos) {}
+    Tower::TargetSheduler::TargetSheduler(const Point& palacePos,
+        const Point& towerPos): 
+        palacePos(palacePos),
+        towerPos(towerPos) {}
+    
     void Tower::TargetSheduler::shedule(Enemy* e) {
-        if (!enemy || enemy->getHealth() <= 0) {
+        if (!enemy || enemy->isDead()) {
             enemy = e;
             return;
         }
@@ -73,7 +81,13 @@ namespace TowerDefence {
         }
         Enemy* target = s();
         if (target) {
-            target->setHealth(target->getHealth() - properties.at(level).damage);
+            for (unsigned int i = 0; i < properties.at(level).rateOfFire; i++) {
+                if (target->isDead()) {
+                    this->dropTarget();
+                    return true;
+                }
+                target->getDamage(properties.at(level).damage);
+            }
             return true;
         }
         return false;
@@ -93,6 +107,12 @@ namespace TowerDefence {
         Enemy* target = s();
         if (target) {
             target->addEffect(this->getEffect());
+            for (unsigned int i = 0; i < properties.at(level).rateOfFire; i++) {
+                if (target->isDead()) {
+                    return true;
+                }
+                target->getDamage(properties.at(level).damage);
+            }
             return true;
         }
         return false;

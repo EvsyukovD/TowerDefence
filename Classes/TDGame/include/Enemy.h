@@ -10,6 +10,7 @@ namespace TowerDefence {
 		  std::string name;
 		  std::vector<Point> path;
 		  int currentPos;
+		  
 	public:
 		const int MAX_HEALTH;
 		Enemy(int maxHealth,
@@ -31,6 +32,12 @@ namespace TowerDefence {
 		Установить текущее здоровье врага
 		**/
 		void setHealth(int);
+		/*
+		Нанести урон врагу. Если враг имеет эффект\n
+		ослабления, то ему наносится дополнительный урон
+		@param d - значение урона 
+		**/
+		void getDamage(int d);
 		/*
 		Вернуть текущую скорость врага
 		@return текущую скорость
@@ -65,6 +72,10 @@ namespace TowerDefence {
 		Сделать ход и рассчитать здоровье
 		**/
 		void tick();
+		/*
+		@return Флаг того, что враг дошёл до финиша
+		**/
+		bool isOnFinish() const;
 	};
 }
 #endif // !__ENEMY_H__

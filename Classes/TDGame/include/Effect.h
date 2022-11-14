@@ -36,6 +36,10 @@ namespace TowerDefence {
 		@return продолжительность эффекта
 		**/
 		int getDuration() const;
+		/*
+		@return Значение эффекта
+		**/
+		float getValue()const;
 	};
 
 	class PoisonEffect : public Effect {

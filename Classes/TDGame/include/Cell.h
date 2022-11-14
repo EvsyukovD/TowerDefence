@@ -6,11 +6,14 @@ namespace TowerDefence{
 		PALACE,
 		TOWER,
 		LAIR,
-		NONE
+		ROAD,
+		NONE,
+		TOWER_PLACE,
+		TRAP
 	};
 	class Cell {
 	private:
-		CellType type = NONE;
+		CellType type = CellType::NONE;
 		Building* objectPtr = nullptr;
 		float height;
 		float length;
@@ -23,7 +26,7 @@ namespace TowerDefence{
 		/*
 		”становить тип строени€
 		**/
-		void setType(CellType, Building*) const;
+		void setType(CellType, Building*);
 		/*
 		@return указатель на строение 
 		**/
