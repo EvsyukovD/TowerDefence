@@ -2,20 +2,19 @@
 #define __CELL_H__
 #include "TowerDefence.h"
 namespace TowerDefence{
+	enum CellType {
+		PALACE,
+		TOWER,
+		LAIR,
+		ROAD,
+		NONE,
+		TOWER_PLACE,
+		TRAP
+	};
 	class Cell {
-	public:
-		enum CellType {
-			PALACE,
-			TOWER,
-			LAIR,
-			ROAD,
-			NONE,
-			TOWER_PLACE,
-			TRAP
-		};
 	private:
 		CellType type = CellType::NONE;
-		Building* objectPtr = nullptr;
+		std::shared_ptr<Building> objectPtr = nullptr;
 		float height;
 		float length;
 	public:
@@ -27,7 +26,7 @@ namespace TowerDefence{
 		/*
 		”становить тип строени€
 		**/
-		void setType(CellType, Building*);
+		void setType(CellType, std::shared_ptr<Building>);
 		/*
 		@return указатель на строение 
 		**/

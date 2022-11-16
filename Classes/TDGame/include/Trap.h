@@ -16,7 +16,7 @@ namespace TowerDefence {
         @param m - таблица всех живых врагов на карте
         @return true - если ловушка была активирована и false иначе
         **/
-        virtual bool fire(std::list<Enemy*>& m);
+        virtual bool fire(std::list<std::shared_ptr<Enemy>>& m);
     };
 }
 #endif // !__TRAP_H__

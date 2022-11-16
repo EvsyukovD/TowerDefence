@@ -7,9 +7,9 @@ namespace TowerDefence {
         s(palacePos,object->getPosition()) {
     
        //загрузка из конфига
-        TowerProperties p(100, 100, 5, 1);
+        TowerProperties p(100, 100, 5, 1,100);
         for (int i = 1; i <= MAX_LEVEL;i++) {
-            this->properties.insert({ i, TowerProperties(p.damage * i, p.cost + 2 * i, p.radius + (float)i, i) });
+            this->properties.insert({ i, TowerProperties(p.damage * i, p.cost + 2 * i, p.radius + (float)i, i,i) });
         }
     }
 
@@ -66,17 +66,21 @@ namespace TowerDefence {
     unsigned int Tower::getLevel()const {
         return level;
     }
-    void Tower::updateLevel() {
+    bool Tower::updateLevel(unsigned int gold) {
         if (level == MAX_LEVEL) {
-            return;
+            return true;
         }
-        level++;
+        if (gold >= properties.at(level).updatingCost) {
+            level++;
+            return true;
+        }
+        return false;
     }
-    bool Tower::fire(std::list<Enemy*>& enemies) {
+    bool Tower::fire(std::list<std::shared_ptr<Enemy>>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();
             if ((double)p.distance(this->object->getPosition()) - (double)properties.at(level).radius < 1E-32) {
-                s.shedule(*iter);
+                s.shedule((*iter).get());
             }
         }
         Enemy* target = s();
@@ -97,11 +101,11 @@ namespace TowerDefence {
         const std::string& name,
         const std::string& filename):MagicObject(e), Tower(palacePos,name,filename) {}
     
-    bool MagicTower::fire(std::list<Enemy*>& enemies) {
+    bool MagicTower::fire(std::list<std::shared_ptr<Enemy>>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();
             if ((double)p.distance(this->object->getPosition()) - (double)properties.at(level).radius < 1E-32) {
-                s.shedule(*iter);
+                s.shedule((*iter).get());
             }
         }
         Enemy* target = s();

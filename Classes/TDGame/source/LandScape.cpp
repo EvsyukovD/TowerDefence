@@ -4,8 +4,12 @@
 #include "../include/Trap.h"
 #include "../include/Lair.h"
 #include "../include/TowerDefence.h"
+#include "../lib/json/single_include/nlohmann/json.hpp"
+using json = nlohmann::json;
 namespace TowerDefence {
-    LandScape::LandScape(const std::string& file) : TDObject(file) {
+    LandScape::LandScape(const std::string& jsonConfig,const std::string& fileWithLandScape) : TDObject(fileWithLandScape) {
+        json config(jsonConfig);
+
         /*«агрузка путей, мест дл€ построек из конфига, установка начального положени€ дл€ врагов*/
     }
     int LandScape::getFieldHeight() const {
@@ -26,21 +30,25 @@ namespace TowerDefence {
             throw std::invalid_argument("This point doesn't exist");
         }
         Cell& cell = res->second;
-        if (instanceof<Tower, AbstractAttackingObject>(ob) && cell.getType() == Cell::CellType::TOWER_PLACE) {
+        if (instanceof<Tower, AbstractAttackingObject>(ob) && cell.getType() == CellType::TOWER_PLACE) {
             int cost = ((Tower*)ob)->getProperties().cost;
             if (palace.getGold() >= cost) {
                 palace.takeGold(cost);
-                cell.setType(Cell::CellType::TOWER, (Building*)ob);
-                attackingObjects.push_back(ob);
+                std::shared_ptr<Building> b(ob);
+                cell.setType(CellType::TOWER, b);
+                std::shared_ptr<AbstractAttackingObject> p(ob);
+                attackingObjects.push_back(p);
             }
             return;
         }
-        if (instanceof<Trap,AbstractAttackingObject>(ob) && cell.getType() == Cell::CellType::ROAD) {
+        if (instanceof<Trap,AbstractAttackingObject>(ob) && cell.getType() == CellType::ROAD) {
             int cost = ((Trap*)ob)->getCost();
             if (palace.getGold() >= cost) {
                 palace.takeGold(cost);
-                cell.setType(Cell::CellType::TRAP, (Building*)ob);
-                attackingObjects.push_back(ob);
+                std::shared_ptr<Building> b(ob);
+                cell.setType(CellType::TRAP, b);
+                std::shared_ptr<AbstractAttackingObject> p(ob);
+                attackingObjects.push_back(p);
             }
         }
     }
@@ -48,8 +56,8 @@ namespace TowerDefence {
         bool emptyLairsFlag = true;
         for (int i = 0; i < lairs.size(); ++i) {
             emptyLairsFlag = emptyLairsFlag && lairs[i].getNumOfEnemies() == 0;
-            Enemy* e = lairs[i].getNextEnemy(ticks);
-            if (e) {
+            std::shared_ptr<Enemy> e = lairs[i].getNextEnemy(ticks);
+            if (e.get()) {
                 enemies.push_back(e);
             }
         }
@@ -58,7 +66,7 @@ namespace TowerDefence {
             return;
         }
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
-            Enemy* e = *iter;
+            Enemy* e = (*iter).get();
             if (e->isDead()) {
                 palace.addGold(e->getAward());
                 enemies.erase(iter);
@@ -72,8 +80,8 @@ namespace TowerDefence {
             }
         }
         for (auto iter = attackingObjects.begin(); iter != attackingObjects.end(); ++iter) {
-            if (instanceof<Trap,AbstractAttackingObject>(*iter)) {
-                if ((*iter)->fire(enemies)) {
+            if (instanceof<Trap,AbstractAttackingObject>((*iter).get())) {
+                if ((*iter).get()->fire(enemies)) {
                     attackingObjects.erase(iter);
                 }
             }
@@ -86,5 +94,19 @@ namespace TowerDefence {
         this->attackingObjects.clear();
         this->battlefield.clear();
         this->enemies.clear();
+    }
+    bool LandScape::tryUpdateTower(Tower& t) {
+        unsigned int cost = t.getProperties().updatingCost;
+        if (t.updateLevel(palace.getGold())) {
+            palace.takeGold(cost);
+            return true;
+        }
+        return false;
+    }
+    bool LandScape::init() {
+        if (battlefield.size() == 0) {
+            return false;
+        }
+
     }
 }

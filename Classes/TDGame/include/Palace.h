@@ -21,11 +21,11 @@ namespace TowerDefence {
 		**/
 		void addGold(unsigned int g);
 		/*
-		Забрать у замка данное количество золота
-		@param Новое количество золота
-		@throws std::invalid_argument - если у замка не хватает золота
+		Забрать у замка данное количество золота.
+		@param Новое количество золота.
+		@returns true, если у замка хватает золота и false иначе 
 		**/
-		void takeGold(unsigned int);
+		bool takeGold(unsigned int);
 		/*
 		@return Текущая прочность замка
 		**/

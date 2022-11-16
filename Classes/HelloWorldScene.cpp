@@ -23,9 +23,11 @@
  ****************************************************************************/
 
 #include "HelloWorldScene.h"
-
+#include "TDGame/lib/json/single_include/nlohmann/json.hpp"
+#include <fstream>
+#include <iostream>
 USING_NS_CC;
-
+using json = nlohmann::json;
 Scene* HelloWorld::createScene()
 {
     return HelloWorld::create();
@@ -71,7 +73,7 @@ bool HelloWorld::init()
     {
         float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
         float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(x,y));
+        closeItem->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     }
 
     // create menu, it's an autorelease object
@@ -86,6 +88,7 @@ bool HelloWorld::init()
     // create and initialize a label
 
     auto label = Label::createWithTTF("Tower Defence", "fonts/Marker Felt.ttf", 24);
+    
     if (label == nullptr)
     {
         problemLoading("'fonts/Marker Felt.ttf'");
@@ -99,7 +102,19 @@ bool HelloWorld::init()
         // add the label as a child to this layer
         this->addChild(label, 1);
     }
+    auto backgroundSprite = Sprite::create("Background.png");
+    backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 
+    this->addChild(backgroundSprite);
+
+    auto playItem = MenuItemImage::create("Play Button.png", "Play Button Clicked.png", CC_CALLBACK_1(HelloWorld::GoToGameScene, this));
+    playItem->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+
+    cocos2d::Menu* menu1 = Menu::create(playItem, NULL);
+    menu1->setPosition(Point::ZERO);
+
+    this->addChild(menu1);
+    /*
     // add "HelloWorld" splash screen"
     auto sprite = Sprite::create("Level_1.png");
     if (sprite == nullptr)
@@ -113,8 +128,9 @@ bool HelloWorld::init()
 
         // add the sprite as a child to this layer
         this->addChild(sprite, 0);
-    }
-    /*auto ghost = Sprite::create("Enemies/Ghost/frame_00001.png");
+    }*/
+    /*
+    auto ghost = Sprite::create("Enemies/Ghost/frame_00001.png");
     auto simpleTower = Sprite::create("SimpleTower.png");
     auto magicTower = Sprite::create("MagicTower.png");
     float x = origin.x + visibleSize.width / 2;
@@ -155,6 +171,23 @@ bool HelloWorld::init()
     return true;
 }
 
+void HelloWorld::GoToGameScene(cocos2d::Ref* sender)
+{
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    auto scene = Scene::create();//GameScene::createScene();
+    auto layer = Layer::create();
+    auto label = Label::createWithTTF("Tower Defence", "fonts/Marker Felt.ttf", 24);
+    label->setPosition(Vec2(origin.x + visibleSize.width / 2,
+        origin.y + visibleSize.height - label->getContentSize().height));
+    auto backgroundSprite = Sprite::create("Level_1.png");
+    backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    scene->addChild(backgroundSprite);
+    scene->addChild(layer);
+    scene->addChild(label, 1);
+    Director::getInstance()->replaceScene(TransitionProgressRadialCW::create(1.5, scene));
+}
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
@@ -165,6 +198,4 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
     //EventCustom customEndEvent("game_scene_close_event");
     //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
 }

@@ -14,7 +14,7 @@ namespace TowerDefence {
     Атаковать врагов в определённом радиусе\n
     Если враги были атакованы, ловушка уничтожается
     **/
-    bool Trap::fire(std::list<Enemy*>& m) {
+    bool Trap::fire(std::list<std::shared_ptr<Enemy>>& m) {
         bool isExploded = false;
         for (auto iter = m.begin(); iter != m.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();

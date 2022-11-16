@@ -1,29 +1,27 @@
 #include "../include/TDObject.h"
 namespace TowerDefence {
-	long TDObject::count = 0;
-	TDObject::TDObject(const std::string& filename) {
+	int TDObject::count = 0;
+	TDObject::TDObject(const std::string& filename):object(Sprite::create(filename)) {
 		count++;
 		id = count;
-		object = Sprite::create(filename);
 	}
-	Sprite* TDObject::getSprite() {
+	std::shared_ptr<Sprite> TDObject::getSprite() {
 		return object;
 	}
-	long TDObject::getObjectID()const {
+	int TDObject::getObjectID()const {
 		return id;
 	}
-	void TDObject::setSprite(Sprite* o) {
+	void TDObject::setSprite(std::shared_ptr<Sprite> o) {
 		object->cleanup();
-		delete object;
 		object = o;
 	}
 	TDObject::TDObject(const TDObject& o) {
 		count++;
 		id = count;
-		object = Sprite::create();
+		object = std::shared_ptr<Sprite>(Sprite::create());
 		object->initWithTexture(o.object->getTexture());
 	}
-	TDObject::TDObject(TDObject&& o): object(o.object) {
+	TDObject::TDObject(TDObject&& o): object(o.object.get())  {
 		count++;
 		id = count;
 		o.object = nullptr;
@@ -33,8 +31,7 @@ namespace TowerDefence {
 			return *this;
 		}
 		object->cleanup();
-		delete object;
-		object = Sprite::create();
+		object = std::shared_ptr<Sprite>(Sprite::create());
 		object->initWithTexture(o.object->getTexture());
 		return *this;
 	}
@@ -44,7 +41,7 @@ namespace TowerDefence {
 		return *this;
 	}
 	void TDObject::kill() {
-		if (object) {
+		if (object.get()) {
 			object->cleanup();
 			object = nullptr;
 		}

@@ -7,7 +7,6 @@ namespace TowerDefence {
 	bool instanceof(T* p) {
 		return dynamic_cast<Base*>(p) != nullptr;
 	}
-	
 	class TDObject;
 	class Effect;
 	class PoisonEffect;

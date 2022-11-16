@@ -8,21 +8,22 @@ namespace TowerDefence {
 		unsigned int cost;
 		float radius;
 		unsigned int rateOfFire;
+		unsigned int updatingCost;
 		TowerProperties(int damage,
 			unsigned int cost,
 			float radius,
-			unsigned int rateOfFire) {
+			unsigned int rateOfFire,unsigned int updatingCost) {
 			this->damage = damage;
 			this->cost = cost;
 			this->radius = radius;
 			this->rateOfFire = rateOfFire;
+			this->updatingCost = updatingCost;
 		}
 	};
 	class Tower: public AbstractAttackingObject {
 	protected:
 		unsigned int level = 1;
 		std::map<unsigned int, TowerProperties> properties;
-		const int MAX_LEVEL = 3;
 		class TargetSheduler {
 		private:
 			Enemy* enemy = nullptr;
@@ -36,12 +37,18 @@ namespace TowerDefence {
 		};
 		TargetSheduler s;
 	public:
+		static const int MAX_LEVEL = 3;
 		Tower(const Point& palacePos,const std::string& name,const std::string& filename);
+		
 		unsigned int getLevel()const;
-		void updateLevel();
+		/*
+		Обновить уровень башни
+		@param Вносимое количество золота
+		@returns True, если обновление прошло успешно и false иначе
+		**/
+		bool updateLevel(unsigned int gold);
 		/*
 		@returns Cвойства башни
-
 		**/
 		TowerProperties getProperties()const;
 		/*
@@ -58,7 +65,7 @@ namespace TowerDefence {
 		@param enemies - живые враги на карте
 		@return true если враги были атакованы и false иначе
 		**/
-		virtual bool fire(std::list<Enemy*>& enemies);
+		virtual bool fire(std::list<std::shared_ptr<Enemy>>& enemies);
 	};
 	class MagicTower: public Tower, public MagicObject {
 	public:
@@ -71,7 +78,7 @@ namespace TowerDefence {
 		@param enemies - живые враги на карте
 		@return true если враги были атакованы и false иначе
 		**/
-		virtual bool fire(std::list<Enemy*>& enemies);
+		virtual bool fire(std::list<std::shared_ptr<Enemy>>& enemies);
 	};
 }
 #endif

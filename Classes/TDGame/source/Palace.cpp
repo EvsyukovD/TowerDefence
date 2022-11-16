@@ -10,7 +10,7 @@ namespace TowerDefence {
         MAX_STRENGTH(maxStrength){
         //загрузка из конфига
     }
-    Palace::Palace():Palace("NONE","NONE",0,0){}
+    Palace::Palace():Palace("NONE","Empty.png",0,0){}
     unsigned int Palace::getGold()const {
         return gold;
     }
@@ -20,12 +20,13 @@ namespace TowerDefence {
     void Palace::addGold(unsigned int g) {
         this->gold += g;
     }
-    void Palace::takeGold(unsigned int gold) {
+    bool Palace::takeGold(unsigned int gold) {
         if (gold <= this->gold) {
             this->gold -= gold;
+            return true;
         }
         else {
-            throw std::invalid_argument("Doesn't have enough gold");
+            return false;
         }
     }
     void Palace::getDamage(unsigned int d) {

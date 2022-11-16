@@ -8,10 +8,10 @@ namespace TowerDefence {
 	**/
 	class TDObject {
 	private:
-		static long count;
-		long id = 0;
+		static int count;
+		int id = 0;
 	protected:
-		Sprite* object = nullptr;
+		std::shared_ptr<Sprite> object;
 		/*
 		Функция, уничтожающая текстуру
 		**/
@@ -20,7 +20,7 @@ namespace TowerDefence {
 		/*
 		@returns ID объекта
 		**/
-		long getObjectID()const;
+		int getObjectID()const;
 		/*
 		Создание экзнмпляра класса TDObject на основе\n
 		файла с текстурой
@@ -33,12 +33,12 @@ namespace TowerDefence {
 		Получить спрайт
 		@returns Указатель на Sprite
 		*/
-		Sprite* getSprite();
+		std::shared_ptr<Sprite> getSprite();
 		/**
 		Установить спрайт
 		@param Указатель на Sprite
 		*/
-		void setSprite(Sprite*);
+		void setSprite(std::shared_ptr<Sprite>);
 		/*
 		Копирующее присваивание
 		**/

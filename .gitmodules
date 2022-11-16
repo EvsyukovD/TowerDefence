@@ -1,0 +1,3 @@
+[submodule "Classes/TDGame/lib/json"]
+	path = Classes/TDGame/lib/json
+	url = https://github.com/nlohmann/json.git
