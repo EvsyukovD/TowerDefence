@@ -2,7 +2,7 @@
 namespace TowerDefence {
     Tower::Tower(const Point& palacePos,
         const std::string& name, 
-        const std::string& filename) : 
+        const std::string& filename): 
         AbstractAttackingObject(name, filename), 
         s(palacePos,object->getPosition()) {
     
@@ -12,7 +12,9 @@ namespace TowerDefence {
             this->properties.insert({ i, TowerProperties(p.damage * i, p.cost + 2 * i, p.radius + (float)i, i,i) });
         }
     }
-
+    Tower::Tower(const Point& palacePos,const Point& towerPos,const std::string& jsonConfig) {
+         
+    }
     TowerProperties Tower::getProperties()const {
         return properties.at(level);
     }

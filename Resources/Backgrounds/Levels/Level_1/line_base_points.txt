@@ -1,0 +1,5 @@
+Button posx: 218 posy: 20
+Button posx: 228 posy: 95
+Button posx: 301 posy: 122
+Button posx: 295 posy: 148
+Button posx: 165 posy: 148

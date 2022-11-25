@@ -42,9 +42,10 @@ namespace TowerDefence {
 	}
 	void DecelerationEffect::apply(Enemy& e) {
 		if (duration <= 0) {
+			e.setSpeed(e.getNativeSpeed());
 			return;
 		}
-		e.setSpeed(e.getSpeed() * (1 - value));
+		e.setSpeed(e.getNativeSpeed() * (1 - value));
 		duration--;
 	}
 }

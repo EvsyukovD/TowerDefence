@@ -7,6 +7,7 @@ namespace TowerDefence {
         //Название строения
         std::string name;
     public:
+        Building();
         Building(const std::string& name, const std::string& filename);
         std::string getName() const;
         void setName(const std::string&);

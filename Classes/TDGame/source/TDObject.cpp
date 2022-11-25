@@ -5,6 +5,9 @@ namespace TowerDefence {
 		count++;
 		id = count;
 	}
+	TDObject::TDObject():object(Sprite::create()) {
+		
+	}
 	std::shared_ptr<Sprite> TDObject::getSprite() {
 		return object;
 	}

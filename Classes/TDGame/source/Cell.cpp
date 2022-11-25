@@ -1,10 +1,11 @@
 #include "../include/Cell.h"
 namespace TowerDefence {
-	Cell::Cell(CellType type, Building* objectPtr, float height, float length):
+	Cell::Cell(const Point& topLeft,CellType type, Building* objectPtr, size_t height, size_t width):
+		topLeft(topLeft),
 		type(type),
 		objectPtr(objectPtr), 
 		height(height), 
-		length(length) {}
+		width(width) {}
 	Building* Cell::getObject() {
 		return objectPtr.get();
 	}
@@ -14,5 +15,14 @@ namespace TowerDefence {
 	void Cell::setType(CellType type, std::shared_ptr<Building> objectPtr) {
 		this->type = type;
 		this->objectPtr = objectPtr;
+	}
+	size_t Cell::getHeight()const { 
+		return height; 
+	}
+	size_t Cell::getWidth()const { 
+		return width; 
+	}
+	Point Cell::getTopLeft()const { 
+		return topLeft; 
 	}
 }

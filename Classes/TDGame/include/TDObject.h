@@ -26,6 +26,7 @@ namespace TowerDefence {
 		файла с текстурой
 		@param filename - файл с текстурой
 		**/
+		TDObject();
 		TDObject(const std::string& filename);
 		TDObject(const TDObject&);
 		TDObject(TDObject&&);

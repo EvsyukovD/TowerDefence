@@ -13,12 +13,13 @@ namespace TowerDefence{
 	};
 	class Cell {
 	private:
+		Point topLeft;
 		CellType type = CellType::NONE;
 		std::shared_ptr<Building> objectPtr = nullptr;
-		float height;
-		float length;
+		size_t height;
+		size_t width;
 	public:
-		Cell(CellType type, Building* objectPtr, float height, float length);
+		Cell(const Point& topLeft,CellType type, Building* objectPtr, size_t height, size_t length);
 		/*
 		@return тип строения
 		**/
@@ -31,7 +32,18 @@ namespace TowerDefence{
 		@return указатель на строение 
 		**/
 		Building* getObject();
-	
+		/*
+		@return Высота клетки
+		**/
+		size_t getHeight()const;
+		/*
+		@return Ширина клетки
+		**/
+		size_t getWidth()const;
+		/*
+		@return Верхний левый угол клетки
+		**/
+		Point getTopLeft()const;
 	};
 }
 #endif

@@ -7,25 +7,54 @@
 #include "../lib/json/single_include/nlohmann/json.hpp"
 using json = nlohmann::json;
 namespace TowerDefence {
-    LandScape::LandScape(const std::string& jsonConfig,const std::string& fileWithLandScape) : TDObject(fileWithLandScape) {
+    LandScape::LandScape(const std::string& jsonConfig){
         json config(jsonConfig);
-
-        /*«агрузка путей, мест дл€ построек из конфига, установка начального положени€ дл€ врагов*/
+        object->initWithFile(config["map"]);
+        object->setScale(config["map_scale"]);
+        object->setAnchorPoint(Vec2(0, 1));
+        size_t cellHeight = config["cell_height"], cellWidth = config["cell_width"];
+        auto visibleSize = object->getContentSize();
+        Vec2 origin = Director::getInstance()->getVisibleOrigin();
+        height = visibleSize.height, width = visibleSize.width;
+        for (int i = 0; i * cellHeight < height; i++) {
+            battlefield.push_back(std::vector<Cell>());
+            for (int j = 0; j * cellWidth < width; j++) {
+                Vec2 v = Vec2(origin.x + j * cellWidth, origin.y + visibleSize.height - i * cellHeight);
+                Cell cell = Cell(v,CellType::NONE,nullptr,cellHeight,cellWidth);
+                battlefield[i].push_back(cell);
+            }
+        }
+        for (int k = 0; k < config["road"].size(); k++) {
+            int i = config["road"][k][0], j = config["road"][k][1];
+            battlefield[i][j].setType(CellType::ROAD, nullptr);
+        }
+        for (int k = 0; k < config["towers"].size(); k++) {
+            int i = config["towers"][k][0], j = config["towers"][k][1];
+            battlefield[i][j].setType(CellType::TOWER_PLACE,nullptr);
+        }
+        std::vector<Point> path;
+        const Point& delta = Point(cellWidth,-cellHeight) / 2.0;
+        for (int i = 0; i < config["path"].size(); i++) {
+            const Point& topLeft  = battlefield[config["path"][i][0]][config["path"][i][1]].getTopLeft();
+            path.push_back(topLeft + delta);
+        }
+        size_t lairsNum = config["lairs_num"];
+        std::string lairConfigFile = "lair_config_";
+        std::string lair_config;
+        for (int i = 0; i < lairsNum; i++) {
+            lair_config = config[lairConfigFile.append(std::to_string(i))];
+            lairs.push_back(Lair(path,lair_config));
+        }
+        palace.init((size_t)config["gold"], (size_t)config["max_strength"]);
     }
     int LandScape::getFieldHeight() const {
         return height;
     }
     int LandScape::getFieldLength() const {
-        return length;
-    }
-    void LandScape::setFieldHeight(int h) {
-        height = h;
-    }
-    void LandScape::setFieldLength(int l) {
-        length = l;
+        return width;
     }
     void LandScape::addAttackingObject(const Point& p, AbstractAttackingObject* ob) { 
-        auto res = battlefield.find(p);
+        /*auto res = battlefield.find(p);
         if (res == battlefield.end()) {
             throw std::invalid_argument("This point doesn't exist");
         }
@@ -51,6 +80,7 @@ namespace TowerDefence {
                 attackingObjects.push_back(p);
             }
         }
+        */
     }
     void LandScape::tick() {
         bool emptyLairsFlag = true;
@@ -77,7 +107,9 @@ namespace TowerDefence {
                     //ѕроигрыш, конец игры
                     return;
                 }
+                enemies.erase(iter);
             }
+            e->tick();
         }
         for (auto iter = attackingObjects.begin(); iter != attackingObjects.end(); ++iter) {
             if (instanceof<Trap,AbstractAttackingObject>((*iter).get())) {
@@ -89,6 +121,7 @@ namespace TowerDefence {
                 (*iter)->fire(enemies);
             }
         }
+        ticks++;
     }
     LandScape::~LandScape() {
         this->attackingObjects.clear();

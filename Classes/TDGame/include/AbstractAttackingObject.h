@@ -7,6 +7,7 @@ namespace TowerDefence {
 	class AbstractAttackingObject: public Building {
 	public:
 		AbstractAttackingObject(const std::string& name, const std::string& filename):Building(name,filename) {}
+		AbstractAttackingObject() {}
 		/*
 		Функция атаки
 		@param enemies - живые враги на карте

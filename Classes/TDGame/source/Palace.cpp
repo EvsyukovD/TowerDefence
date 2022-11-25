@@ -7,10 +7,13 @@ namespace TowerDefence {
         Building(name,filename),
         gold(gold),
         currentStrength(maxStrength),
-        MAX_STRENGTH(maxStrength){
-        //загрузка из конфига
+        maxStrength(maxStrength){
     }
-    Palace::Palace():Palace("NONE","Empty.png",0,0){}
+    Palace::Palace(){
+        gold = 0;
+        currentStrength = 0;
+        maxStrength = 0;
+    }
     unsigned int Palace::getGold()const {
         return gold;
     }
@@ -30,9 +33,19 @@ namespace TowerDefence {
         }
     }
     void Palace::getDamage(unsigned int d) {
-        this->currentStrength -= d;
+        if (this->currentStrength - d >= 0) {
+            this->currentStrength -= d;
+        }
+        else {
+            this->currentStrength = 0;
+        }
     }
     bool Palace::isDestroyed() const{
-        return currentStrength <= 0;
+        return currentStrength == 0;
+    }
+    void Palace::init(unsigned int gold,unsigned int maxStrength) {
+        this->maxStrength = maxStrength;
+        this->gold;
+        this->currentStrength = maxStrength;
     }
 }

@@ -5,7 +5,7 @@ namespace TowerDefence {
 	class Palace : public Building {
 	private:
 		unsigned int gold;
-		const unsigned int MAX_STRENGTH;
+		unsigned int maxStrength;
 		unsigned int currentStrength;
 	public:
 		Palace();
@@ -39,6 +39,8 @@ namespace TowerDefence {
 		@return Флаг уничтожен ли замок
 		**/
 		bool isDestroyed() const;
+
+		void init(unsigned int gold,unsigned int maxStrength);
 	};
 }
 #endif // !__PALACE_H__

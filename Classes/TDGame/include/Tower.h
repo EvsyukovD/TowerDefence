@@ -31,6 +31,7 @@ namespace TowerDefence {
 			const Point towerPos;
 		public:
 			TargetSheduler(const Point&,const Point&);
+			TargetSheduler() {}
 			void dropShedule();
 			void shedule(Enemy*);
 			virtual Enemy* operator ()();
@@ -39,7 +40,7 @@ namespace TowerDefence {
 	public:
 		static const int MAX_LEVEL = 3;
 		Tower(const Point& palacePos,const std::string& name,const std::string& filename);
-		
+		Tower(const Point& palacePos,const Point& towerPos,const std::string& jsonConfig);
 		unsigned int getLevel()const;
 		/*
 		Обновить уровень башни
@@ -73,6 +74,7 @@ namespace TowerDefence {
 			const Point& palacePos,
 			const std::string& name,
 			const std::string& filename);
+		MagicTower(const Effect&,const Point& palacePos,const std::string& jsonConfig);
 		/*
 		Функция атаки
 		@param enemies - живые враги на карте

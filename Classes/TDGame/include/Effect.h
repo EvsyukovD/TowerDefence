@@ -24,32 +24,32 @@ namespace TowerDefence {
 		**/
 		Effect(int duration, float value, Effect::EffectType type);
 		Effect();
-		/*
-		Оказать воздействие на врага
-		@param e - враг
-		**/
+		/*!
+		\brief Оказать воздействие на врага
+		\param e - враг
+		*/
 		virtual void apply(Enemy& e);
-		/*
+		/*!
 		@return тип эффекта
 		**/
 		EffectType getType() const;
-		/*
-		@return продолжительность эффекта
+		/*!
+		\return продолжительность эффекта
 		**/
 		int getDuration() const;
-		/*
-		@return Значение эффекта
-		**/
+		/*!
+		\return Значение эффекта
+		*/
 		float getValue()const;
 	};
 
 	class PoisonEffect : public Effect {
 	public:
 		PoisonEffect(int duration, float value) : Effect(duration, value, Effect::EffectType::POISON) {}
-		/*
-		Отравить на врага
-		@param e - враг
-		**/
+		/*!
+		\brief Отравить на врага
+		\param e - враг
+		*/
 		virtual void apply(Enemy& e);
 	};
 	class WeaknessEffect : public Effect {

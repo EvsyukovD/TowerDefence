@@ -6,6 +6,7 @@ namespace TowerDefence {
 	private:
 		  int health;
 		  float speed;
+		  float nativeSpeed;
 		  std::list<Effect> effects;
 		  std::string name;
 		  std::vector<Point> path;
@@ -18,6 +19,7 @@ namespace TowerDefence {
 			unsigned int award,
 			const std::string& name,
 			const std::vector<Point>& path, const std::string& filename);
+		Enemy(const std::vector<Point>& path,const std::string& jsonConfig);
 		
 		Enemy(const Enemy&);
 		/*
@@ -64,6 +66,11 @@ namespace TowerDefence {
 		@return имя врага
 		**/
 		std::string getName()const;
+
+		/*!
+		\return Исходная скорость врага
+		**/
+		float getNativeSpeed()const;
 		/*
 		Установить имя врага
 		**/
