@@ -15,7 +15,8 @@ namespace TowerDefence {
 		return id;
 	}
 	void TDObject::setSprite(std::shared_ptr<Sprite> o) {
-		object->cleanup();
+		//object->cleanup();
+		kill();
 		object = o;
 	}
 	TDObject::TDObject(const TDObject& o) {
@@ -33,7 +34,8 @@ namespace TowerDefence {
 		if (this == &o) {
 			return *this;
 		}
-		object->cleanup();
+		//object->cleanup();
+		kill();
 		object = std::shared_ptr<Sprite>(Sprite::create());
 		object->initWithTexture(o.object->getTexture());
 		return *this;
@@ -45,7 +47,8 @@ namespace TowerDefence {
 	}
 	void TDObject::kill() {
 		if (object.get()) {
-			object->cleanup();
+			//object->cleanup();
+			object->removeFromParent();
 			object = nullptr;
 		}
 	}

@@ -26,6 +26,10 @@
 #include "TDGame/lib/json/single_include/nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
+#include "TDGame/include/LandScape.h"
+#include "TDGame/include/Lair.h"
+#include "TDGame/include/Enemy.h"
+#include "TDGame/include/Cell.h"
 //USING_NS_CC;
 using json = nlohmann::json;
 Scene* HelloWorld::createScene()
@@ -85,13 +89,13 @@ bool HelloWorld::init()
     {
         float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
         float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+        closeItem->setPosition(x, y);
     }
 
     // create menu, it's an autorelease object
     auto menu = Menu::create(closeItem, NULL);
     menu->setPosition(Vec2::ZERO);
-    //this->addChild(menu, 1);
+    this->addChild(menu, 1);
 
     /////////////////////////////
     // 3. add your codes below...
@@ -114,12 +118,18 @@ bool HelloWorld::init()
         // add the label as a child to this layer
         this->addChild(label, 1);
     }
+    /*auto ghost = Sprite::create("Backgrounds/Levels/Level_1/Enemies/Ghost/frame_1.png");
+    std::shared_ptr<Sprite> p(ghost);
+    ghost->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+    auto move = MoveBy::create(1.0,Vec2(30, 30));
+    ghost->runAction(move);
     auto backgroundSprite = Sprite::create("Level_1.png");
     backgroundSprite->setScale(0.8);
     backgroundSprite->setAnchorPoint(Vec2(0,1));
     backgroundSprite->setPosition(Vec2(origin.x,origin.y + visibleSize.height));
     float width = 5, height = 5;
     this->addChild(backgroundSprite);
+    this->addChild(ghost,0,1);
     auto vis = backgroundSprite->getContentSize();
     for (int i = 0; i * height< vis.height; i++) {
         nodes.push_back(std::vector<Point>());
@@ -131,18 +141,17 @@ bool HelloWorld::init()
             node->drawRect(v, Vec2(origin.x + 5 + j * width, origin.y + visibleSize.height - 5 - i * height), Color4F::BLACK);
             this->addChild(node);
         }
-    }
-    Vec2 &v = Vec2(origin.x, origin.y + visibleSize.height);
+    }*/
+    /*Vec2 &v = Vec2(origin.x, origin.y + visibleSize.height);
     Vec2& dest = Vec2(origin.x + 5, origin.y + visibleSize.height - 5);
-    //backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    //Point o = Point(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
-   // auto playItem = MenuItemImage::create("Play Button.png", "Play Button Clicked.png", CC_CALLBACK_1(HelloWorld::GoToGameScene, this));
-   // playItem->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
-   // cocos2d::Menu* menu1 = Menu::create(playItem, NULL);
-   // menu1->setPosition(Point::ZERO);
-
-    //this->addChild(menu1);
+    auto backgroundSprite = Sprite::create("Backgrounds/Background.png");
+    backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    Point o = Point(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);*/
+    auto playItem = MenuItemImage::create("Play Button.png", "Play Button Clicked.png", CC_CALLBACK_1(HelloWorld::GoToGameScene, this));
+    playItem->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    cocos2d::Menu* menu1 = Menu::create(playItem, NULL);
+    menu1->setPosition(Point::ZERO);
+    this->addChild(menu1);
     /*
     // add "HelloWorld" splash screen"
     auto sprite = Sprite::create("Level_1.png");
@@ -201,6 +210,10 @@ bool HelloWorld::init()
 
 bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
 {    
+   /* Node* n = this->getChildByTag(1);
+    if (n) {
+        n->removeFromParent();
+    }
     const Point& pos = touch->getLocation();
     for (int i = 0; i < nodes.size();i++) {
         for (int j = 0; j < nodes[i].size(); j++) {
@@ -217,7 +230,7 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
                 file.close();
             }
         }
-    }
+    }*/
     /*
     x = 47.900181, y = 291.101685 A
     x = 431.850098, y = 291.101685 B
@@ -244,9 +257,16 @@ void HelloWorld::onTouchCancelled(Touch* touch, Event* event)
    // cocos2d::log("touch cancelled");
 }
 
-void HelloWorld::GoToGameScene(cocos2d::Ref* sender)
+void HelloWorld::GoToGameScene(Ref* sender)
 {
-    Size visibleSize = Director::getInstance()->getVisibleSize();
+    TowerDefence::LandScape l;
+    l.initWithConfig("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json");
+    auto scene = TowerDefence::LandScape::createScene();
+    l.getSprite()->setPosition(Point::ZERO);
+    scene->addChild(l.getSprite().get());
+    Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));
+    //l.init();
+   /*Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     auto scene = Scene::create();//GameScene::createScene();
@@ -254,14 +274,14 @@ void HelloWorld::GoToGameScene(cocos2d::Ref* sender)
     auto label = Label::createWithTTF("Tower Defence", "fonts/Marker Felt.ttf", 24);
     label->setPosition(Vec2(origin.x + visibleSize.width / 2,
         origin.y + visibleSize.height - label->getContentSize().height));
-    auto backgroundSprite = Sprite::create("Level_1.png");
+    auto backgroundSprite = Sprite::create("Backgrounds/Levels/Level_1/Level_1.png");
     backgroundSprite->setScale(0.8);
     backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     scene->addChild(backgroundSprite);
     scene->addChild(layer);
     scene->addChild(label);
-    Director::getInstance()->replaceScene(TransitionProgressRadialCW::create(1.5, scene));
-    auto closeItem = MenuItemImage::create(
+    Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));*/
+   /* auto closeItem = MenuItemImage::create(
         "CloseNormal.png",
         "CloseSelected.png",
         CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
@@ -282,7 +302,7 @@ void HelloWorld::GoToGameScene(cocos2d::Ref* sender)
         file << "Button posx: " << pos.x << " posy: " << pos.y << std::endl;
         file.close();
     }
-    scene->addChild(closeItem);
+    scene->addChild(closeItem);*/
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)

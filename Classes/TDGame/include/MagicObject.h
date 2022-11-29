@@ -7,13 +7,13 @@ namespace TowerDefence {
 		Effect effect;
 	public:
 		MagicObject(const Effect&);
-		/*
-	    @return Ёффект, накладываемый ловушкой
-		**/
+		/**  
+	    @return Trap's effect
+		*/
 		Effect getEffect() const;
-		/*
-		»зменить эффект, накладывемый ловушкой
-		**/
+		/**
+		Set trap's effect
+		*/
 		void setEffect(const Effect&);
 	};
 }

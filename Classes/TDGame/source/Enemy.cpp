@@ -1,6 +1,7 @@
 #include "../include/Enemy.h"
 #include "../include/Effect.h"
 #include "../lib/json/single_include/nlohmann/json.hpp"
+#include <fstream>
 using json = nlohmann::json;
 namespace TowerDefence {
     Enemy::Enemy(int maxHealth,
@@ -17,8 +18,12 @@ namespace TowerDefence {
         this->currentPos = 0;
         this->object->setPosition(path[currentPos]);
     }
-    Enemy::Enemy(const std::vector<Point>& path,const std::string& jsonConfig):path(path),MAX_HEALTH(json(jsonConfig)["max_health"]) {
-        json js(jsonConfig);
+    Enemy::Enemy(const std::vector<Point>& path,const std::string& jsonConfig):path(path) {
+        json js;
+        std::ifstream file(jsonConfig);
+        file >> js;
+        file.close();
+        MAX_HEALTH = js["max_health"];
         health = MAX_HEALTH;
         award = js["award"];
         name = js["name"];

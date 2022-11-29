@@ -58,10 +58,36 @@ endif()
 list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/HelloWorldScene.cpp
+     Classes/TDGame/source/Cell.cpp
+     Classes/TDGame/source/Building.cpp
+     Classes/TDGame/source/Effect.cpp
+     Classes/TDGame/source/Enemy.cpp
+     Classes/TDGame/source/Lair.cpp
+     Classes/TDGame/source/LandScape.cpp
+     Classes/TDGame/source/MagicObject.cpp
+     Classes/TDGame/source/Palace.cpp
+     Classes/TDGame/source/TDObject.cpp
+     Classes/TDGame/source/Tower.cpp
+     Classes/TDGame/source/TowerDefence.cpp
+     Classes/TDGame/source/Trap.cpp
      )
 list(APPEND GAME_HEADER
      Classes/AppDelegate.h
      Classes/HelloWorldScene.h
+     Classes/TDGame/lib/json/single_include/nlohmann/json.hpp
+     Classes/TDGame/include/AbstractAttackingObject.h
+     Classes/TDGame/include/Cell.h
+     Classes/TDGame/include/Building.h
+     Classes/TDGame/include/Effect.h
+     Classes/TDGame/include/Enemy.h
+     Classes/TDGame/include/Lair.h
+     Classes/TDGame/include/LandScape.h
+     Classes/TDGame/include/MagicObject.h
+     Classes/TDGame/include/Palace.h
+     Classes/TDGame/include/TDObject.h
+     Classes/TDGame/include/Tower.h
+     Classes/TDGame/include/TowerDefence.h
+     Classes/TDGame/include/Trap.h
      )
 
 if(ANDROID)

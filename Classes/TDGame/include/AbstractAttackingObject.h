@@ -8,11 +8,11 @@ namespace TowerDefence {
 	public:
 		AbstractAttackingObject(const std::string& name, const std::string& filename):Building(name,filename) {}
 		AbstractAttackingObject() {}
-		/*
-		Функция атаки
-		@param enemies - живые враги на карте
-		@return true если враги были атакованы и false иначе 
-		**/
+		/**
+		\brief Function of fire
+		\param enemies - living enemies
+		\return true if enemy was attacked and false otherwise 
+		*/
 		virtual bool fire(std::list<std::shared_ptr<Enemy>> & enemies) = 0;
 	};
 }

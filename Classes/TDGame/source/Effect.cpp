@@ -1,9 +1,12 @@
 #include "../include/Effect.h"
 #include "../include/Enemy.h"
+#include "../lib/json/single_include/nlohmann/json.hpp"
+using json = nlohmann::json;
 namespace TowerDefence {
 	Effect::Effect() {
 		
 	}
+	
 	Effect::Effect(int duration, float value, Effect::EffectType type) {
 		if (duration < 0) {
 			throw std::invalid_argument("duration can't be negative");

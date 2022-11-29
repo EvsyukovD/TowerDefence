@@ -27,7 +27,7 @@
 
 #include "cocos2d.h"
 USING_NS_CC;
-class HelloWorld : /*public cocos2d::Scene,*/ public cocos2d::Layer
+class HelloWorld : public cocos2d::Layer
 {
 public:
     static cocos2d::Scene* createScene();
@@ -47,7 +47,7 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 private:
-    void GoToGameScene(cocos2d::Ref* sender);
+    void GoToGameScene(Ref* sender);
     cocos2d::Label* labelTouchInfo;
 };
 

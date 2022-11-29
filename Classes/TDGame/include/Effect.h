@@ -16,29 +16,29 @@ namespace TowerDefence {
 		float value = 0;
 		EffectType type = Effect::EffectType::NONE;
 	public:
-		/*
-		Конструктор эффекта
-		@param duration - длительность эффекта
-		@param value - значение эффекта
-		@throws std::invalid_argument - При отрицательном duration
-		**/
+		/**  
+		Effect constructor
+		\param duration - duration
+		\param value - effect value
+		\throws std::invalid_argument - if duration less than zero
+		*/
 		Effect(int duration, float value, Effect::EffectType type);
 		Effect();
 		/*!
-		\brief Оказать воздействие на врага
+		\brief Apply to enemy
 		\param e - враг
 		*/
 		virtual void apply(Enemy& e);
 		/*!
-		@return тип эффекта
+		\return Effect type
 		**/
 		EffectType getType() const;
 		/*!
-		\return продолжительность эффекта
+		\return Duration of effect
 		**/
 		int getDuration() const;
 		/*!
-		\return Значение эффекта
+		\return Value of effect
 		*/
 		float getValue()const;
 	};
@@ -47,8 +47,8 @@ namespace TowerDefence {
 	public:
 		PoisonEffect(int duration, float value) : Effect(duration, value, Effect::EffectType::POISON) {}
 		/*!
-		\brief Отравить на врага
-		\param e - враг
+		\brief Poison enemy
+		\param e - enemy
 		*/
 		virtual void apply(Enemy& e);
 	};
@@ -56,18 +56,18 @@ namespace TowerDefence {
 	public:
 		WeaknessEffect(int duration, float value) : Effect(duration, value, Effect::EffectType::WEAKNESS) {}
 		/*
-		Ослабить врага
-		@param e - враг
+		\brief Weak the enemy
+		\param e - enemy
 		**/
 		virtual void apply(Enemy& e) override;
 	};
 	class DecelerationEffect : public Effect {
 	public:
 		DecelerationEffect(int duration, float value) : Effect(duration, value, Effect::EffectType::DECELERATION) {}
-		/*
-		Замедлить врага
-		@param e - враг
-		**/
+		/**
+		\brief Decelerate enemy
+		\param e - enemy
+		*/
 		virtual void apply(Enemy& e) override;
 	};
 }

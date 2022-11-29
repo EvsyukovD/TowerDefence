@@ -1,6 +1,6 @@
 #include "../include/Cell.h"
 namespace TowerDefence {
-	Cell::Cell(const Point& topLeft,CellType type, Building* objectPtr, size_t height, size_t width):
+	Cell::Cell(const Point& topLeft,CellType type, Building* objectPtr, float height, float width):
 		topLeft(topLeft),
 		type(type),
 		objectPtr(objectPtr), 

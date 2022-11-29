@@ -10,34 +10,34 @@ namespace TowerDefence {
 	public:
 		Palace();
 		Palace(const std::string& name, const std::string& filename,unsigned int gold, unsigned int maxStrength);
-		/*
-		@return Текущее количество золота
-		**/
+		/**
+		\return Current amount of gold
+		*/
 		unsigned int getGold()const;
 
-		/*
-		Дать замку золота
-		@param g - добавочное значение золота
-		**/
+		/**
+		\brief Give gold to the palace
+		\param g - amount of gold
+		*/
 		void addGold(unsigned int g);
-		/*
-		Забрать у замка данное количество золота.
-		@param Новое количество золота.
-		@returns true, если у замка хватает золота и false иначе 
-		**/
+		/**
+		\breif Take gold from palace 
+		\param amount of gold
+		\returns true, if palace has enough amount of gold and false otherwise 
+		*/
 		bool takeGold(unsigned int);
-		/*
-		@return Текущая прочность замка
-		**/
+		/**
+		\return Current strength of palace
+		*/
 		unsigned int getStrength() const;
-		/*
-		Нанести урон замку
-		@param d - величина урона
-		**/
+		/**
+		\breif Damage palace
+		\param d - damage value
+		*/
 		void getDamage(unsigned int d);
-		/*
-		@return Флаг уничтожен ли замок
-		**/
+		/**
+		@return Palace is destroyed flag
+		*/
 		bool isDestroyed() const;
 
 		void init(unsigned int gold,unsigned int maxStrength);

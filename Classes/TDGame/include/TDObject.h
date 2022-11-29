@@ -2,51 +2,40 @@
 #define __TDOBJECT_H__
 #include "TowerDefence.h"
 namespace TowerDefence {
-	/*
-	Базовый класс для всех объектов на карте TowerDefence,\n
-	включая карту уровня
-	**/
+	
 	class TDObject {
 	private:
 		static int count;
 		int id = 0;
 	protected:
 		std::shared_ptr<Sprite> object;
-		/*
-		Функция, уничтожающая текстуру
-		**/
+		/**
+		 * \brief Remove object from scenery graph
+		 */
 		virtual void kill();
 	public:
-		/*
-		@returns ID объекта
-		**/
+		/**
+		 * \return object's id
+		 */
 		int getObjectID()const;
-		/*
-		Создание экзнмпляра класса TDObject на основе\n
-		файла с текстурой
-		@param filename - файл с текстурой
-		**/
 		TDObject();
+		/**  
+		\brief create object with texture file
+		\param filename - file with texture
+		**/
 		TDObject(const std::string& filename);
 		TDObject(const TDObject&);
 		TDObject(TDObject&&);
 		/**
-		Получить спрайт
-		@returns Указатель на Sprite
+		\returns Sprite's pointer
 		*/
 		std::shared_ptr<Sprite> getSprite();
 		/**
-		Установить спрайт
-		@param Указатель на Sprite
+		\brief Set sprite
+		\param  Sprite's ptr
 		*/
 		void setSprite(std::shared_ptr<Sprite>);
-		/*
-		Копирующее присваивание
-		**/
 		TDObject& operator =(const TDObject&);
-		/*
-		Перемещающее присваивание 
-		**/
 		TDObject& operator =(TDObject&&);
 		virtual ~TDObject();
 	};

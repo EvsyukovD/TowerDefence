@@ -1,19 +1,27 @@
 #include "../include/Tower.h"
+#include "../lib/json/single_include/nlohmann/json.hpp"
+#include <fstream>
+using json = nlohmann::json;
 namespace TowerDefence {
-    Tower::Tower(const Point& palacePos,
-        const std::string& name, 
-        const std::string& filename): 
-        AbstractAttackingObject(name, filename), 
-        s(palacePos,object->getPosition()) {
-    
-       //загрузка из конфига
-        TowerProperties p(100, 100, 5, 1,100);
-        for (int i = 1; i <= MAX_LEVEL;i++) {
-            this->properties.insert({ i, TowerProperties(p.damage * i, p.cost + 2 * i, p.radius + (float)i, i,i) });
+    Tower::Tower(const Point& palacePos,const Point& towerPos,const std::string& jsonConfig): s(palacePos,towerPos){
+        json js;
+        std::ifstream file(jsonConfig);
+        file >> js;
+        file.close();
+        object->initWithFile(js["sprite"]);
+        object->setScale(js["tower_scale"]);
+        TowerProperties p;
+        std::string level;
+        for (int i = 0; i < MAX_LEVEL; i++) {
+            level = "level_";
+            level = level.append(std::to_string(i));
+            p.cost = js[level]["cost"];
+            p.damage = js[level]["damage"];
+            p.radius = js[level]["radius"];
+            p.rateOfFire = js[level]["rate_of_fire"];
+            p.updatingCost = js[level]["updating_cost"];
+            properties.insert_or_assign(i + 1, p);
         }
-    }
-    Tower::Tower(const Point& palacePos,const Point& towerPos,const std::string& jsonConfig) {
-         
     }
     TowerProperties Tower::getProperties()const {
         return properties.at(level);
@@ -98,11 +106,13 @@ namespace TowerDefence {
         }
         return false;
     }
-    MagicTower::MagicTower(const Effect& e,
+    MagicTower::MagicTower(const Effect& e, 
         const Point& palacePos,
-        const std::string& name,
-        const std::string& filename):MagicObject(e), Tower(palacePos,name,filename) {}
-    
+        const Point& towerPos, 
+        const std::string& jsonConfig):
+        MagicObject(e),
+        Tower(palacePos,towerPos,jsonConfig) {}
+
     bool MagicTower::fire(std::list<std::shared_ptr<Enemy>>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();

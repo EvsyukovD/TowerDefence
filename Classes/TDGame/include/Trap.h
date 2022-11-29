@@ -11,11 +11,11 @@ namespace TowerDefence {
         Trap(float radius,int cost, const Effect& e, const std::string& name, const std::string& filename);
         int getCost() const;
         float getRadius() const;
-        /*
-        Атаковать врагов в радиусе действия
-        @param m - таблица всех живых врагов на карте
-        @return true - если ловушка была активирована и false иначе
-        **/
+        /**
+        Attack enemies, which is situated in radius of firing
+        \param m - living enemies
+        \return true, if trap was activated and false otherwise
+        */
         virtual bool fire(std::list<std::shared_ptr<Enemy>>& m);
     };
 }

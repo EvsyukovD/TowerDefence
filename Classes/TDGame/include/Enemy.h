@@ -13,7 +13,7 @@ namespace TowerDefence {
 		  int currentPos;
 		  unsigned int award = 0;
 	public:
-		const int MAX_HEALTH;
+		int MAX_HEALTH;
 		Enemy(int maxHealth,
 			float speed,
 			unsigned int award,
@@ -23,72 +23,68 @@ namespace TowerDefence {
 		
 		Enemy(const Enemy&);
 		/*
-		@return флаг, что враг умер
+		@return Enemy dead flag
 		**/
 		bool isDead()const;
-		/*
-		Вернуть текущее здоровье врага
-		@return текущее здоровье
-		**/
+		/**  
+		\return current health
+		*/
 		int getHealth()const;
-		/*
-		Установить текущее здоровье врага
-		**/
-		/*
-		@return награда за уничтожение врага
-		**/
+		/**  
+		\return Award for destroing enemy
+		*/
 		unsigned int getAward() const;
+		/**  
+		Set current amount of health
+		*/
 		void setHealth(int);
-		/*
-		Нанести урон врагу. Если враг имеет эффект\n
-		ослабления, то ему наносится дополнительный урон
-		@param d - значение урона 
-		**/
+		/**  
+		* Damage enemy. If enemy has weakness effect
+		* damage is increased
+		\param d - damage value
+		*/
 		void getDamage(int d);
-		/*
-		Вернуть текущую скорость врага
-		@return текущую скорость
-		**/
+		/**  
+		\return current speed
+		*/
 		float getSpeed()const;
-		/*
-		Установить текущую скорость врага
-		@param новое значение скорости
-		@throws std::invalid_argument - При отрицательной скорости
-		**/
+		/**  
+		Set current speed of enemy
+		\param new value of speed
+		\throws std::invalid_argument - if value less than 0
+		*/
 		void setSpeed(float);
-		/*
-		Добавить эффект врагу
-		@param Накладываемый эффект
-		**/
+		/**  
+		Add effect to enemy
+		\param effect
+		*/
 		void addEffect(const Effect&);
-		/*
-		Вернуть имя  врага
-		@return имя врага
+		/*!
+		\return Enemy name
 		**/
 		std::string getName()const;
 
 		/*!
-		\return Исходная скорость врага
+		\return Native speed of enemy
 		**/
 		float getNativeSpeed()const;
-		/*
-		Установить имя врага
-		**/
+		/**  
+		Set enemy name
+		*/
 		void setName(const std::string&);
-		/*
-		Получить количество эффектов
-		@return кол-во эффектов
-		**/
+		/**  
+		\return amount of effects
+		*/
 		int getNumOfEffects()const;
-		/*
-		Сделать ход и рассчитать здоровье\n
-		Если здоровье врага не положительно то\n
-		он уничтожается
-		**/
+		/**  
+		Make step and calculate health\n
+		If health less than zero\n
+		he is destroyed
+		*/
 		void tick();
-		/*
-		@return Флаг того, что враг дошёл до конца пути
-		**/
+		/**
+		\return Enemy come to the finish
+		*/
 		bool isOnFinish() const;
 
 		virtual ~Enemy();

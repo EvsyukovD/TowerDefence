@@ -7,7 +7,16 @@ namespace TowerDefence {
         std::map<unsigned int, std::shared_ptr<Enemy>> enemyMap;
     public:
         Lair(const std::vector<Point>&,const std::string& jsonConfigFile);
+        /**
+         * \brief Release next enemy
+         * 
+         * \param current tick
+         * \return Enemie's ptr or nullptr if time isn't come
+         */
         std::shared_ptr<Enemy> getNextEnemy(unsigned int);
+        /**
+         * \return Num of enemies in this lair 
+         */
         int getNumOfEnemies()const;
     };
 }

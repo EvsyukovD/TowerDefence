@@ -4,7 +4,7 @@
 namespace TowerDefence {
     class Building : public TDObject {
     protected:
-        //Название строения
+        //Building name
         std::string name;
     public:
         Building();

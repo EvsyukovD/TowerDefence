@@ -19,6 +19,7 @@ namespace TowerDefence {
 			this->rateOfFire = rateOfFire;
 			this->updatingCost = updatingCost;
 		}
+		TowerProperties(): TowerProperties(0, 0, 0, 0, 0) {}
 	};
 	class Tower: public AbstractAttackingObject {
 	protected:
@@ -31,7 +32,6 @@ namespace TowerDefence {
 			const Point towerPos;
 		public:
 			TargetSheduler(const Point&,const Point&);
-			TargetSheduler() {}
 			void dropShedule();
 			void shedule(Enemy*);
 			virtual Enemy* operator ()();
@@ -39,47 +39,41 @@ namespace TowerDefence {
 		TargetSheduler s;
 	public:
 		static const int MAX_LEVEL = 3;
-		Tower(const Point& palacePos,const std::string& name,const std::string& filename);
 		Tower(const Point& palacePos,const Point& towerPos,const std::string& jsonConfig);
 		unsigned int getLevel()const;
-		/*
-		ќбновить уровень башни
-		@param ¬носимое количество золота
-		@returns True, если обновление прошло успешно и false иначе
-		**/
+		/**
+		\brief Update tower's level
+		\param amount of gold
+		\return true, if updating was successful and false otherwise
+		*/
 		bool updateLevel(unsigned int gold);
-		/*
-		@returns Cвойства башни
-		**/
+		/**
+		\return Tower's properties
+		*/
 		TowerProperties getProperties()const;
-		/*
-		—бросить цель башни (у башни не будет цели дл€ атаки)
-		**/
+		/**
+		Drop target of tower (in that case tower hasn't got target)
+		*/
 		void dropTarget();
-		/*
-		÷ель атаки дл€ данной башни
-		@return ”казатель на врага
-		**/
+		/**
+		\return Tower's target pointer
+		*/
 		Enemy* getTarget();
-		/*
-		‘ункци€ атаки
-		@param enemies - живые враги на карте
-		@return true если враги были атакованы и false иначе
-		**/
+		/**
+		\brief Function of fire
+		\param enemies - living enemies
+		\return true if enemy was attacked and false otherwise
+		*/
 		virtual bool fire(std::list<std::shared_ptr<Enemy>>& enemies);
 	};
 	class MagicTower: public Tower, public MagicObject {
 	public:
-		MagicTower(const Effect& e,
-			const Point& palacePos,
-			const std::string& name,
-			const std::string& filename);
-		MagicTower(const Effect&,const Point& palacePos,const std::string& jsonConfig);
-		/*
-		‘ункци€ атаки
-		@param enemies - живые враги на карте
-		@return true если враги были атакованы и false иначе
-		**/
+		MagicTower(const Effect&,const Point& palacePos,const Point& towerPos,const std::string& jsonConfig);
+		/**
+		\brief Function of fire
+		\param enemies - living enemies
+		\return true if enemy was attacked and false otherwise
+		*/
 		virtual bool fire(std::list<std::shared_ptr<Enemy>>& enemies);
 	};
 }

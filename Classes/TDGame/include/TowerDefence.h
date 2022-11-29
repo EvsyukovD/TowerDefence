@@ -28,4 +28,5 @@ namespace TowerDefence {
 	class Tower;
 	class MagicTower;
 }
+
 #endif
