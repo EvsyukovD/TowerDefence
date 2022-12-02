@@ -1,0 +1,5 @@
+﻿  EnemyTest.cpp
+C:\Users\devsy\Desktop\GraphicsLib\my_tower_defence\Classes\TDGame\include\TowerDefence.h(3,10): fatal error C1083: Не удается открыть файл включение: cocos2d.h: No such file or directory,
+  test.cpp
+C:\Users\devsy\Desktop\GraphicsLib\my_tower_defence\Classes\TDGame\include\TowerDefence.h(3,10): fatal error C1083: Не удается открыть файл включение: cocos2d.h: No such file or directory,
+  Создание кода...

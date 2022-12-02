@@ -53,6 +53,6 @@ namespace TowerDefence {
 		}
 	}
 	TDObject::~TDObject() {
-		kill();
+		//kill();
 	}
 }

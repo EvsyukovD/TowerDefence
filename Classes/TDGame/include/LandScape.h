@@ -20,7 +20,7 @@ namespace TowerDefence {
 		bool isEnd = false;
 		bool isVictory = true;
 	public:
-		static cocos2d::Scene* createScene();
+		static cocos2d::Scene* createScene(const std::string& jsonConfigFile);
 		void initWithConfig(const std::string& jsonConfigFile);
 		LandScape(){}
 		virtual bool init();

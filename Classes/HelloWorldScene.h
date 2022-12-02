@@ -35,19 +35,11 @@ public:
     virtual bool init();
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
-    /*! 
-    \brief blah-blah
-    \return blah-blah
-    */
-    virtual bool onTouchBegan(cocos2d::Touch*, cocos2d::Event*);
-    virtual void onTouchEnded(cocos2d::Touch*, cocos2d::Event*);
-    virtual void onTouchMoved(cocos2d::Touch*, cocos2d::Event*);
-    virtual void onTouchCancelled(cocos2d::Touch*, cocos2d::Event*);
 
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 private:
-    void GoToGameScene(Ref* sender);
+    void GoToGameScene(cocos2d::Ref* sender);
     cocos2d::Label* labelTouchInfo;
 };
 

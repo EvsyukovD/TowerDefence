@@ -208,62 +208,14 @@ bool HelloWorld::init()
     return true;
 }
 
-bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
-{    
-   /* Node* n = this->getChildByTag(1);
-    if (n) {
-        n->removeFromParent();
-    }
-    const Point& pos = touch->getLocation();
-    for (int i = 0; i < nodes.size();i++) {
-        for (int j = 0; j < nodes[i].size(); j++) {
-            const Vec2& topLeft = nodes[i][j];
-            if (topLeft.x < pos.x && pos.x < topLeft.x + 5.0 && topLeft.y > pos.y && pos.y > topLeft.y - 5.0) {
-                labelTouchInfo->setPosition(pos);
-                auto node = DrawNode::create();
-                node->drawRect(nodes[i][j],nodes[i][j] + Vec2(5,-5),Color4F::RED);
-                this->addChild(node);
-                labelTouchInfo->setString("x");
-                std::ofstream file("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/path.txt", std::ios_base::app);
-                file << "[" << i << "," << j << "],";
-                //file << "[" << topLeft.x + 2.5 << "," << topLeft.y - 2.5 << "],";
-                file.close();
-            }
-        }
-    }*/
-    /*
-    x = 47.900181, y = 291.101685 A
-    x = 431.850098, y = 291.101685 B
-    x = 432.349091, y = 31.891609 C
-    x = 47.900181, y = 32.141098 D
-    */
-    //labelTouchInfo->setPosition(pos);
-    //cocos2d::log("x = %f, y = %f",pos.x,pos.y);
-    return true;
-}
 
-void HelloWorld::onTouchEnded(Touch* touch, Event* event)
+void HelloWorld::GoToGameScene(cocos2d::Ref* sender)
 {
-    //cocos2d::log("touch ended");
-}
-
-void HelloWorld::onTouchMoved(Touch* touch, Event* event)
-{
-    //cocos2d::log("touch moved");
-}
-
-void HelloWorld::onTouchCancelled(Touch* touch, Event* event)
-{
-   // cocos2d::log("touch cancelled");
-}
-
-void HelloWorld::GoToGameScene(Ref* sender)
-{
-    TowerDefence::LandScape l;
-    l.initWithConfig("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json");
-    auto scene = TowerDefence::LandScape::createScene();
-    l.getSprite()->setPosition(Point::ZERO);
-    scene->addChild(l.getSprite().get());
+   // TowerDefence::LandScape l;
+    //l.initWithConfig("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json");
+    auto scene = TowerDefence::LandScape::createScene("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json");
+    //l.getSprite()->setPosition(Point::ZERO);
+    //scene->addChild(l.getSprite().get());
     Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));
     //l.init();
    /*Size visibleSize = Director::getInstance()->getVisibleSize();

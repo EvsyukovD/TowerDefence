@@ -6,22 +6,29 @@
 #include "../include/TowerDefence.h"
 #include <fstream>
 namespace TowerDefence {
-    cocos2d::Scene* LandScape::createScene() {
+    cocos2d::Scene* LandScape::createScene(const std::string& jsonConfig) {
         auto scene = Scene::create();
-        auto layer = Layer::create();
-        scene->addChild(layer);
+        LandScape* l = new LandScape();
+        l->initWithConfig(jsonConfig);
+        if (l->init()) {
+            l->autorelease();
+        }
+        else {
+            delete l;
+            delete scene;
+            return nullptr;
+        }
+        scene->addChild(l);
         return scene;
     }
     void LandScape::initMap(const json& config) {
         object->initWithFile(config["map"]);
         object->setScale((float)config["map_scale"]);
-        object->setAnchorPoint(Vec2(0, 1));
         float cellHeight = config["cell_height"], cellWidth = config["cell_width"];
         auto visibleSize = Director::getInstance()->getVisibleSize();
         Vec2 origin = Director::getInstance()->getVisibleOrigin();
         object->setAnchorPoint(Vec2(0, 1));
         object->setPosition(Vec2(origin.x, origin.y + visibleSize.height));
-        this->addChild(object.get());
         auto vis = object->getContentSize();
         height = vis.height, width = vis.width;
         for (int i = 0; i * cellHeight < visibleSize.height; i++) {
@@ -172,11 +179,7 @@ namespace TowerDefence {
         return false;
     }
     bool LandScape::init() {
-        if (!Layer::init()) {
-            return false;
-        }
-        auto scene = Scene::create();
-        this->addChild(scene);
+         this->addChild(object.get());
        // run();
         return true;
     }
