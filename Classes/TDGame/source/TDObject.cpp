@@ -6,7 +6,7 @@ namespace TowerDefence {
 		id = count;
 	}
 	TDObject::TDObject():object(Sprite::create()) {
-		
+		object->retain();
 	}
 	Sprite* TDObject::getSprite() {
 		return object;
@@ -24,11 +24,13 @@ namespace TowerDefence {
 		id = count;
 		object = Sprite::create();
 		object->initWithTexture(o.object->getTexture());
+		object->retain();
 	}
 	TDObject::TDObject(TDObject&& o): object(o.object)  {
 		count++;
 		id = count;
 		o.object = nullptr;
+		object->retain();
 	}
 	TDObject& TDObject::operator=(const TDObject& o) {
 		if (this == &o) {
@@ -46,13 +48,15 @@ namespace TowerDefence {
 		return *this;
 	}
 	void TDObject::kill() {
-		if (object) {
+		if (object && object->getReferenceCount() > 0) {
 			//object->cleanup();
+			object->setVisible(false);
 			object->removeFromParent();
-			object = nullptr;
+			object->release();
+			//object = nullptr;
 		}
 	}
 	TDObject::~TDObject() {
-		//kill();
+		kill();
 	}
 }

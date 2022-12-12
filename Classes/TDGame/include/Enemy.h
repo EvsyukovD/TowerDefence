@@ -20,7 +20,6 @@ namespace TowerDefence {
 			const std::string& name,
 			const std::vector<Point>& path, const std::string& filename);
 		Enemy(const std::vector<Point>& path,const std::string& jsonConfig);
-		
 		Enemy(const Enemy&);
 		/** 
 		\return Enemy dead flag

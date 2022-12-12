@@ -136,6 +136,7 @@ namespace TowerDefence {
             if (e->isDead()) {
                 palace.addGold(e->getAward());
                 enemies.erase(iter);
+                delete e;
             }
             else if (e->isOnFinish()) {
                 palace.getDamage(e->getHealth());
@@ -146,8 +147,11 @@ namespace TowerDefence {
                     return;
                 }
                 enemies.erase(iter);
+                delete e;
             }
-            e->tick();
+            else {
+                e->tick();
+            }
         }
         for (auto iter = attackingObjects.begin(); iter != attackingObjects.end(); ++iter) {
             if (instanceof<Trap,AbstractAttackingObject>(*iter)) {

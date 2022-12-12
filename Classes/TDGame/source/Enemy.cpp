@@ -28,6 +28,7 @@ namespace TowerDefence {
         award = js["award"];
         name = js["name"];
         nativeSpeed = js["native_speed"];//(391,62)->(788,62) - (391,636) - (788,636)
+        speed = nativeSpeed;
         object->initWithFile(js["frames"][0]);
         object->setScale(js["enemy_scale"]);
         Vector<SpriteFrame*> animFrames;
@@ -85,7 +86,6 @@ namespace TowerDefence {
     void Enemy::addEffect(const Effect& e) {
         effects.push_back(e);
     }
-
     Enemy::Enemy(const Enemy& e):TDObject(static_cast<const TDObject&>(e)), MAX_HEALTH(e.MAX_HEALTH) {
         health = e.health;
         speed = e.speed;
@@ -119,10 +119,13 @@ namespace TowerDefence {
             return;
         }
         else {
-            double dist = this->object->getPosition().distance(path[currentPos + 1]);
-             auto move = MoveTo::create(dist / speed, path[currentPos + 1]);
+            int d = floor(speed);
+            currentPos = d + currentPos >= path.size() ? path.size() - 1 : currentPos + d;
+            //d = d + currentPos >= path.size() ? path.size() - currentPos - 1 : d;
+            //double dist = this->object->getPosition().distance(path[currentPos + 1]);
+             auto move = MoveTo::create(1.0f, path[currentPos]);
              object->runAction(move);
-             currentPos++;
+             //currentPos += d;
         }
     }
     Enemy::~Enemy() {

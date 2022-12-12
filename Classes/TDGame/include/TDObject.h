@@ -9,11 +9,11 @@ namespace TowerDefence {
 		int id = 0;
 	protected:
 		Sprite* object;
+	public:
 		/**
 		 * \brief Remove object from scenery graph
 		 */
 		virtual void kill();
-	public:
 		/**
 		 * \return object's id
 		 */
