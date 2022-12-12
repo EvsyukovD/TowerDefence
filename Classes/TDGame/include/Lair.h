@@ -4,7 +4,7 @@
 namespace TowerDefence {
     class Lair:public Building {
     private:
-        std::map<unsigned int, std::shared_ptr<Enemy>> enemyMap;
+        std::map<unsigned int, Enemy*> enemyMap;
     public:
         Lair(const std::vector<Point>&,const std::string& jsonConfigFile);
         /**
@@ -13,7 +13,7 @@ namespace TowerDefence {
          * \param current tick
          * \return Enemie's ptr or nullptr if time isn't come
          */
-        std::shared_ptr<Enemy> getNextEnemy(unsigned int);
+        Enemy* getNextEnemy(unsigned int);
         /**
          * \return Num of enemies in this lair 
          */

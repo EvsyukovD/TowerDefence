@@ -7,12 +7,12 @@ namespace TowerDefence {
 		height(height), 
 		width(width) {}
 	Building* Cell::getObject() {
-		return objectPtr.get();
+		return objectPtr;
 	}
 	CellType Cell::getType() const {
 		return type;
 	}
-	void Cell::setType(CellType type, std::shared_ptr<Building> objectPtr) {
+	void Cell::setType(CellType type, Building* objectPtr) {
 		this->type = type;
 		this->objectPtr = objectPtr;
 	}

@@ -1,7 +1,7 @@
 #include "../include/Palace.h"
 namespace TowerDefence {
     Palace::Palace(const std::string& name, 
-        const std::string& filename, 
+        const std::string& filename,
         unsigned int gold, 
         unsigned int maxStrength): 
         Building(name,filename),

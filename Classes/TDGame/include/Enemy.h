@@ -22,9 +22,9 @@ namespace TowerDefence {
 		Enemy(const std::vector<Point>& path,const std::string& jsonConfig);
 		
 		Enemy(const Enemy&);
-		/*
-		@return Enemy dead flag
-		**/
+		/** 
+		\return Enemy dead flag
+		*/
 		bool isDead()const;
 		/**  
 		\return current health
@@ -59,14 +59,13 @@ namespace TowerDefence {
 		\param effect
 		*/
 		void addEffect(const Effect&);
-		/*!
+		/**  
 		\return Enemy name
-		**/
+		*/
 		std::string getName()const;
-
-		/*!
+		/**  
 		\return Native speed of enemy
-		**/
+		*/
 		float getNativeSpeed()const;
 		/**  
 		Set enemy name

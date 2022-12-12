@@ -86,11 +86,11 @@ namespace TowerDefence {
         }
         return false;
     }
-    bool Tower::fire(std::list<std::shared_ptr<Enemy>>& enemies) {
+    bool Tower::fire(std::list<Enemy*>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();
             if ((double)p.distance(this->object->getPosition()) - (double)properties.at(level).radius < 1E-32) {
-                s.shedule((*iter).get());
+                s.shedule(*iter);
             }
         }
         Enemy* target = s();
@@ -113,11 +113,11 @@ namespace TowerDefence {
         MagicObject(e),
         Tower(palacePos,towerPos,jsonConfig) {}
 
-    bool MagicTower::fire(std::list<std::shared_ptr<Enemy>>& enemies) {
+    bool MagicTower::fire(std::list<Enemy*>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();
             if ((double)p.distance(this->object->getPosition()) - (double)properties.at(level).radius < 1E-32) {
-                s.shedule((*iter).get());
+                s.shedule(*iter);
             }
         }
         Enemy* target = s();

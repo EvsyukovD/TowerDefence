@@ -101,10 +101,8 @@ namespace TowerDefence {
             int cost = ((Tower*)ob)->getProperties().cost;
             if (palace.getGold() >= cost) {
                 palace.takeGold(cost);
-                std::shared_ptr<Building> b(ob);
-                cell.setType(CellType::TOWER, b);
-                std::shared_ptr<AbstractAttackingObject> p(ob);
-                attackingObjects.push_back(p);
+                cell.setType(CellType::TOWER, ob);
+                attackingObjects.push_back(ob);
             }
             return;
         }
@@ -112,10 +110,8 @@ namespace TowerDefence {
             int cost = ((Trap*)ob)->getCost();
             if (palace.getGold() >= cost) {
                 palace.takeGold(cost);
-                std::shared_ptr<Building> b(ob);
-                cell.setType(CellType::TRAP, b);
-                std::shared_ptr<AbstractAttackingObject> p(ob);
-                attackingObjects.push_back(p);
+                cell.setType(CellType::TRAP, ob);
+                attackingObjects.push_back(ob);
             }
         }
         
@@ -124,10 +120,10 @@ namespace TowerDefence {
         bool emptyLairsFlag = true;
         for (int i = 0; i < lairs.size(); ++i) {
             emptyLairsFlag = emptyLairsFlag && lairs[i].getNumOfEnemies() == 0;
-            std::shared_ptr<Enemy> e = lairs[i].getNextEnemy(ticks);
-            if (e.get()) {
+            Enemy* e = lairs[i].getNextEnemy(ticks);
+            if (e) {
                 enemies.push_back(e);
-                this->addChild(e->getSprite().get(),0,e->getObjectID());
+                this->addChild(e->getSprite(),0,e->getObjectID());
             }
         }
         if (emptyLairsFlag && enemies.empty()) {
@@ -136,7 +132,7 @@ namespace TowerDefence {
             return;
         }
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
-            Enemy* e = (*iter).get();
+            Enemy* e = *iter;
             if (e->isDead()) {
                 palace.addGold(e->getAward());
                 enemies.erase(iter);
@@ -154,8 +150,8 @@ namespace TowerDefence {
             e->tick();
         }
         for (auto iter = attackingObjects.begin(); iter != attackingObjects.end(); ++iter) {
-            if (instanceof<Trap,AbstractAttackingObject>((*iter).get())) {
-                if ((*iter).get()->fire(enemies)) {
+            if (instanceof<Trap,AbstractAttackingObject>(*iter)) {
+                if ((*iter)->fire(enemies)) {
                     attackingObjects.erase(iter);
                 }
             }
@@ -179,9 +175,15 @@ namespace TowerDefence {
         return false;
     }
     bool LandScape::init() {
-         this->addChild(object.get());
-       // run();
-        return true;
+         this->addChild(object);
+         std::function<void()> test = std::bind(&LandScape::run, this);
+         auto func = CallFunc::create(test);
+         auto delay = DelayTime::create(1.0f);
+         auto funcSequence = Sequence::create(delay, func, nullptr);
+         auto funcRepeat = Repeat::create(funcSequence, 30);
+         this->runAction(funcRepeat);
+         //run();
+         return true;
     }
     void LandScape::run() {
         while (!isEnd) {

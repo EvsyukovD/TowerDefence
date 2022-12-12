@@ -13,7 +13,7 @@ namespace TowerDefence {
 		\param enemies - living enemies
 		\return true if enemy was attacked and false otherwise 
 		*/
-		virtual bool fire(std::list<std::shared_ptr<Enemy>> & enemies) = 0;
+		virtual bool fire(std::list<Enemy*> & enemies) = 0;
 	};
 }
 #endif // !__ABSTRACT_ATTACKING_OBJECT_H__

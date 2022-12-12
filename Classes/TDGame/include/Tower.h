@@ -64,7 +64,7 @@ namespace TowerDefence {
 		\param enemies - living enemies
 		\return true if enemy was attacked and false otherwise
 		*/
-		virtual bool fire(std::list<std::shared_ptr<Enemy>>& enemies);
+		virtual bool fire(std::list<Enemy*>& enemies);
 	};
 	class MagicTower: public Tower, public MagicObject {
 	public:
@@ -74,7 +74,7 @@ namespace TowerDefence {
 		\param enemies - living enemies
 		\return true if enemy was attacked and false otherwise
 		*/
-		virtual bool fire(std::list<std::shared_ptr<Enemy>>& enemies);
+		virtual bool fire(std::list<Enemy*>& enemies);
 	};
 }
 #endif

@@ -8,7 +8,7 @@ namespace TowerDefence {
 		static int count;
 		int id = 0;
 	protected:
-		std::shared_ptr<Sprite> object;
+		Sprite* object;
 		/**
 		 * \brief Remove object from scenery graph
 		 */
@@ -22,19 +22,19 @@ namespace TowerDefence {
 		/**  
 		\brief create object with texture file
 		\param filename - file with texture
-		**/
+		*/
 		TDObject(const std::string& filename);
 		TDObject(const TDObject&);
 		TDObject(TDObject&&);
 		/**
 		\returns Sprite's pointer
 		*/
-		std::shared_ptr<Sprite> getSprite();
+		Sprite* getSprite();
 		/**
 		\brief Set sprite
 		\param  Sprite's ptr
 		*/
-		void setSprite(std::shared_ptr<Sprite>);
+		void setSprite(Sprite*);
 		TDObject& operator =(const TDObject&);
 		TDObject& operator =(TDObject&&);
 		virtual ~TDObject();

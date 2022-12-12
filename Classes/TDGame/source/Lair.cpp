@@ -12,16 +12,16 @@ namespace TowerDefence {
         this->name = js["name"];
         std::string enemyConfig(js["enemy_config"]);
         for (int i = 0; i < js["ticks"].size(); i++) {
-            enemyMap.insert_or_assign(js["ticks"][i],std::shared_ptr<Enemy>(new Enemy(path,enemyConfig)));
+            enemyMap.insert_or_assign(js["ticks"][i],new Enemy(path,enemyConfig));
         }
     }
     int Lair::getNumOfEnemies()const {
         return enemyMap.size();
     }
-    std::shared_ptr<Enemy> Lair::getNextEnemy(unsigned int t) {
+    Enemy* Lair::getNextEnemy(unsigned int t) {
         auto res = enemyMap.find(t);
         if (res != enemyMap.end()) {
-            std::shared_ptr<Enemy> e = (res->second);
+            Enemy* e = res->second;
             enemyMap.erase(res);
             return e;
         }

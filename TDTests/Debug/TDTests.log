@@ -1,0 +1,2 @@
+﻿  pch.cpp
+C:\Users\devsy\Desktop\GraphicsLib\my_tower_defence\cocos2d\cocos\platform\CCPlatformConfig.h(97,1): fatal error C1189: #error:   "Cannot recognize the target platform; are you targeting an unsupported platform?"

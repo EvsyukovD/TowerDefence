@@ -34,7 +34,7 @@ namespace TowerDefence {
 		if (duration <= 0) {
 			return;
 		}
-		e.setHealth(e.getHealth() * (1 - value));
+		e.setHealth(floor(e.getHealth() * (1 - value)));
 		duration--;
 	}
 	void WeaknessEffect::apply(Enemy& e) {
@@ -48,7 +48,7 @@ namespace TowerDefence {
 			e.setSpeed(e.getNativeSpeed());
 			return;
 		}
-		e.setSpeed(e.getNativeSpeed() * (1 - value));
+		e.setSpeed(floor(e.getNativeSpeed() * (1 - value)));
 		duration--;
 	}
 }

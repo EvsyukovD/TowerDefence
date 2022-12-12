@@ -10,10 +10,10 @@ namespace TowerDefence {
 	class LandScape: public TDObject,public cocos2d::Layer{
 	private:
 		Palace palace;
-		std::list<std::shared_ptr<Enemy>> enemies;
+		std::list<Enemy*> enemies;
 		std::vector<std::vector<Cell>> battlefield;
 		std::vector<Lair> lairs;
-		std::list<std::shared_ptr<AbstractAttackingObject>> attackingObjects;
+		std::list<AbstractAttackingObject*> attackingObjects;
 		int height = 0;
 		int width = 0;
 		unsigned int ticks = 0;
@@ -32,7 +32,7 @@ namespace TowerDefence {
 		 * \return Battlefield length
 		 */
 		int getFieldLength() const;
-		/*!
+		/**  
 		 \brief Add attacking object
 		 \param cell - cell for attacking object
 		 \param ob - attacking object
@@ -44,10 +44,10 @@ namespace TowerDefence {
 		virtual void onTouchMoved(cocos2d::Touch*, cocos2d::Event*);
 		virtual void onTouchCancelled(cocos2d::Touch*, cocos2d::Event*);*/
 		
-		/*!
-		@brief Try to update tower's level 
-		@param t - tower
-		@return true if updating was successfull and false otherwise
+		/**  
+		\brief Try to update tower's level 
+		\param t - tower
+		\return true if updating was successfull and false otherwise
 		*/
 		bool tryUpdateTower(Tower& t);
 		/*
@@ -57,35 +57,35 @@ namespace TowerDefence {
 		virtual ~LandScape();
 		CREATE_FUNC(LandScape);
 	private:
-		/*
+		/**  
 		\brief Running the game
-		**/
+		*/
 		void run();
-		/*
-		@brief Map initializing
-		@param config - json config file
-		**/
+		/**  
+		\brief Map initializing
+		\param config - json config file
+		*/
 		void initMap(const json& config);
-		/*
-		@brief Road initializing
-		@param config - json config file
-		**/
+		/**  
+		\brief Road initializing
+		\param config - json config file
+		*/
 		void initRoad(const json& config);
-		/*
-		@brief Tower places initializing
-		@param config - json config file
-		**/
+		/**  
+		\brief Tower places initializing
+		\param config - json config file
+		*/
 		void initTowerPlaces(const json& config);
-		/*
-		@brief Read enemy path with some number
-		@param config - json config file
-		@param pathNum - path number in config
-		**/
+		/**  
+		\brief Read enemy path with some number
+		\param config - json config file
+		\param pathNum - path number in config
+		*/
 		std::vector<Point> readPath(const json& config, int pathNum);
-		/*
-		@brief Lairs initializing
-		@param config - json config file
-		**/
+		/**  
+		\brief Lairs initializing
+		\param config - json config file
+		*/
 		void initLairs(const json& config);
 	};
 }

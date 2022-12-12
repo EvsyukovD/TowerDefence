@@ -15,7 +15,7 @@ namespace TowerDefence{
 	private:
 		Point topLeft;
 		CellType type = CellType::NONE;
-		std::shared_ptr<Building> objectPtr = nullptr;
+		Building* objectPtr = nullptr;
 		float height;
 		float width;
 	public:
@@ -29,7 +29,7 @@ namespace TowerDefence{
 		\param type - building type
 		\param objectPtr - building pointer
 		*/
-		void setType(CellType type, std::shared_ptr<Building> objectPtr);
+		void setType(CellType type, Building* objectPtr);
 		/**
 		\return Building pointer
 		*/

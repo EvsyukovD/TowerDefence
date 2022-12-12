@@ -16,7 +16,7 @@ namespace TowerDefence {
         \param m - living enemies
         \return true, if trap was activated and false otherwise
         */
-        virtual bool fire(std::list<std::shared_ptr<Enemy>>& m);
+        virtual bool fire(std::list<Enemy*>& m);
     };
 }
 #endif // !__TRAP_H__
