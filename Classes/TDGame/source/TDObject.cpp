@@ -4,6 +4,7 @@ namespace TowerDefence {
 	TDObject::TDObject(const std::string& filename):object(Sprite::create(filename)) {
 		count++;
 		id = count;
+		object->retain();
 	}
 	TDObject::TDObject():object(Sprite::create()) {
 		object->retain();

@@ -67,9 +67,9 @@ namespace TowerDefence {
     void Enemy::getDamage(int d) {
         double damage = d;
         for (auto iter = effects.begin(); iter != effects.end(); ++iter) {
-            Effect& e = *iter;
-            if (e.getType() == Effect::EffectType::WEAKNESS) {
-                damage += d * (1.0 - e.getValue() / 100.0);
+            Effect* e = *iter;
+            if (e->getType() == Effect::EffectType::WEAKNESS) {
+                damage += d * (1.0 - e->getValue() / 100.0);
             }
         }
         health -= (int)floor(damage);
@@ -83,7 +83,7 @@ namespace TowerDefence {
         }
         this->speed = speed;
     }
-    void Enemy::addEffect(const Effect& e) {
+    void Enemy::addEffect(Effect* e) {
         effects.push_back(e);
     }
     Enemy::Enemy(const Enemy& e):TDObject(static_cast<const TDObject&>(e)), MAX_HEALTH(e.MAX_HEALTH) {
@@ -105,15 +105,22 @@ namespace TowerDefence {
             kill();
             return;
         }
-        for (auto iter = effects.begin(); iter != effects.end();++iter) {
-             Effect& e = *iter;
-             e.apply(*this);
-             if (e.getDuration() == 0) {
-                 effects.erase(iter);
-             }
-             if (health <= 0) {
-                 kill();
-             }
+        bool increment;
+        for (auto iter = effects.begin(); iter != effects.end();) {
+            Effect* e = *iter;
+            increment = true;
+            e->apply(*this);
+            if (e->getDuration() == 0) {
+                iter = effects.erase(iter);
+                delete e;
+                increment = false;
+            }
+            if (health <= 0) {
+                kill();
+            }
+            if (increment) {
+                ++iter;
+            }
         }
         if (isOnFinish()) {
             return;

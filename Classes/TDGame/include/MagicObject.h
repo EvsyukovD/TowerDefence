@@ -10,7 +10,7 @@ namespace TowerDefence {
 		/**  
 	    \return Trap's effect
 		*/
-		Effect getEffect() const;
+		Effect* getEffect() const;
 		/**
 		Set trap's effect
 		*/

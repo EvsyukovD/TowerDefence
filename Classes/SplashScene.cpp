@@ -1,10 +1,10 @@
 #include "SplashScene.h"
 #include "HelloWorldScene.h"
-
+#include "TDGame/lib/list/list.h"
 USING_NS_CC;
 
 Scene* SplashScene::createScene()
-{
+{   
     // 'scene' is an autorelease object
     auto scene = Scene::create();
 
@@ -28,7 +28,11 @@ bool SplashScene::init()
         return false;
     }
 
-
+    MySTL::List<int> list;
+    list.push_front(1);
+    list.push_front(2);
+    list.push_front(3);
+    list.clear();
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 

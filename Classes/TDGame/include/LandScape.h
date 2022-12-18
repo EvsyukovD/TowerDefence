@@ -23,6 +23,7 @@ namespace TowerDefence {
 		static cocos2d::Scene* createScene(const std::string& jsonConfigFile);
 		void initWithConfig(const std::string& jsonConfigFile);
 		LandScape(){}
+		virtual void update(float dt);
 		virtual bool init();
 		/**
 		 * \return Battlefield height 
@@ -39,7 +40,7 @@ namespace TowerDefence {
 		 */		
 		void addAttackingObject(Cell& cell, AbstractAttackingObject* ob);
 
-		/*virtual bool onTouchBegan(cocos2d::Touch*, cocos2d::Event*);
+		virtual bool onTouchBegan(cocos2d::Touch*, cocos2d::Event*);
 		/*virtual void onTouchEnded(cocos2d::Touch*, cocos2d::Event*);
 		virtual void onTouchMoved(cocos2d::Touch*, cocos2d::Event*);
 		virtual void onTouchCancelled(cocos2d::Touch*, cocos2d::Event*);*/
@@ -55,12 +56,12 @@ namespace TowerDefence {
 		*/
 		void tick();
 		virtual ~LandScape();
-		CREATE_FUNC(LandScape);
-	private:
-		/**  
+		/**
 		\brief Running the game
 		*/
-		void run();
+		void  run();
+		CREATE_FUNC(LandScape);
+	private:
 		/**  
 		\brief Map initializing
 		\param config - json config file

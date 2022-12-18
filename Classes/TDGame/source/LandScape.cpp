@@ -123,7 +123,7 @@ namespace TowerDefence {
             Enemy* e = lairs[i].getNextEnemy(ticks);
             if (e) {
                 enemies.push_back(e);
-                this->addChild(e->getSprite(),0,e->getObjectID());
+                object->addChild(e->getSprite(),0,e->getObjectID());
             }
         }
         if (emptyLairsFlag && enemies.empty()) {
@@ -131,12 +131,15 @@ namespace TowerDefence {
             isEnd = true;
             return;
         }
-        for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
+        bool increment;
+        for (auto iter = enemies.begin(); iter != enemies.end();) {
+            increment = true;
             Enemy* e = *iter;
             if (e->isDead()) {
                 palace.addGold(e->getAward());
-                enemies.erase(iter);
+                iter = enemies.erase(iter);
                 delete e;
+                increment = false;
             }
             else if (e->isOnFinish()) {
                 palace.getDamage(e->getHealth());
@@ -146,21 +149,30 @@ namespace TowerDefence {
                     isVictory = false;
                     return;
                 }
-                enemies.erase(iter);
+                iter = enemies.erase(iter);
                 delete e;
+                increment = false;
             }
             else {
                 e->tick();
             }
+            if (increment) {
+                ++iter;
+            }
         }
-        for (auto iter = attackingObjects.begin(); iter != attackingObjects.end(); ++iter) {
+        for (auto iter = attackingObjects.begin(); iter != attackingObjects.end();) {
+            increment = true;
             if (instanceof<Trap,AbstractAttackingObject>(*iter)) {
                 if ((*iter)->fire(enemies)) {
-                    attackingObjects.erase(iter);
+                    iter = attackingObjects.erase(iter);
+                    increment = false;
                 }
             }
             else {
                 (*iter)->fire(enemies);
+            }
+            if(increment){
+                ++iter;
             }
         }
         ticks++;
@@ -179,8 +191,9 @@ namespace TowerDefence {
         return false;
     }
     bool LandScape::init() {
+         this->scheduleUpdate();
          this->addChild(object);
-         std::function<void()> test = std::bind(&LandScape::run, this);
+         std::function<void()> test = std::bind(&LandScape::tick, this);
          auto func = CallFunc::create(test);
          auto delay = DelayTime::create(1.0f);
          auto funcSequence = Sequence::create(delay, func, nullptr);
@@ -188,6 +201,12 @@ namespace TowerDefence {
          this->runAction(funcRepeat);
          //run();
          return true;
+    }
+    bool LandScape::onTouchBegan(cocos2d::Touch*, cocos2d::Event*) {
+        return true;
+    }
+    void LandScape::update(float dt) {
+        tick();
     }
     void LandScape::run() {
         while (!isEnd) {

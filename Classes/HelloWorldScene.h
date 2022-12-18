@@ -35,7 +35,7 @@ public:
     virtual bool init();
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
-
+    virtual bool onTouchBegan(cocos2d::Touch*, cocos2d::Event*);
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
 private:

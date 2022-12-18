@@ -7,7 +7,7 @@ namespace TowerDefence {
 		  int health;
 		  float speed;
 		  float nativeSpeed;
-		  std::list<Effect> effects;
+		  std::list<Effect*> effects;
 		  std::string name;
 		  std::vector<Point> path;
 		  int currentPos;
@@ -57,7 +57,7 @@ namespace TowerDefence {
 		Add effect to enemy
 		\param effect
 		*/
-		void addEffect(const Effect&);
+		void addEffect(Effect*);
 		/**  
 		\return Enemy name
 		*/

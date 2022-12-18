@@ -208,12 +208,15 @@ bool HelloWorld::init()
     return true;
 }
 
-
+bool HelloWorld::onTouchBegan(cocos2d::Touch*, cocos2d::Event*) {
+    return true;
+}
 void HelloWorld::GoToGameScene(cocos2d::Ref* sender)
 {
    // TowerDefence::LandScape l;
     //l.initWithConfig("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json");
-    auto scene = TowerDefence::LandScape::createScene("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json");
+    std::string conf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json";
+    auto scene = TowerDefence::LandScape::createScene(conf);
     //l.getSprite()->setPosition(Point::ZERO);
     //scene->addChild(l.getSprite().get());
     Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));

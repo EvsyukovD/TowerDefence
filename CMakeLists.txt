@@ -59,6 +59,7 @@ list(APPEND GAME_SOURCE
      Classes/AppDelegate.cpp
      Classes/SplashScene.cpp
      Classes/HelloWorldScene.cpp
+     Classes/TDGame/lib/list/list.cpp
      Classes/TDGame/source/Cell.cpp
      Classes/TDGame/source/Building.cpp
      Classes/TDGame/source/Effect.cpp
@@ -77,6 +78,7 @@ list(APPEND GAME_HEADER
      Classes/SplashScene.h
      Classes/HelloWorldScene.h
      Classes/TDGame/lib/json/single_include/nlohmann/json.hpp
+     Classes/TDGame/lib/list/list.h
      Classes/TDGame/include/AbstractAttackingObject.h
      Classes/TDGame/include/Cell.h
      Classes/TDGame/include/Building.h
