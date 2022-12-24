@@ -1,13 +1,15 @@
 #ifndef __ENEMY_H__
 #define __ENEMY_H__
 #include "TDObject.h"
+#include "../lib/list/list.h"
 namespace TowerDefence {
 	class Enemy : public TDObject{
 	private:
 		  int health;
 		  float speed;
 		  float nativeSpeed;
-		  std::list<Effect*> effects;
+		  //std::list<Effect*> effects;
+		  MySTL::List<Effect*> effects;
 		  std::string name;
 		  std::vector<Point> path;
 		  int currentPos;

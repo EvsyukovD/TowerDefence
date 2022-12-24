@@ -27,7 +27,7 @@ namespace TowerDefence {
         health = MAX_HEALTH;
         award = js["award"];
         name = js["name"];
-        nativeSpeed = js["native_speed"];//(391,62)->(788,62) - (391,636) - (788,636)
+        nativeSpeed = js["native_speed"];
         speed = nativeSpeed;
         object->initWithFile(js["frames"][0]);
         object->setScale(js["enemy_scale"]);
