@@ -40,7 +40,7 @@ namespace TowerDefence {
 		*/
 		bool isDestroyed() const;
 
-		void init(unsigned int gold,unsigned int maxStrength);
+		void init(unsigned int gold,unsigned int maxStrength,const Point& pos);
 	};
 }
 #endif // !__PALACE_H__

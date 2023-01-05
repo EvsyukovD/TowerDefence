@@ -6,13 +6,15 @@ namespace TowerDefence {
 	Effect::Effect() {
 		
 	}
-	
 	Effect::Effect(int duration, float value, Effect::EffectType type) {
 		if (duration < 0) {
 			throw std::invalid_argument("duration can't be negative");
 		}
 		this->duration = duration;
 		this->value = value;
+		this->type = type;
+	}
+	void Effect::setType(Effect::EffectType type) {
 		this->type = type;
 	}
 	Effect::EffectType Effect::getType() const {

@@ -3,6 +3,7 @@
 #include "TDObject.h"
 #include "Palace.h"
 #include "cocos2d.h"
+#include "Effect.h"
 #include <memory>
 #include "../lib/json/single_include/nlohmann/json.hpp"
 using json = nlohmann::json;
@@ -19,9 +20,18 @@ namespace TowerDefence {
 		unsigned int ticks = 0;
 		bool isEnd = false;
 		bool isVictory = true;
+		const static int LAYER_PRIOR = 0;
+		const static int MAP_PRIOR = -1;
+		const static int TOWER_PLACES_PRIOR = 100;
+		const static int ENEMY_PRIOR = 200;
+		const static int ATTACKING_OBJECTS_PRIOR = 400;
+		json trapConfig;
+		std::string towerConfig;
+		Trap* createTrap();
+		Tower* createTower(bool isMagic, const Point& towerPos, Effect::EffectType type);
 	public:
-		static cocos2d::Scene* createScene(const std::string& jsonConfigFile);
-		void initWithConfig(const std::string& jsonConfigFile);
+		static cocos2d::Scene* createScene(const std::string& jsonConfigFile,const json& trapConfig,const json& towerConfig);
+		void initWithConfig(const std::string& jsonConfigFile,const std::string& trapConfig, const std::string& towerConfig);
 		LandScape(){}
 		virtual void update(float dt);
 		virtual bool init();

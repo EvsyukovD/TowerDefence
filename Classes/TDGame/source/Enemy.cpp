@@ -30,8 +30,9 @@ namespace TowerDefence {
         nativeSpeed = js["native_speed"];
         speed = nativeSpeed;
         object->initWithFile(js["frames"][0]);
-        object->setScale(js["enemy_scale"]);
-        Vector<SpriteFrame*> animFrames;
+        object->setScale(js["enemy_scale"]);//0.65
+        object->setVisible(true);
+        /*Vector<SpriteFrame*> animFrames;
         animFrames.reserve(js["frames"].size());
         Rect r = Rect(js["rect"][0], js["rect"][1], js["rect"][2], js["rect"][3]);
         for (int i = 0; i < js["frames"].size(); i++) {
@@ -39,7 +40,7 @@ namespace TowerDefence {
         }
         Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
         Animate* animate = Animate::create(animation);
-        object->runAction(RepeatForever::create(animate));
+        object->runAction(RepeatForever::create(animate));*/
         currentPos = 0;
         object->setPosition(path[currentPos]);
     }
@@ -130,8 +131,9 @@ namespace TowerDefence {
             currentPos = d + currentPos >= path.size() ? path.size() - 1 : currentPos + d;
             //d = d + currentPos >= path.size() ? path.size() - currentPos - 1 : d;
             //double dist = this->object->getPosition().distance(path[currentPos + 1]);
-             auto move = MoveTo::create(1.0f, path[currentPos]);
-             object->runAction(move);
+             //auto move = MoveTo::create(1.0f, path[currentPos]);
+             //object->runAction(move);
+             object->setPosition(path[currentPos]);
              //currentPos += d;
         }
     }

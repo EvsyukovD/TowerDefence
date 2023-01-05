@@ -37,11 +37,11 @@ namespace TowerDefence{
 		/**
 		\return Cell height
 		*/
-		size_t getHeight()const;
+		float getHeight()const;
 		/**
 		\return Cell width
 		*/
-		size_t getWidth()const;
+		float getWidth()const;
 		/**
 		\return Top level point of cell
 		*/

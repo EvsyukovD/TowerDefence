@@ -61,6 +61,11 @@ namespace TowerDefence {
             return;
         }
     }
+    Tower::TargetSheduler::TargetSheduler(const TargetSheduler& s):palacePos(s.palacePos), towerPos(s.towerPos) {
+        enemy = s.enemy;
+    }
+    Tower::Tower(const Tower& t):s(t.s),properties(t.properties),level(t.level) {
+    }
     Enemy* Tower::TargetSheduler::operator()() {
         return enemy;
     }

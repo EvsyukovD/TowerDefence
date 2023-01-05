@@ -16,10 +16,10 @@ namespace TowerDefence {
 		this->type = type;
 		this->objectPtr = objectPtr;
 	}
-	size_t Cell::getHeight()const { 
+	float Cell::getHeight()const { 
 		return height; 
 	}
-	size_t Cell::getWidth()const { 
+	float Cell::getWidth()const { 
 		return width; 
 	}
 	Point Cell::getTopLeft()const { 

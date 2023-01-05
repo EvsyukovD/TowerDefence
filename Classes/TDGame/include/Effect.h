@@ -14,7 +14,7 @@ namespace TowerDefence {
 		//длительность эффекта (число ходов)
 		int duration = 0; 
 		float value = 0;
-		EffectType type = Effect::EffectType::NONE;
+		EffectType type;
 	public:
 		/**  
 		Effect constructor
@@ -22,7 +22,7 @@ namespace TowerDefence {
 		\param value - effect value
 		\throws std::invalid_argument - if duration less than zero
 		*/
-		Effect(int duration, float value, Effect::EffectType type);
+		Effect(int duration, float value, Effect::EffectType type = EffectType::NONE);
 		Effect();
 		/*!
 		\brief Apply to enemy
@@ -41,6 +41,7 @@ namespace TowerDefence {
 		\return Value of effect
 		*/
 		float getValue()const;
+		void setType(Effect::EffectType type);
 	};
 
 	class PoisonEffect : public Effect {

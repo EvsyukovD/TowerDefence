@@ -32,6 +32,7 @@ namespace TowerDefence {
 			const Point towerPos;
 		public:
 			TargetSheduler(const Point&,const Point&);
+			TargetSheduler(const TargetSheduler& s);
 			void dropShedule();
 			void shedule(Enemy*);
 			virtual Enemy* operator ()();
@@ -41,6 +42,7 @@ namespace TowerDefence {
 		static const int MAX_LEVEL = 3;
 		Tower(const Point& palacePos,const Point& towerPos,const std::string& jsonConfig);
 		unsigned int getLevel()const;
+		Tower(const Tower& t);
 		/**
 		\brief Update tower's level
 		\param amount of gold

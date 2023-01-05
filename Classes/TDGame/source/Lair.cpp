@@ -1,5 +1,6 @@
 #include "../include/Lair.h"
 #include "../include/Enemy.h"
+#include "../include/Cell.h"
 #include "../lib/json/single_include/nlohmann/json.hpp"
 #include <fstream>
 using json = nlohmann::json;

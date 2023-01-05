@@ -33,7 +33,7 @@ namespace TowerDefence {
         }
     }
     void Palace::getDamage(unsigned int d) {
-        if (this->currentStrength - d >= 0) {
+        if (this->currentStrength >= d) {
             this->currentStrength -= d;
         }
         else {
@@ -43,9 +43,10 @@ namespace TowerDefence {
     bool Palace::isDestroyed() const{
         return currentStrength == 0;
     }
-    void Palace::init(unsigned int gold,unsigned int maxStrength) {
+    void Palace::init(unsigned int gold,unsigned int maxStrength,const Point& pos) {
         this->maxStrength = maxStrength;
         this->gold;
         this->currentStrength = maxStrength;
+        this->object->setPosition(pos);
     }
 }

@@ -1,1 +1,9 @@
-{"name":"magic trap","cost":10,"radius":3.0}
+{
+  "name": "magic trap",
+  "cost": 10,
+  "radius": 3.0,
+  "effect_type": 3,
+  "value": 0.5,
+  "duration": 3,
+  "sprite": "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Traps/trap.png"
+}
