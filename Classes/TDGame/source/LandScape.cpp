@@ -114,21 +114,27 @@ namespace TowerDefence {
     int LandScape::getFieldLength() const {
         return width;
     }
-    Trap* LandScape::createTrap() {
+    Trap* LandScape::createTrap(const Point& trapPos) {
         int type = trapConfig["effect_type"];
         Trap* res = nullptr;
         Effect e;
         switch (type) {
         case Effect::EffectType::NONE:
             e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::NONE);
+            break;
         case Effect::EffectType::DECELERATION:
             e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::DECELERATION);
+            break;
         case Effect::EffectType::POISON:
             e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::POISON);
+            break;
         case Effect::EffectType::WEAKNESS:
             e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::WEAKNESS);
+            break;
         }
-        return new Trap(trapConfig["radius"], trapConfig["cost"],e,trapConfig["name"],trapConfig["sprite"]);
+        res = new Trap(trapConfig["radius"], trapConfig["cost"],e,trapConfig["name"],trapConfig["sprite"]);
+        res->getSprite()->setPosition(trapPos);
+        return res;
     }
     Tower* LandScape::createTower(bool isMagic,const Point& towerPos,Effect::EffectType type = Effect::EffectType::NONE) {
         if (!isMagic) {
@@ -139,12 +145,16 @@ namespace TowerDefence {
             switch (type) {
             case Effect::EffectType::NONE:
                 e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::NONE);
+                break;
             case Effect::EffectType::DECELERATION:
                 e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::DECELERATION);
+                break;
             case Effect::EffectType::POISON:
                 e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::POISON);
+                break;
             case Effect::EffectType::WEAKNESS:
                 e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::WEAKNESS);
+                break;
             }
             return new MagicTower(e, palace.getSprite()->getPosition(), towerPos, towerConfig);
         }
@@ -157,10 +167,11 @@ namespace TowerDefence {
                 cell.setType(CellType::TOWER, ob);
                 this->addChild(ob->getSprite(), ATTACKING_OBJECTS_PRIOR);
                 attackingObjects.push_back(ob);
+                log("You have bought tower");
             }
             else {
                 delete ob;
-                log("You can't buy it");
+                log("You can't buy tower");
             }
             return;
         }
@@ -171,10 +182,11 @@ namespace TowerDefence {
                 cell.setType(CellType::TRAP, ob);
                 this->addChild(ob->getSprite(), ATTACKING_OBJECTS_PRIOR);
                 attackingObjects.push_back(ob);
+                log("You have bought trap");
             }
             else {
                 delete ob;
-                log("You can't buy it");
+                log("You can't buy trap");
             }
         }
         
@@ -201,7 +213,8 @@ namespace TowerDefence {
             if (e->isDead()) {
                 palace.addGold(e->getAward());
                 iter = enemies.erase(iter);
-                delete e;
+                e->tick();
+                //delete e;
                 increment = false;
             }
             else if (e->isOnFinish()) {
@@ -213,11 +226,18 @@ namespace TowerDefence {
                     return;
                 }
                 iter = enemies.erase(iter);
-                delete e;
+                //delete e;
                 increment = false;
             }
             else {
                 e->tick();
+                if (e->isDead()) {
+                    palace.addGold(e->getAward());
+                    iter = enemies.erase(iter);
+                    e->tick();
+                    //delete e;
+                    increment = false;
+                }
             }
             if (increment) {
                 ++iter;
@@ -255,6 +275,12 @@ namespace TowerDefence {
     }
     bool LandScape::init() {
          this->addChild(object, MAP_PRIOR);
+
+         auto touchListener = EventListenerTouchOneByOne::create();
+
+         touchListener->onTouchBegan = CC_CALLBACK_2(LandScape::onTouchBegan, this);
+
+         _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
          this->schedule(CC_SCHEDULE_SELECTOR(LandScape::update), 0.5f);
          return true;
     }
@@ -267,14 +293,16 @@ namespace TowerDefence {
                     top = cell.getTopLeft();
                     if (top.x < p.x && p.x < top.x + cell.getWidth() && top.y > p.y && p.y > top.y - cell.getHeight()) {
                         AbstractAttackingObject* ob = nullptr;
+                        Point delta = Point(cell.getWidth() / 2.0, cell.getHeight() / 2.0);
+                        Point pos = Point(top.x + delta.x, top.y - delta.y);
                         switch (cell.getType())
                         {
                         case CellType::ROAD:
-                            ob = createTrap();
+                            ob = createTrap(pos);
+                            break;
                         case CellType::TOWER_PLACE:
-                            Point delta = Point(cell.getWidth() / 2.0, cell.getHeight() / 2.0);
-                            Point towerPos = Point(top.x + delta.x, top.y - delta.y);
-                            ob = createTower(false, towerPos);
+                            ob = createTower(false, pos);
+                            break;
                         }
                         addAttackingObject(cell, ob);
                     }

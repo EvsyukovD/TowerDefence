@@ -45,7 +45,7 @@ namespace TowerDefence {
     }
     void Palace::init(unsigned int gold,unsigned int maxStrength,const Point& pos) {
         this->maxStrength = maxStrength;
-        this->gold;
+        this->gold = gold;
         this->currentStrength = maxStrength;
         this->object->setPosition(pos);
     }

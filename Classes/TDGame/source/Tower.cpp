@@ -10,6 +10,7 @@ namespace TowerDefence {
         file.close();
         object->initWithFile(js["sprite"]);
         object->setScale(js["tower_scale"]);
+        object->setPosition(towerPos);
         TowerProperties p;
         std::string level;
         for (int i = 0; i < MAX_LEVEL; i++) {
@@ -93,10 +94,11 @@ namespace TowerDefence {
     }
     bool Tower::fire(std::list<Enemy*>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
-            const Point& p = (*iter)->getSprite()->getPosition();
-            if ((double)p.distance(this->object->getPosition()) - (double)properties.at(level).radius < 1E-32) {
-                s.shedule(*iter);
-            }
+                const Point& p = (*iter)->getSprite()->getPosition();
+                double dist = p.distance(this->object->getPosition());
+                if (dist - (double)properties.at(level).radius < 1E-32) {
+                    s.shedule(*iter);
+                }
         }
         Enemy* target = s();
         if (target) {

@@ -43,6 +43,10 @@ namespace TowerDefence {
         object->runAction(RepeatForever::create(animate));*/
         currentPos = 0;
         object->setPosition(path[currentPos]);
+        Label* label = Label::createWithSystemFont(std::to_string(health), "Arial", 20);
+        float p = 0.5;
+        label->setPosition(path[currentPos].x,path[currentPos].y * (p + 1.0));
+        object->addChild(label, 10000,"hp");
     }
     int Enemy::getHealth()const {
         return health;
@@ -74,6 +78,8 @@ namespace TowerDefence {
             }
         }
         health -= (int)floor(damage);
+        Label* l = (Label*) object->getChildByName("hp");
+        l->setString(std::to_string(health));
     }
     void Enemy::setName(const std::string& name) {
         this->name = name;
@@ -118,6 +124,7 @@ namespace TowerDefence {
             }
             if (health <= 0) {
                 kill();
+                return;
             }
             if (increment) {
                 ++iter;
@@ -126,7 +133,7 @@ namespace TowerDefence {
         if (isOnFinish()) {
             return;
         }
-        else {
+        else if(object->getReferenceCount() > 0){
             int d = floor(speed);
             currentPos = d + currentPos >= path.size() ? path.size() - 1 : currentPos + d;
             //d = d + currentPos >= path.size() ? path.size() - currentPos - 1 : d;

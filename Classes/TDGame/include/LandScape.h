@@ -27,7 +27,7 @@ namespace TowerDefence {
 		const static int ATTACKING_OBJECTS_PRIOR = 400;
 		json trapConfig;
 		std::string towerConfig;
-		Trap* createTrap();
+		Trap* createTrap(const Point& trapPos);
 		Tower* createTower(bool isMagic, const Point& towerPos, Effect::EffectType type);
 	public:
 		static cocos2d::Scene* createScene(const std::string& jsonConfigFile,const json& trapConfig,const json& towerConfig);
