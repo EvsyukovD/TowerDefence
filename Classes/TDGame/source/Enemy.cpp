@@ -131,17 +131,13 @@ namespace TowerDefence {
             }
         }
         if (isOnFinish()) {
+            kill();
             return;
         }
         else if(object->getReferenceCount() > 0){
             int d = floor(speed);
             currentPos = d + currentPos >= path.size() ? path.size() - 1 : currentPos + d;
-            //d = d + currentPos >= path.size() ? path.size() - currentPos - 1 : d;
-            //double dist = this->object->getPosition().distance(path[currentPos + 1]);
-             //auto move = MoveTo::create(1.0f, path[currentPos]);
-             //object->runAction(move);
-             object->setPosition(path[currentPos]);
-             //currentPos += d;
+            object->setPosition(path[currentPos]);
         }
     }
     Enemy::~Enemy() {

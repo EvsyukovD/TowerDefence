@@ -23,6 +23,15 @@ namespace TowerDefence {
             p.updatingCost = js[level]["updating_cost"];
             properties.insert_or_assign(i + 1, p);
         }
+        Label* l = Label::createWithSystemFont(std::to_string(this->level), "Arial", 20);
+        float f = 0.99;
+        Point point = object->getPosition();
+        l->setPosition(point.x,point.y);
+        object->addChild(l, 10500, "level");
+    }
+    void Tower::displayCurrentLevel() {
+        Label* l = (Label*)object->getChildByName("level");
+        l->setString(std::to_string(this->level));
     }
     TowerProperties Tower::getProperties()const {
         return properties.at(level);
@@ -84,10 +93,11 @@ namespace TowerDefence {
     }
     bool Tower::updateLevel(unsigned int gold) {
         if (level == MAX_LEVEL) {
-            return true;
+            return false;//true
         }
         if (gold >= properties.at(level).updatingCost) {
             level++;
+            displayCurrentLevel();
             return true;
         }
         return false;

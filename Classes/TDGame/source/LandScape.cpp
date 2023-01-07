@@ -21,6 +21,12 @@ namespace TowerDefence {
         scene->addChild(l,LAYER_PRIOR);
         return scene;
     }
+    void LandScape::updatePalaceParams() {
+        Label* gold = (Label*)this->getChildByName("palace_gold");
+        gold->setString("gold: " + std::to_string(palace.getGold()));
+        Label* strength = (Label*)this->getChildByName("palace_strength");
+        strength->setString("strength: " + std::to_string(palace.getStrength()));
+    }
     void LandScape::initMap(const json& config) {
         object->initWithFile(config["map"]);
         object->setScale((float)config["map_scale"]);
@@ -106,7 +112,14 @@ namespace TowerDefence {
         initRoad(config);
         initTowerPlaces(config);
         initLairs(config);
-        //palace.init((size_t)config["gold"], (size_t)config["max_strength"]);
+        Label* strength = Label::createWithSystemFont("strength: " + std::to_string(palace.getStrength()),"Arial",15);
+        Label* gold = Label::createWithSystemFont("gold: " + std::to_string(palace.getGold()), "Arial", 15);
+        Point palacePos = palace.getSprite()->getPosition();
+        float px = 0.1,py = 0.1;
+        strength->setPosition(palacePos.x * (1 + px), palacePos.y * (1.0 + py));
+        gold->setPosition(palacePos.x * (1 + px), palacePos.y * (1.0 - py));
+        this->addChild(strength, 10000, "palace_strength");
+        this->addChild(gold, 10000, "palace_gold");
     }
     int LandScape::getFieldHeight() const {
         return height;
@@ -159,11 +172,29 @@ namespace TowerDefence {
             return new MagicTower(e, palace.getSprite()->getPosition(), towerPos, towerConfig);
         }
     }
+    void LandScape::updateTowerLevel(Tower* t) {
+        unsigned int cost = t->getProperties().cost;
+        if (t->updateLevel(palace.getGold())) {
+            palace.takeGold(cost);
+        }
+        else {
+            Label* l = Label::createWithSystemFont("Can't update tower","Arial",10);
+            Point p = t->getSprite()->getPosition();
+            l->setPosition(p);
+            this->addChild(l,10000);
+            float h = 70.0;
+            MoveTo* moveTo = MoveTo::create(1.0f,p + Point(0.0,h));
+            l->runAction(moveTo);
+            l->removeFromParent();
+            delete l;
+        }
+    }
     void LandScape::addAttackingObject(Cell& cell, AbstractAttackingObject* ob) { 
         if (cell.getType() == CellType::TOWER_PLACE) {
             int cost = ((Tower*)ob)->getProperties().cost;
             if (palace.getGold() >= cost) {
                 palace.takeGold(cost);
+                updatePalaceParams();
                 cell.setType(CellType::TOWER, ob);
                 this->addChild(ob->getSprite(), ATTACKING_OBJECTS_PRIOR);
                 attackingObjects.push_back(ob);
@@ -179,6 +210,7 @@ namespace TowerDefence {
             int cost = ((Trap*)ob)->getCost();
             if (palace.getGold() >= cost) {
                 palace.takeGold(cost);
+                updatePalaceParams();
                 cell.setType(CellType::TRAP, ob);
                 this->addChild(ob->getSprite(), ATTACKING_OBJECTS_PRIOR);
                 attackingObjects.push_back(ob);
@@ -212,6 +244,7 @@ namespace TowerDefence {
             Enemy* e = *iter;
             if (e->isDead()) {
                 palace.addGold(e->getAward());
+                updatePalaceParams();
                 iter = enemies.erase(iter);
                 e->tick();
                 //delete e;
@@ -219,6 +252,7 @@ namespace TowerDefence {
             }
             else if (e->isOnFinish()) {
                 palace.getDamage(e->getHealth());
+                updatePalaceParams();
                 if (palace.isDestroyed()) {
                     //Проигрыш, конец игры
                     isEnd = true;
@@ -226,6 +260,7 @@ namespace TowerDefence {
                     return;
                 }
                 iter = enemies.erase(iter);
+                e->tick();
                 //delete e;
                 increment = false;
             }
@@ -233,8 +268,8 @@ namespace TowerDefence {
                 e->tick();
                 if (e->isDead()) {
                     palace.addGold(e->getAward());
+                    updatePalaceParams();
                     iter = enemies.erase(iter);
-                    e->tick();
                     //delete e;
                     increment = false;
                 }
@@ -287,24 +322,33 @@ namespace TowerDefence {
     bool LandScape::onTouchBegan(cocos2d::Touch* t, cocos2d::Event*) {
         Point p = t->getLocation();
         Point top;
-        for (auto line : battlefield) {
-            for (auto cell : line) {
-                if (cell.getType() == CellType::ROAD || cell.getType() == CellType::TOWER_PLACE) {
-                    top = cell.getTopLeft();
-                    if (top.x < p.x && p.x < top.x + cell.getWidth() && top.y > p.y && p.y > top.y - cell.getHeight()) {
+        for (auto line = battlefield.begin(); line != battlefield.end(); ++line) {
+            for (auto cell_iter = (*line).begin(); cell_iter != (*line).end(); ++cell_iter) {
+                Cell& cell = *cell_iter;
+                top = cell.getTopLeft();
+                if (top.x < p.x && p.x < top.x + cell.getWidth() && top.y > p.y && p.y > top.y - cell.getHeight()) {
+                    if (cell.getType() == CellType::ROAD || cell.getType() == CellType::TOWER_PLACE) {
+                        top = cell.getTopLeft();
                         AbstractAttackingObject* ob = nullptr;
                         Point delta = Point(cell.getWidth() / 2.0, cell.getHeight() / 2.0);
                         Point pos = Point(top.x + delta.x, top.y - delta.y);
                         switch (cell.getType())
                         {
-                        case CellType::ROAD:
-                            ob = createTrap(pos);
-                            break;
-                        case CellType::TOWER_PLACE:
-                            ob = createTower(false, pos);
-                            break;
+                          case CellType::ROAD:
+                               ob = createTrap(pos);
+                               break;
+                          case CellType::TOWER_PLACE:
+                               ob = createTower(false, pos);
+                               break;
                         }
                         addAttackingObject(cell, ob);
+                        return true;
+                    } else {
+                        if (cell.getType() == CellType::TOWER) {
+                            top = cell.getTopLeft();
+                            updateTowerLevel((Tower*)cell.getObject());
+                            return true;
+                        }
                     }
                 }
             }

@@ -38,6 +38,8 @@ namespace TowerDefence {
 			virtual Enemy* operator ()();
 		};
 		TargetSheduler s;
+	private:
+		void displayCurrentLevel();
 	public:
 		static const int MAX_LEVEL = 3;
 		Tower(const Point& palacePos,const Point& towerPos,const std::string& jsonConfig);
