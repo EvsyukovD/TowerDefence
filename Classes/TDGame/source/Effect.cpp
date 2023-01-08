@@ -23,6 +23,20 @@ namespace TowerDefence {
 	int Effect::getDuration()const {
 		return duration;
 	}
+	Effect::EffectType Effect::getType(int type) {
+		switch (type) {
+		case 0:
+			return Effect::EffectType::POISON;
+		case 1:
+			return Effect::EffectType::WEAKNESS;
+		case 2:
+			return Effect::EffectType::DECELERATION;
+		case 3:
+			return Effect::EffectType::NONE;
+		default:
+			return Effect::EffectType::NONE;
+		}
+	}
 	float Effect::getValue()const {
 		return value;
 	}

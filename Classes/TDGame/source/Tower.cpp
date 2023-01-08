@@ -24,12 +24,13 @@ namespace TowerDefence {
             properties.insert_or_assign(i + 1, p);
         }
         Label* l = Label::createWithSystemFont(std::to_string(this->level), "Arial", 20);
-        float f = 0.99;
-        Point point = object->getPosition();
-        l->setPosition(point.x,point.y);
-        object->addChild(l, 10500, "level");
+        float f = 0.1;
+        l->setAnchorPoint(Point(0,0));
+        l->setPosition(0.0,0.0);
+        object->addChild(l, 10000, "level");
     }
     void Tower::displayCurrentLevel() {
+
         Label* l = (Label*)object->getChildByName("level");
         l->setString(std::to_string(this->level));
     }

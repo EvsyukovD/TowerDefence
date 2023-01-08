@@ -8,11 +8,11 @@ namespace TowerDefence {
 	public:
 		MagicObject(const Effect&);
 		/**  
-	    \return Trap's effect
+	    \return Object's effect
 		*/
 		Effect* getEffect() const;
 		/**
-		Set trap's effect
+		Set Object's effect
 		*/
 		void setEffect(const Effect&);
 	};

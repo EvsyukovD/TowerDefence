@@ -308,7 +308,14 @@ namespace TowerDefence {
         }
         return false;
     }
+    void LandScape::menu_change_tower_type(Ref* sender) {
+         currentTowerIsMagic = !currentTowerIsMagic;
+         //Label* l = (Label*)this->getChildByName("tower_type");
+        // l->setString("Magic tower");
+    }
     bool LandScape::init() {
+         auto visibleSize = Director::getInstance()->getVisibleSize();
+         Vec2 origin = Director::getInstance()->getVisibleOrigin();
          this->addChild(object, MAP_PRIOR);
 
          auto touchListener = EventListenerTouchOneByOne::create();
@@ -316,6 +323,16 @@ namespace TowerDefence {
          touchListener->onTouchBegan = CC_CALLBACK_2(LandScape::onTouchBegan, this);
 
          _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+         std::string type1 = "type.png";
+         std::string type2 = "type_clicked.png";
+         auto towerTypeItem = MenuItemImage::create(type1,type2,CC_CALLBACK_1(LandScape::menu_change_tower_type,this));
+         float x = origin.x + visibleSize.width - towerTypeItem->getContentSize().width / 2;
+         float y = origin.y + towerTypeItem->getContentSize().height / 2;
+         towerTypeItem->setPosition(x, y);
+         towerTypeItem->setScale(0.6);
+         auto menu = Menu::create(towerTypeItem, nullptr);
+         menu->setPosition(Vec2::ZERO);
+         this->addChild(menu, 1);
          this->schedule(CC_SCHEDULE_SELECTOR(LandScape::update), 0.5f);
          return true;
     }
@@ -338,7 +355,8 @@ namespace TowerDefence {
                                ob = createTrap(pos);
                                break;
                           case CellType::TOWER_PLACE:
-                               ob = createTower(false, pos);
+                               int type = trapConfig["effect_type"];
+                               ob = createTower(currentTowerIsMagic, pos,Effect::getType(type));
                                break;
                         }
                         addAttackingObject(cell, ob);
@@ -358,6 +376,15 @@ namespace TowerDefence {
     void LandScape::update(float dt) {
         if (!isEnd) {
             tick();
+        }
+        else {
+            if (isVictory) {
+                log("You have won!!!!!!");
+            }
+            else {
+                log("You lose!!!");
+            }
+            Director::getInstance()->end();
         }
     }
     void LandScape::run() {

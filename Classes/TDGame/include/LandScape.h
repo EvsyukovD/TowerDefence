@@ -27,8 +27,8 @@ namespace TowerDefence {
 		const static int ATTACKING_OBJECTS_PRIOR = 400;
 		json trapConfig;
 		std::string towerConfig;
+		bool currentTowerIsMagic = false;
 		Trap* createTrap(const Point& trapPos);
-
 		Tower* createTower(bool isMagic, const Point& towerPos, Effect::EffectType type);
 		/**
 		 * \brief display current palace params
@@ -39,6 +39,7 @@ namespace TowerDefence {
 		\param t - tower
 		*/
 		void updateTowerLevel(Tower* t);
+		void menu_change_tower_type(Ref* sender);
 	public:
 		static cocos2d::Scene* createScene(const std::string& jsonConfigFile,const json& trapConfig,const json& towerConfig);
 		void initWithConfig(const std::string& jsonConfigFile,const std::string& trapConfig, const std::string& towerConfig);

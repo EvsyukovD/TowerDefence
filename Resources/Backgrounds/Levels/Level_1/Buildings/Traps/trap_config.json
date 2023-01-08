@@ -1,7 +1,7 @@
 {
   "name": "magic trap",
   "cost": 10,
-  "radius": 10.0,
+  "radius": 200.0,
   "effect_type": 0,
   "value": 0.5,
   "duration": 9,

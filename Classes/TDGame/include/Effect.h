@@ -42,6 +42,7 @@ namespace TowerDefence {
 		*/
 		float getValue()const;
 		void setType(Effect::EffectType type);
+		static Effect::EffectType getType(int type);
 	};
 
 	class PoisonEffect : public Effect {

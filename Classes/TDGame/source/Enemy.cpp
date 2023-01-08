@@ -46,6 +46,8 @@ namespace TowerDefence {
         Label* label = Label::createWithSystemFont(std::to_string(health), "Arial", 20);
         float p = 0.5;
         label->setPosition(path[currentPos].x,path[currentPos].y * (p + 1.0));
+        //label->setAnchorPoint(Point(0,0));
+        //label->setPosition(0.0, 0.0);
         object->addChild(label, 10000,"hp");
     }
     int Enemy::getHealth()const {
@@ -117,6 +119,8 @@ namespace TowerDefence {
             Effect* e = *iter;
             increment = true;
             e->apply(*this);
+            Label* l = (Label*)object->getChildByName("hp");
+            l->setString(std::to_string(health));
             if (e->getDuration() == 0) {
                 iter = effects.erase(iter);
                 delete e;
