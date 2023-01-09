@@ -1,7 +1,5 @@
 #include "../include/Tower.h"
-#include "../lib/json/single_include/nlohmann/json.hpp"
 #include <fstream>
-using json = nlohmann::json;
 namespace TowerDefence {
     Tower::Tower(const Point& palacePos,const Point& towerPos,const std::string& jsonConfig): s(palacePos,towerPos){
         json js;
@@ -27,6 +25,28 @@ namespace TowerDefence {
         float f = 0.1;
         l->setAnchorPoint(Point(0,0));
         l->setPosition(0.0,0.0);
+        object->addChild(l, 10000, "level");
+    }
+    Tower::Tower(const Point& palacePos, const Point& towerPos, const json& js):s(palacePos,towerPos) {
+        object->initWithFile(js["sprite"]);
+        object->setScale(js["tower_scale"]);
+        object->setPosition(towerPos);
+        TowerProperties p;
+        std::string level;
+        for (int i = 0; i < MAX_LEVEL; i++) {
+            level = "level_";
+            level = level.append(std::to_string(i));
+            p.cost = js[level]["cost"];
+            p.damage = js[level]["damage"];
+            p.radius = js[level]["radius"];
+            p.rateOfFire = js[level]["rate_of_fire"];
+            p.updatingCost = js[level]["updating_cost"];
+            properties.insert_or_assign(i + 1, p);
+        }
+        Label* l = Label::createWithSystemFont(std::to_string(this->level), "Arial", 20);
+        float f = 0.1;
+        l->setAnchorPoint(Point(0, 0));
+        l->setPosition(0.0, 0.0);
         object->addChild(l, 10000, "level");
     }
     void Tower::displayCurrentLevel() {
@@ -130,7 +150,10 @@ namespace TowerDefence {
         const std::string& jsonConfig):
         MagicObject(e),
         Tower(palacePos,towerPos,jsonConfig) {}
-
+    MagicTower::MagicTower(const Effect& e,
+        const Point& palacePos,
+        const Point& towerPos,
+        const json& js) : MagicObject(e), Tower(palacePos, towerPos, js) {}
     bool MagicTower::fire(std::list<Enemy*>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();

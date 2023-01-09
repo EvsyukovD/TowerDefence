@@ -6,10 +6,10 @@
 #include "../include/TowerDefence.h"
 #include <fstream>
 namespace TowerDefence {
-    cocos2d::Scene* LandScape::createScene(const std::string& jsonConfig,const json& trapConfig,const json& towerConfig) {
+    cocos2d::Scene* LandScape::createScene(const std::string& jsonConfig,const std::string& trapConfig,const std::string& simpleTowerConfig, const std::string& magicTowerConfig) {
         auto scene = Scene::create();
         LandScape* l = new LandScape();
-        l->initWithConfig(jsonConfig,trapConfig,towerConfig);
+        l->initWithConfig(jsonConfig,trapConfig, simpleTowerConfig, magicTowerConfig);
         if (l->init()) {
             l->autorelease();
         }
@@ -96,8 +96,8 @@ namespace TowerDefence {
             lairs.push_back(l);
         }
     }
-    void LandScape::initWithConfig(const std::string& jsonConfig, const std::string& trapConfig, const std::string& towerConfig){
-        std::ifstream file(jsonConfig);
+    void LandScape::initWithConfig(const std::string& landscapeConfig, const std::string& trapConfig, const std::string& simpleTowerConfig, const std::string& magicTowerConfig){
+        std::ifstream file(landscapeConfig);
         json config;
         file >> config;
         file.close();
@@ -105,8 +105,19 @@ namespace TowerDefence {
         std::ifstream file1(trapConfig);
         file1 >> this->trapConfig;
         file1.close();
-        
-        this->towerConfig = towerConfig;
+  
+
+        std::ifstream simple(simpleTowerConfig);
+        simple >> this->simpleTowerConfig;
+        simple.close();
+
+        std::ifstream magic(magicTowerConfig);
+        magic >> this->magicTowerConfig;
+        magic.close();
+
+        std::ifstream file2("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Effects/effects_config.json");
+        file2 >> this->effectConfig;
+        file2.close();
 
         initMap(config);
         initRoad(config);
@@ -130,46 +141,19 @@ namespace TowerDefence {
     Trap* LandScape::createTrap(const Point& trapPos) {
         int type = trapConfig["effect_type"];
         Trap* res = nullptr;
-        Effect e;
-        switch (type) {
-        case Effect::EffectType::NONE:
-            e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::NONE);
-            break;
-        case Effect::EffectType::DECELERATION:
-            e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::DECELERATION);
-            break;
-        case Effect::EffectType::POISON:
-            e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::POISON);
-            break;
-        case Effect::EffectType::WEAKNESS:
-            e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::WEAKNESS);
-            break;
-        }
+        Effect e = Effect(effectConfig["type"][type]["duration"], effectConfig["type"][type]["value"],Effect::getType(type));
         res = new Trap(trapConfig["radius"], trapConfig["cost"],e,trapConfig["name"],trapConfig["sprite"]);
         res->getSprite()->setPosition(trapPos);
         return res;
     }
-    Tower* LandScape::createTower(bool isMagic,const Point& towerPos,Effect::EffectType type = Effect::EffectType::NONE) {
+    Tower* LandScape::createTower(bool isMagic,const Point& towerPos) {
         if (!isMagic) {
-            return new Tower(palace.getSprite()->getPosition(),towerPos,towerConfig);
+            return new Tower(palace.getSprite()->getPosition(),towerPos,simpleTowerConfig);
         }
         else {
-            Effect e;
-            switch (type) {
-            case Effect::EffectType::NONE:
-                e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::NONE);
-                break;
-            case Effect::EffectType::DECELERATION:
-                e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::DECELERATION);
-                break;
-            case Effect::EffectType::POISON:
-                e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::POISON);
-                break;
-            case Effect::EffectType::WEAKNESS:
-                e = Effect(trapConfig["duration"], trapConfig["value"], Effect::EffectType::WEAKNESS);
-                break;
-            }
-            return new MagicTower(e, palace.getSprite()->getPosition(), towerPos, towerConfig);
+            int type = magicTowerConfig["effect_type"];
+            Effect e = Effect(effectConfig["type"][type]["duration"], effectConfig["type"][type]["value"], Effect::getType(type));
+            return new MagicTower(e, palace.getSprite()->getPosition(), towerPos, magicTowerConfig);
         }
     }
     void LandScape::updateTowerLevel(Tower* t) {
@@ -356,7 +340,7 @@ namespace TowerDefence {
                                break;
                           case CellType::TOWER_PLACE:
                                int type = trapConfig["effect_type"];
-                               ob = createTower(currentTowerIsMagic, pos,Effect::getType(type));
+                               ob = createTower(currentTowerIsMagic, pos);
                                break;
                         }
                         addAttackingObject(cell, ob);

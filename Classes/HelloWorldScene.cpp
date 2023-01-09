@@ -217,9 +217,9 @@ void HelloWorld::GoToGameScene(cocos2d::Ref* sender)
     //l.initWithConfig("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json");
     std::string landConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json";
     std::string trapConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Traps/trap_config.json";
-    std::string towerConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Towers/tower_config.json";
-
-    auto scene = TowerDefence::LandScape::createScene(landConf,trapConf,towerConf);
+    std::string simpleTowerConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Towers/tower_config.json";
+    std::string magicTowerConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Towers/magic_tower_config.json";
+    auto scene = TowerDefence::LandScape::createScene(landConf,trapConf, simpleTowerConf,magicTowerConf);
     //l.getSprite()->setPosition(Point::ZERO);
     //scene->addChild(l.getSprite().get());
     Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));

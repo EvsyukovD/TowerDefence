@@ -26,10 +26,13 @@ namespace TowerDefence {
 		const static int ENEMY_PRIOR = 200;
 		const static int ATTACKING_OBJECTS_PRIOR = 400;
 		json trapConfig;
-		std::string towerConfig;
+		json simpleTowerConfig;
+		json magicTowerConfig;
+		//std::string towerConfig;
+		json effectConfig;
 		bool currentTowerIsMagic = false;
 		Trap* createTrap(const Point& trapPos);
-		Tower* createTower(bool isMagic, const Point& towerPos, Effect::EffectType type);
+		Tower* createTower(bool isMagic, const Point& towerPos);
 		/**
 		 * \brief display current palace params
 		 */
@@ -39,10 +42,21 @@ namespace TowerDefence {
 		\param t - tower
 		*/
 		void updateTowerLevel(Tower* t);
+		/**
+		 * \brief Change type of tower:
+		 * from simple to magic and
+		 * from magic to simple 
+		 */
 		void menu_change_tower_type(Ref* sender);
 	public:
-		static cocos2d::Scene* createScene(const std::string& jsonConfigFile,const json& trapConfig,const json& towerConfig);
-		void initWithConfig(const std::string& jsonConfigFile,const std::string& trapConfig, const std::string& towerConfig);
+		static cocos2d::Scene* createScene(const std::string& jsonConfigFile,
+			const std::string& trapConfig,
+			const std::string& simpleTowerConfig,
+			const std::string& magicTowerConfig);
+		void initWithConfig(const std::string& jsonConfigFile,
+			const std::string& trapConfig,
+			const std::string& simpleTowerConfig,
+			const std::string& magicTowerConfig);
 		LandScape(){}
 		virtual void update(float dt);
 		virtual bool init();

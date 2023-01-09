@@ -2,6 +2,8 @@
 #define __TOWER_H__
 #include "AbstractAttackingObject.h"
 #include "MagicObject.h"
+#include "../lib/json/single_include/nlohmann/json.hpp"
+using json = nlohmann::json;
 namespace TowerDefence {
 	struct TowerProperties {
 		int damage;
@@ -43,6 +45,7 @@ namespace TowerDefence {
 	public:
 		static const int MAX_LEVEL = 3;
 		Tower(const Point& palacePos,const Point& towerPos,const std::string& jsonConfig);
+		Tower(const Point& palacePos, const Point& towerPos, const json& js);
 		unsigned int getLevel()const;
 		Tower(const Tower& t);
 		/**
@@ -73,6 +76,7 @@ namespace TowerDefence {
 	class MagicTower: public Tower, public MagicObject {
 	public:
 		MagicTower(const Effect&,const Point& palacePos,const Point& towerPos,const std::string& jsonConfig);
+		MagicTower(const Effect&,const Point& palacePos, const Point& towerPos, const json& js);
 		/**
 		\brief Function of fire
 		\param enemies - living enemies
