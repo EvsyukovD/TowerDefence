@@ -139,6 +139,10 @@ namespace TowerDefence {
                     return true;
                 }
                 target->getDamage(properties.at(level).damage);
+                FadeOut* fadeOut = FadeOut::create(0.1f);
+                FadeIn* fadeIn = FadeIn::create(0.1f);
+                Sequence* seq = Sequence::create(fadeOut, fadeIn, nullptr);
+                target->getSprite()->runAction(seq);
             }
             return true;
         }
@@ -149,11 +153,15 @@ namespace TowerDefence {
         const Point& towerPos, 
         const std::string& jsonConfig):
         MagicObject(e),
-        Tower(palacePos,towerPos,jsonConfig) {}
+        Tower(palacePos,towerPos,jsonConfig) {
+        object->setColor(Effect::getColorOfEffect(e.getType()));
+    }
     MagicTower::MagicTower(const Effect& e,
         const Point& palacePos,
         const Point& towerPos,
-        const json& js) : MagicObject(e), Tower(palacePos, towerPos, js) {}
+        const json& js) : MagicObject(e), Tower(palacePos, towerPos, js) {
+        object->setColor(Effect::getColorOfEffect(e.getType()));
+    }
     bool MagicTower::fire(MySTL::List<Enemy*>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();
@@ -169,6 +177,10 @@ namespace TowerDefence {
                     return true;
                 }
                 target->getDamage(properties.at(level).damage);
+                FadeOut* fadeOut = FadeOut::create(0.1f);
+                FadeIn* fadeIn = FadeIn::create(0.1f);
+                Sequence* seq = Sequence::create(fadeOut, fadeIn,nullptr);
+                target->getSprite()->runAction(seq);
             }
             return true;
         }

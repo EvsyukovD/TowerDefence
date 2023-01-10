@@ -46,8 +46,6 @@ namespace TowerDefence {
         Label* label = Label::createWithSystemFont(std::to_string(health), "Arial", 20);
         float p = 0.5;
         label->setPosition(path[currentPos].x,path[currentPos].y * (p + 1.0));
-        //label->setAnchorPoint(Point(0,0));
-        //label->setPosition(0.0, 0.0);
         object->addChild(label, 10000,"hp");
     }
     int Enemy::getHealth()const {
@@ -77,6 +75,12 @@ namespace TowerDefence {
             Effect* e = *iter;
             if (e->getType() == Effect::EffectType::WEAKNESS) {
                 damage += d * (1.0 - e->getValue() / 100.0);
+                Color3B color = object->getColor();
+                Color3B effect_color = Effect::getColorOfEffect(Effect::WEAKNESS);
+                TintTo* first_tint = TintTo::create(0.5f, effect_color);
+                TintTo* second_tint = TintTo::create(0.5f, color);
+                Sequence* seq = Sequence::create(first_tint, second_tint, nullptr);
+                object->runAction(seq);
             }
         }
         health -= (int)floor(damage);
@@ -109,6 +113,7 @@ namespace TowerDefence {
     bool Enemy::isOnFinish()const {
         return currentPos == path.size() - 1;
     }
+
     void Enemy::tick() {
         if (health <= 0) {
             kill();
@@ -119,6 +124,12 @@ namespace TowerDefence {
             Effect* e = *iter;
             increment = true;
             e->apply(*this);
+            Color3B color = object->getColor();
+            Color3B effect_color = Effect::getColorOfEffect(e->getType());
+            TintTo* first_tint = TintTo::create(0.5f, effect_color);
+            TintTo* second_tint = TintTo::create(0.5f, color);
+            Sequence* seq = Sequence::create(first_tint, second_tint, nullptr);
+            object->runAction(seq);
             Label* l = (Label*)object->getChildByName("hp");
             l->setString(std::to_string(health));
             if (e->getDuration() <= 0) {

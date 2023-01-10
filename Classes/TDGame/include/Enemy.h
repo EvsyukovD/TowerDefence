@@ -1,6 +1,7 @@
 #ifndef __ENEMY_H__
 #define __ENEMY_H__
 #include "TDObject.h"
+#include "Effect.h"
 #include "../lib/list/list.h"
 namespace TowerDefence {
 	class Enemy : public TDObject{

@@ -52,6 +52,21 @@ namespace TowerDefence {
 			return "none";
 		}
 	}
+	Color3B Effect::getColorOfEffect(Effect::EffectType type) {
+		switch (type)
+		{
+		case Effect::POISON:
+			return Color3B::GREEN;
+		case Effect::WEAKNESS:
+			return Color3B::RED;
+		case Effect::DECELERATION:
+			return Color3B::BLUE;
+		case Effect::NONE:
+			return Color3B::BLACK;
+		default:
+			return Color3B::BLACK;
+		}
+	}
 	float Effect::getValue()const {
 		return value;
 	}
