@@ -4,6 +4,7 @@
 #include "../include/Trap.h"
 #include "../include/Lair.h"
 #include "../include/TowerDefence.h"
+#include "GameOverScene.h"
 #include <fstream>
 namespace TowerDefence {
     cocos2d::Scene* LandScape::createScene(const std::string& jsonConfig,const std::string& trapConfig,const std::string& simpleTowerConfig, const std::string& magicTowerConfig) {
@@ -74,14 +75,12 @@ namespace TowerDefence {
             drawNode = DrawNode::create();
             topLeft = battlefield[i][j].getTopLeft();
             drawNode->setAnchorPoint(Point(0, 1));
-            //drawNode->setPosition(topLeft);
             drawNode->drawRect(topLeft, topLeft + Point(battlefield[i][j].getWidth(), -battlefield[i][j].getHeight()), Color4F::BLACK);
             this->addChild(drawNode,TOWER_PLACES_PRIOR);
         }
     }
     void LandScape::initLairs(const json& config) {
         size_t lairsNum = config["lairs_num"];
-        //std::string lairConfigFile = "lair_config_";
         std::string lair_config;
         bool isInit = false;
         for (int i = 0; i < lairsNum; i++) {
@@ -305,14 +304,6 @@ namespace TowerDefence {
         this->battlefield.clear();
         this->enemies.clear();
     }
-    bool LandScape::tryUpdateTower(Tower& t) {
-        unsigned int cost = t.getProperties().updatingCost;
-        if (t.updateLevel(palace.getGold())) {
-            palace.takeGold(cost);
-            return true;
-        }
-        return false;
-    }
     void LandScape::menu_change_tower_type(Ref* sender) {
          currentTowerIsMagic = !currentTowerIsMagic;
          std::string type = currentTowerIsMagic ? "Tower: magic" : "Tower: simple";
@@ -429,16 +420,13 @@ namespace TowerDefence {
         else {
             if (isVictory) {
                 log("You have won!!!!!!");
+                
             }
             else {
                 log("You lose!!!");
             }
-            Director::getInstance()->end();
-        }
-    }
-    void LandScape::run() {
-        while (!isEnd) {
-            tick();
+            auto scene = GameOver::createScene(isVictory);
+            Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));
         }
     }
 }

@@ -30,7 +30,6 @@
 #include "TDGame/include/Lair.h"
 #include "TDGame/include/Enemy.h"
 #include "TDGame/include/Cell.h"
-//USING_NS_CC;
 using json = nlohmann::json;
 Scene* HelloWorld::createScene()
 {   
@@ -38,7 +37,6 @@ Scene* HelloWorld::createScene()
     auto layer = HelloWorld::create();
     scene->addChild(layer);
     return scene;
-    //return HelloWorld::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -57,7 +55,6 @@ bool HelloWorld::init()
     {
         return false;
     }
-    //labelTouchInfo = Label::createWithSystemFont("Touch or clicksomewhere to begin", "Arial", 30);
     labelTouchInfo = Label::create();
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -213,54 +210,12 @@ bool HelloWorld::onTouchBegan(cocos2d::Touch*, cocos2d::Event*) {
 }
 void HelloWorld::GoToGameScene(cocos2d::Ref* sender)
 {
-   // TowerDefence::LandScape l;
-    //l.initWithConfig("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json");
     std::string landConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json";
     std::string trapConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Traps/trap_config.json";
     std::string simpleTowerConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Towers/tower_config.json";
     std::string magicTowerConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Towers/magic_tower_config.json";
     auto scene = TowerDefence::LandScape::createScene(landConf,trapConf, simpleTowerConf,magicTowerConf);
-    //l.getSprite()->setPosition(Point::ZERO);
-    //scene->addChild(l.getSprite().get());
     Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));
-    //l.init();
-   /*Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-    auto scene = Scene::create();//GameScene::createScene();
-    auto layer = Layer::create();
-    auto label = Label::createWithTTF("Tower Defence", "fonts/Marker Felt.ttf", 24);
-    label->setPosition(Vec2(origin.x + visibleSize.width / 2,
-        origin.y + visibleSize.height - label->getContentSize().height));
-    auto backgroundSprite = Sprite::create("Backgrounds/Levels/Level_1/Level_1.png");
-    backgroundSprite->setScale(0.8);
-    backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    scene->addChild(backgroundSprite);
-    scene->addChild(layer);
-    scene->addChild(label);
-    Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));*/
-   /* auto closeItem = MenuItemImage::create(
-        "CloseNormal.png",
-        "CloseSelected.png",
-        CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
-
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
-    {
-        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
-    }
-    else
-    {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
-        float y = origin.y + closeItem->getContentSize().height / 2;
-        closeItem->setPosition(Vec2(origin.x + visibleSize.width / 2 - 102, origin.y + visibleSize.height / 2 + 9));
-        const Point& pos = closeItem->getPosition();
-        std::ofstream file("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/path.txt");
-        file << "Button posx: " << pos.x << " posy: " << pos.y << std::endl;
-        file.close();
-    }
-    scene->addChild(closeItem);*/
 }
 
 void HelloWorld::menuCloseCallback(Ref* pSender)

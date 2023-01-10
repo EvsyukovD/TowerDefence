@@ -64,6 +64,12 @@ namespace TowerDefence {
 			const std::string& simpleTowerConfig,
 			const std::string& magicTowerConfig);
 		LandScape(){}
+		/**
+		 * \brief Running the main cycle of
+		 * the game
+		 * 
+		 * \param dt - formal parametr
+		 */
 		virtual void update(float dt);
 		virtual bool init();
 		/**
@@ -82,25 +88,13 @@ namespace TowerDefence {
 		void addAttackingObject(Cell& cell, AbstractAttackingObject* ob);
 
 		virtual bool onTouchBegan(cocos2d::Touch*, cocos2d::Event*);
-		/*virtual void onTouchEnded(cocos2d::Touch*, cocos2d::Event*);
-		virtual void onTouchMoved(cocos2d::Touch*, cocos2d::Event*);
-		virtual void onTouchCancelled(cocos2d::Touch*, cocos2d::Event*);*/
 		
-		/**  
-		\brief Try to update tower's level 
-		\param t - tower
-		\return true if updating was successfull and false otherwise
-		*/
-		bool tryUpdateTower(Tower& t);
 		/*
 		\brief Enemies and towers do their step
 		*/
 		void tick();
 		virtual ~LandScape();
-		/**
-		\brief Running the game
-		*/
-		void  run();
+		
 		CREATE_FUNC(LandScape);
 	private:
 		/**  
