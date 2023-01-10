@@ -28,26 +28,32 @@ namespace TowerDefence {
 		json trapConfig;
 		json simpleTowerConfig;
 		json magicTowerConfig;
-		//std::string towerConfig;
 		json effectConfig;
 		bool currentTowerIsMagic = false;
 		Trap* createTrap(const Point& trapPos);
 		Tower* createTower(bool isMagic, const Point& towerPos);
+
 		/**
-		 * \brief display current palace params
+		 * \brief Display current palace params
 		 */
 		void updatePalaceParams();
+
 		/**
 		\brief Try to update tower's level
 		\param t - tower
 		*/
 		void updateTowerLevel(Tower* t);
+
 		/**
-		 * \brief Change type of tower:
-		 * from simple to magic and
-		 * from magic to simple 
+		  \brief Change type of tower:
+		  from simple to magic and
+		  from magic to simple 
 		 */
 		void menu_change_tower_type(Ref* sender);
+
+		void menu_change_trap_effect(Ref* sender);
+
+		void menu_change_tower_effect(Ref* sender);
 	public:
 		static cocos2d::Scene* createScene(const std::string& jsonConfigFile,
 			const std::string& trapConfig,

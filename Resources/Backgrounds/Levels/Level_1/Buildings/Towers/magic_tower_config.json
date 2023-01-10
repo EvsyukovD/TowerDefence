@@ -22,7 +22,5 @@
     "rate_of_fire": 5,
     "updating_cost": 0
   },
-  "effect_type": 0,
-  "value": 0.5,
-  "duration": 9
+  "effect_type": 0
 }

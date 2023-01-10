@@ -123,14 +123,38 @@ namespace TowerDefence {
         initRoad(config);
         initTowerPlaces(config);
         initLairs(config);
+
+        Size visibleSize = Director::getInstance()->getVisibleSize();
+        Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+        float factor_h = 0.08;
+        float factor_w = 0.12;
+        float delta_h = visibleSize.height * factor_h;
+        float delta_w = visibleSize.width * factor_w;
+        float strength_x = origin.x + visibleSize.width - delta_w;
+        float strength_y = origin.y + visibleSize.height - delta_h;
+        float gold_x = strength_x, gold_y = strength_y - delta_h;
+        Effect::EffectType trap_effect_type = Effect::getType(this->trapConfig["effect_type"]);
+        Effect::EffectType tower_effect_type = Effect::getType(this->magicTowerConfig["effect_type"]);
         Label* strength = Label::createWithSystemFont("strength: " + std::to_string(palace.getStrength()),"Arial",15);
         Label* gold = Label::createWithSystemFont("gold: " + std::to_string(palace.getGold()), "Arial", 15);
-        Point palacePos = palace.getSprite()->getPosition();
-        float px = 0.1,py = 0.1;
-        strength->setPosition(palacePos.x * (1 + px), palacePos.y * (1.0 + py));
-        gold->setPosition(palacePos.x * (1 + px), palacePos.y * (1.0 - py));
+        Label* trap_effect = Label::createWithSystemFont("Trap: " + Effect::to_string(trap_effect_type), "Arial", 15);
+        Label* tower_type = Label::createWithSystemFont("Tower: simple", "Arial", 15);
+        Label* tower_effect = Label::createWithSystemFont("Tower eff.: " + Effect::to_string(tower_effect_type), "Arial", 15);
+        //Point palacePos = palace.getSprite()->getPosition();
+        //float px = 0.1,py = 0.1;
+        //strength->setPosition(palacePos.x * (1 + px), palacePos.y * (1.0 + py));
+        //gold->setPosition(palacePos.x * (1 + px), palacePos.y * (1.0 - py));
+        strength->setPosition(strength_x, strength_y);
+        gold->setPosition(gold_x, gold_y);
+        trap_effect->setPosition(gold_x, gold_y - delta_h);
+        tower_type->setPosition(gold_x, gold_y - 2.0 * delta_h);
+        tower_effect->setPosition(gold_x, gold_y - 3.0 * delta_h);
         this->addChild(strength, 10000, "palace_strength");
         this->addChild(gold, 10000, "palace_gold");
+        this->addChild(trap_effect, 10000, "trap_effect");
+        this->addChild(tower_type, 10000, "tower_type");
+        this->addChild(tower_effect, 10000, "tower_effect");
     }
     int LandScape::getFieldHeight() const {
         return height;
@@ -231,7 +255,6 @@ namespace TowerDefence {
                 updatePalaceParams();
                 iter = enemies.erase(iter);
                 e->tick();
-                //delete e;
                 increment = false;
             }
             else if (e->isOnFinish()) {
@@ -245,7 +268,6 @@ namespace TowerDefence {
                 }
                 iter = enemies.erase(iter);
                 e->tick();
-                //delete e;
                 increment = false;
             }
             else {
@@ -254,7 +276,6 @@ namespace TowerDefence {
                     palace.addGold(e->getAward());
                     updatePalaceParams();
                     iter = enemies.erase(iter);
-                    //delete e;
                     increment = false;
                 }
             }
@@ -294,8 +315,9 @@ namespace TowerDefence {
     }
     void LandScape::menu_change_tower_type(Ref* sender) {
          currentTowerIsMagic = !currentTowerIsMagic;
-         //Label* l = (Label*)this->getChildByName("tower_type");
-        // l->setString("Magic tower");
+         std::string type = currentTowerIsMagic ? "Tower: magic" : "Tower: simple";
+         Label* l = (Label*)this->getChildByName("tower_type");
+         l->setString(type);
     }
     bool LandScape::init() {
          auto visibleSize = Director::getInstance()->getVisibleSize();
@@ -307,14 +329,40 @@ namespace TowerDefence {
          touchListener->onTouchBegan = CC_CALLBACK_2(LandScape::onTouchBegan, this);
 
          _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+         
+         Vector<MenuItem*> MenuItems;
+         float factor_h = 0.1;
+         float delta_h = visibleSize.height * factor_h;
+         std::string trap_type = "trap_type.png";
+         std::string trap_type_clicked = "trap_type_clicked.png";
+         auto trapEffectTypeItem = MenuItemImage::create(trap_type, trap_type_clicked, CC_CALLBACK_1(LandScape::menu_change_trap_effect, this));
+         float trap_x = origin.x + visibleSize.width - trapEffectTypeItem->getContentSize().width / 2;
+         float trap_y = origin.y + trapEffectTypeItem->getContentSize().height / 2 + delta_h;
+         trapEffectTypeItem->setPosition(trap_x, trap_y);
+         trapEffectTypeItem->setScale(0.5);
+
+         MenuItems.pushBack(trapEffectTypeItem);
+
+
          std::string type1 = "type.png";
          std::string type2 = "type_clicked.png";
          auto towerTypeItem = MenuItemImage::create(type1,type2,CC_CALLBACK_1(LandScape::menu_change_tower_type,this));
          float x = origin.x + visibleSize.width - towerTypeItem->getContentSize().width / 2;
          float y = origin.y + towerTypeItem->getContentSize().height / 2;
          towerTypeItem->setPosition(x, y);
-         towerTypeItem->setScale(0.6);
-         auto menu = Menu::create(towerTypeItem, nullptr);
+         towerTypeItem->setScale(0.5);
+        
+         MenuItems.pushBack(towerTypeItem);
+
+         std::string tower_effect = "tower_effect.png";
+         std::string tower_effect_clicked = "tower_effect_clicked.png";
+         auto towerEffectItem = MenuItemImage::create(tower_effect, tower_effect, CC_CALLBACK_1(LandScape::menu_change_tower_effect, this));
+         towerEffectItem->setPosition(trap_x, trap_y + delta_h);
+         towerEffectItem->setScale(0.5);
+
+         MenuItems.pushBack(towerEffectItem);
+
+         auto menu = Menu::createWithArray(MenuItems);
          menu->setPosition(Vec2::ZERO);
          this->addChild(menu, 1);
          this->schedule(CC_SCHEDULE_SELECTOR(LandScape::update), 0.5f);
@@ -356,6 +404,23 @@ namespace TowerDefence {
             }
         }
         return true;
+    }
+    void LandScape::menu_change_trap_effect(Ref* sender) {
+        int effectsNum = effectConfig["type"].size() - 1;
+        trapConfig["effect_type"] = (trapConfig["effect_type"] + 1) % effectsNum;
+        Effect::EffectType type = Effect::getType(trapConfig["effect_type"]);
+        std::string str_type = Effect::to_string(type);
+        Label* l = (Label*)this->getChildByName("trap_effect");
+        l->setString("Trap: " + str_type);
+    }
+
+    void LandScape::menu_change_tower_effect(Ref* sender) {
+        int effectsNum = effectConfig["type"].size() - 1;
+        magicTowerConfig["effect_type"] = (magicTowerConfig["effect_type"] + 1) % effectsNum;
+        Effect::EffectType type = Effect::getType(magicTowerConfig["effect_type"]);
+        std::string str_type = Effect::to_string(type);
+        Label* l = (Label*)this->getChildByName("tower_effect");
+        l->setString("Tower eff.: " + str_type);
     }
     void LandScape::update(float dt) {
         if (!isEnd) {

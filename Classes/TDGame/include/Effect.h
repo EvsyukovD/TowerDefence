@@ -43,6 +43,7 @@ namespace TowerDefence {
 		float getValue()const;
 		void setType(Effect::EffectType type);
 		static Effect::EffectType getType(int type);
+		static std::string to_string(Effect::EffectType type);
 	};
 
 	class PoisonEffect : public Effect {

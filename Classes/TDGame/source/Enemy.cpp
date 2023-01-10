@@ -121,7 +121,7 @@ namespace TowerDefence {
             e->apply(*this);
             Label* l = (Label*)object->getChildByName("hp");
             l->setString(std::to_string(health));
-            if (e->getDuration() == 0) {
+            if (e->getDuration() <= 0) {
                 iter = effects.erase(iter);
                 delete e;
                 increment = false;

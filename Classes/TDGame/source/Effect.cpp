@@ -37,6 +37,21 @@ namespace TowerDefence {
 			return Effect::EffectType::NONE;
 		}
 	}
+	std::string Effect::to_string(Effect::EffectType type) {
+		switch (type)
+		{
+		case TowerDefence::Effect::POISON:
+			return "poison";
+		case TowerDefence::Effect::WEAKNESS:
+			return "weakness";
+		case TowerDefence::Effect::DECELERATION:
+			return "deceleration";
+		case TowerDefence::Effect::NONE:
+			return "none";
+		default:
+			return "none";
+		}
+	}
 	float Effect::getValue()const {
 		return value;
 	}
@@ -47,24 +62,30 @@ namespace TowerDefence {
 		}
 	}
 	void PoisonEffect::apply(Enemy& e) {
-		if (duration <= 0) {
+		if (duration > 0) {
+			e.setHealth(floor(e.getHealth() * (1 - value)));
+			duration--;
+		}
+		if (duration == 0) {
 			return;
 		}
-		e.setHealth(floor(e.getHealth() * (1 - value)));
-		duration--;
 	}
 	void WeaknessEffect::apply(Enemy& e) {
-		if (duration <= 0) {
+		if (duration > 0) {
+			duration--;
+		}
+		if (duration == 0) {
 			return;
 		}
-		duration--;
 	}
 	void DecelerationEffect::apply(Enemy& e) {
-		if (duration <= 0) {
+		if (duration > 0) {
+			e.setSpeed(floor(e.getNativeSpeed() * (1 - value)));
+			duration--;
+		}
+		if(duration == 0) {
 			e.setSpeed(e.getNativeSpeed());
 			return;
 		}
-		e.setSpeed(floor(e.getNativeSpeed() * (1 - value)));
-		duration--;
 	}
 }
