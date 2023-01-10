@@ -14,7 +14,7 @@ namespace TowerDefence {
 		std::list<Enemy*> enemies;
 		std::vector<std::vector<Cell>> battlefield;
 		std::vector<Lair> lairs;
-		std::list<AbstractAttackingObject*> attackingObjects;
+		std::list<Cell*> attackingObjects;
 		int height = 0;
 		int width = 0;
 		unsigned int ticks = 0;

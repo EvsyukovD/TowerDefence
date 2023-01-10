@@ -204,7 +204,8 @@ namespace TowerDefence {
                 updatePalaceParams();
                 cell.setType(CellType::TOWER, ob);
                 this->addChild(ob->getSprite(), ATTACKING_OBJECTS_PRIOR);
-                attackingObjects.push_back(ob);
+                //attackingObjects.push_back(ob);
+                attackingObjects.push_back(&cell);
                 log("You have bought tower");
             }
             else {
@@ -220,7 +221,8 @@ namespace TowerDefence {
                 updatePalaceParams();
                 cell.setType(CellType::TRAP, ob);
                 this->addChild(ob->getSprite(), ATTACKING_OBJECTS_PRIOR);
-                attackingObjects.push_back(ob);
+                //attackingObjects.push_back(ob);
+                attackingObjects.push_back(&cell);
                 log("You have bought trap");
             }
             else {
@@ -284,14 +286,15 @@ namespace TowerDefence {
         }
         for (auto iter = attackingObjects.begin(); iter != attackingObjects.end();) {
             increment = true;
-            if (instanceof<Trap,AbstractAttackingObject>(*iter)) {
-                if ((*iter)->fire(enemies)) {
+            if (instanceof<Trap,AbstractAttackingObject>((AbstractAttackingObject*)(*iter)->getObject())) {
+                if (((Trap*)(*iter)->getObject())->fire(enemies)) {
+                    (*iter)->setType(CellType::ROAD, nullptr);
                     iter = attackingObjects.erase(iter);
                     increment = false;
                 }
             }
             else {
-                (*iter)->fire(enemies);
+                ((Tower*)(*iter)->getObject())->fire(enemies);
             }
             if(increment){
                 ++iter;
