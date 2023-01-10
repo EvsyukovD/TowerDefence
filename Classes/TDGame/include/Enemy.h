@@ -8,7 +8,6 @@ namespace TowerDefence {
 		  int health;
 		  float speed;
 		  float nativeSpeed;
-		  //std::list<Effect*> effects;
 		  MySTL::List<Effect*> effects;
 		  std::string name;
 		  std::vector<Point> path;

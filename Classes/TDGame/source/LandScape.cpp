@@ -204,7 +204,6 @@ namespace TowerDefence {
                 updatePalaceParams();
                 cell.setType(CellType::TOWER, ob);
                 this->addChild(ob->getSprite(), ATTACKING_OBJECTS_PRIOR);
-                //attackingObjects.push_back(ob);
                 attackingObjects.push_back(&cell);
                 log("You have bought tower");
             }
@@ -221,7 +220,6 @@ namespace TowerDefence {
                 updatePalaceParams();
                 cell.setType(CellType::TRAP, ob);
                 this->addChild(ob->getSprite(), ATTACKING_OBJECTS_PRIOR);
-                //attackingObjects.push_back(ob);
                 attackingObjects.push_back(&cell);
                 log("You have bought trap");
             }
@@ -243,7 +241,7 @@ namespace TowerDefence {
             }
         }
         if (emptyLairsFlag && enemies.empty()) {
-            //Победа, конец игры
+            //Victory, game over
             isEnd = true;
             return;
         }
@@ -262,7 +260,7 @@ namespace TowerDefence {
                 palace.getDamage(e->getHealth());
                 updatePalaceParams();
                 if (palace.isDestroyed()) {
-                    //Проигрыш, конец игры
+                    //Fail, game over
                     isEnd = true;
                     isVictory = false;
                     return;
@@ -421,15 +419,18 @@ namespace TowerDefence {
             tick();
         }
         else {
-            if (isVictory) {
-                log("You have won!!!!!!");
-                
+            if (!_isRun) {
+                if (isVictory) {
+                    log("You have won!!!!!!");
+
+                }
+                else {
+                    log("You lose!!!");
+                }
+                _isRun = true;
+                auto scene = GameOver::createScene(isVictory);
+                Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));
             }
-            else {
-                log("You lose!!!");
-            }
-            auto scene = GameOver::createScene(isVictory);
-            Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));
         }
     }
 }

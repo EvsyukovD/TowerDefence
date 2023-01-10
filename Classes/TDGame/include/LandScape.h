@@ -12,16 +12,15 @@ namespace TowerDefence {
 	class LandScape: public TDObject,public cocos2d::Layer{
 	private:
 		Palace palace;
-		//std::list<Enemy*> enemies;
 		MySTL::List<Enemy*> enemies;
 		std::vector<std::vector<Cell>> battlefield;
 		std::vector<Lair> lairs;
-		//std::list<Cell*> attackingObjects;
 		MySTL::List<Cell*> attackingObjects;
 		int height = 0;
 		int width = 0;
 		unsigned int ticks = 0;
 		bool isEnd = false;
+		bool _isRun = false;
 		bool isVictory = true;
 		const static int LAYER_PRIOR = 0;
 		const static int MAP_PRIOR = -1;
