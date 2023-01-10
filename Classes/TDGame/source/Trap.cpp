@@ -10,7 +10,7 @@ namespace TowerDefence {
         this->radius = radius;
         this->cost = cost;
     }
-    bool Trap::fire(std::list<Enemy*>& m) {
+    bool Trap::fire(MySTL::List<Enemy*>& m) {
         bool isExploded = false;
         for (auto iter = m.begin(); iter != m.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();

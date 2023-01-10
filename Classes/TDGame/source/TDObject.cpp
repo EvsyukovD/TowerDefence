@@ -50,12 +50,8 @@ namespace TowerDefence {
 	}
 	void TDObject::kill() {
 		if (object && object->getReferenceCount() > 0) {
-			//object->cleanup();
-			//object->setVisible(false);
-			//object->isRunning();
 			object->removeFromParent();
 			object->release();
-			//object = nullptr;
 		}
 	}
 	TDObject::~TDObject() {

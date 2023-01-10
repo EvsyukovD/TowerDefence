@@ -119,6 +119,9 @@ namespace MySTL {
 				iter = erase(iter);
 			}
 		}
+		bool empty() const{
+			return size() == 0;
+		}
 		List<T>& operator =(const List<T>& list) {
 			if (this == &list) {
 				return *this;

@@ -6,15 +6,18 @@
 #include "Effect.h"
 #include <memory>
 #include "../lib/json/single_include/nlohmann/json.hpp"
+#include "../lib/list/list.h"
 using json = nlohmann::json;
 namespace TowerDefence {
 	class LandScape: public TDObject,public cocos2d::Layer{
 	private:
 		Palace palace;
-		std::list<Enemy*> enemies;
+		//std::list<Enemy*> enemies;
+		MySTL::List<Enemy*> enemies;
 		std::vector<std::vector<Cell>> battlefield;
 		std::vector<Lair> lairs;
-		std::list<Cell*> attackingObjects;
+		//std::list<Cell*> attackingObjects;
+		MySTL::List<Cell*> attackingObjects;
 		int height = 0;
 		int width = 0;
 		unsigned int ticks = 0;

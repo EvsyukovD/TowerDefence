@@ -2,6 +2,7 @@
 #define __ABSTRACT_ATTACKING_OBJECT_H__
 #include "Building.h"
 #include "Enemy.h"
+#include "../lib/list/list.h"
 #include <memory>
 namespace TowerDefence {
 	class AbstractAttackingObject: public Building {
@@ -13,7 +14,8 @@ namespace TowerDefence {
 		\param enemies - living enemies
 		\return true if enemy was attacked and false otherwise 
 		*/
-		virtual bool fire(std::list<Enemy*> & enemies) = 0;
+		//virtual bool fire(std::list<Enemy*> & enemies) = 0;
+		virtual bool fire(MySTL::List<Enemy*>& enemies) = 0;
 	};
 }
 #endif // !__ABSTRACT_ATTACKING_OBJECT_H__

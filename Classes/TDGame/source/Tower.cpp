@@ -123,7 +123,7 @@ namespace TowerDefence {
         }
         return false;
     }
-    bool Tower::fire(std::list<Enemy*>& enemies) {
+    bool Tower::fire(MySTL::List<Enemy*>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
                 const Point& p = (*iter)->getSprite()->getPosition();
                 double dist = p.distance(this->object->getPosition());
@@ -154,7 +154,7 @@ namespace TowerDefence {
         const Point& palacePos,
         const Point& towerPos,
         const json& js) : MagicObject(e), Tower(palacePos, towerPos, js) {}
-    bool MagicTower::fire(std::list<Enemy*>& enemies) {
+    bool MagicTower::fire(MySTL::List<Enemy*>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
             const Point& p = (*iter)->getSprite()->getPosition();
             if ((double)p.distance(this->object->getPosition()) - (double)properties.at(level).radius < 1E-32) {
