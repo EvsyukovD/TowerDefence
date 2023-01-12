@@ -37,7 +37,6 @@ namespace TowerDefence {
         object->setAnchorPoint(Vec2(0, 1));
         object->setPosition(Vec2(origin.x, origin.y + visibleSize.height));
         auto vis = object->getContentSize();
-        height = vis.height, width = vis.width;
         DrawNode* node = nullptr;
         for (int i = 0; i * cellHeight < vis.height; i++) {
             battlefield.push_back(std::vector<Cell>());
@@ -140,10 +139,7 @@ namespace TowerDefence {
         Label* trap_effect = Label::createWithSystemFont("Trap: " + Effect::to_string(trap_effect_type), "Arial", 15);
         Label* tower_type = Label::createWithSystemFont("Tower: simple", "Arial", 15);
         Label* tower_effect = Label::createWithSystemFont("Tower eff.: " + Effect::to_string(tower_effect_type), "Arial", 15);
-        //Point palacePos = palace.getSprite()->getPosition();
-        //float px = 0.1,py = 0.1;
-        //strength->setPosition(palacePos.x * (1 + px), palacePos.y * (1.0 + py));
-        //gold->setPosition(palacePos.x * (1 + px), palacePos.y * (1.0 - py));
+        
         strength->setPosition(strength_x, strength_y);
         gold->setPosition(gold_x, gold_y);
         trap_effect->setPosition(gold_x, gold_y - delta_h);
@@ -154,12 +150,6 @@ namespace TowerDefence {
         this->addChild(trap_effect, 10000, "trap_effect");
         this->addChild(tower_type, 10000, "tower_type");
         this->addChild(tower_effect, 10000, "tower_effect");
-    }
-    int LandScape::getFieldHeight() const {
-        return height;
-    }
-    int LandScape::getFieldLength() const {
-        return width;
     }
     Trap* LandScape::createTrap(const Point& trapPos) {
         int type = trapConfig["effect_type"];
@@ -183,17 +173,6 @@ namespace TowerDefence {
         unsigned int cost = t->getProperties().cost;
         if (t->updateLevel(palace.getGold())) {
             palace.takeGold(cost);
-        }
-        else {
-            Label* l = Label::createWithSystemFont("Can't update tower","Arial",10);
-            Point p = t->getSprite()->getPosition();
-            l->setPosition(p);
-            this->addChild(l,10000);
-            float h = 70.0;
-            MoveTo* moveTo = MoveTo::create(1.0f,p + Point(0.0,h));
-            l->runAction(moveTo);
-            l->removeFromParent();
-            delete l;
         }
     }
     void LandScape::addAttackingObject(Cell& cell, AbstractAttackingObject* ob) { 
@@ -415,11 +394,12 @@ namespace TowerDefence {
         l->setString("Tower eff.: " + str_type);
     }
     void LandScape::update(float dt) {
+        static bool running = false;
         if (!isEnd) {
             tick();
         }
         else {
-            if (!_isRun) {
+            if (!running) {
                 if (isVictory) {
                     log("You have won!!!!!!");
 
@@ -427,7 +407,7 @@ namespace TowerDefence {
                 else {
                     log("You lose!!!");
                 }
-                _isRun = true;
+                running = true;
                 auto scene = GameOver::createScene(isVictory);
                 Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));
             }

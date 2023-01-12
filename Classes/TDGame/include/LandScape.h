@@ -16,11 +16,8 @@ namespace TowerDefence {
 		std::vector<std::vector<Cell>> battlefield;
 		std::vector<Lair> lairs;
 		MySTL::List<Cell*> attackingObjects;
-		int height = 0;
-		int width = 0;
 		unsigned int ticks = 0;
 		bool isEnd = false;
-		bool _isRun = false;
 		bool isVictory = true;
 		const static int LAYER_PRIOR = 0;
 		const static int MAP_PRIOR = -1;
@@ -74,14 +71,7 @@ namespace TowerDefence {
 		 */
 		virtual void update(float dt);
 		virtual bool init();
-		/**
-		 * \return Battlefield height 
-		 */
-		int getFieldHeight()const;
-		/**
-		 * \return Battlefield length
-		 */
-		int getFieldLength() const;
+		
 		/**  
 		 \brief Add attacking object
 		 \param cell - cell for attacking object

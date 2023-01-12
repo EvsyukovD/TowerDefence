@@ -75,12 +75,30 @@ namespace TowerDefence {
             Effect* e = *iter;
             if (e->getType() == Effect::EffectType::WEAKNESS) {
                 damage += d * (1.0 - e->getValue() / 100.0);
-                Color3B color = object->getColor();
-                Color3B effect_color = Effect::getColorOfEffect(Effect::WEAKNESS);
-                TintTo* first_tint = TintTo::create(0.5f, effect_color);
-                TintTo* second_tint = TintTo::create(0.5f, color);
-                Sequence* seq = Sequence::create(first_tint, second_tint, nullptr);
-                object->runAction(seq);
+                auto emitter = ParticleExplosion::create();
+                emitter->setAnchorPoint(Point(0, 1));
+                emitter->setPosition(object->getPosition());
+                emitter->setVisible(true);
+                emitter->setEmissionRate(100.0);
+                emitter->setLife(1.0f);
+                emitter->setLifeVar(1.0f);
+                emitter->setStartSize(20.0);
+                emitter->setStartSizeVar(5.0);
+                emitter->setEndSize(1.0);
+                emitter->setEndSizeVar(0.1);
+
+                emitter->setStartColor(Color4F(Effect::getColorOfEffect(Effect::WEAKNESS)));
+                emitter->setStartColorVar(Color4F(Effect::getColorOfEffect(Effect::WEAKNESS)));
+                emitter->setEndColor(Color4F(Effect::getColorOfEffect(Effect::WEAKNESS)));
+                emitter->setEndColorVar(Color4F(Effect::getColorOfEffect(Effect::WEAKNESS)));
+
+                emitter->setEmitterMode(ParticleSystem::Mode::RADIUS);
+                emitter->setStartRadius(10.0);
+                emitter->setStartRadiusVar(5.0);
+                emitter->setEndRadius(150.0);
+                emitter->setEndRadiusVar(20.0);
+
+                object->addChild(emitter);
             }
         }
         health -= (int)floor(damage);
@@ -126,10 +144,31 @@ namespace TowerDefence {
             e->apply(*this);
             Color3B color = object->getColor();
             Color3B effect_color = Effect::getColorOfEffect(e->getType());
-            TintTo* first_tint = TintTo::create(0.5f, effect_color);
-            TintTo* second_tint = TintTo::create(0.5f, color);
-            Sequence* seq = Sequence::create(first_tint, second_tint, nullptr);
-            object->runAction(seq);
+     
+            auto emitter = ParticleExplosion::create();
+            emitter->setAnchorPoint(Point(0,1));
+            emitter->setPosition(object->getPosition());
+            emitter->setVisible(true);
+            emitter->setEmissionRate(100.0);
+            emitter->setLife(1.0f);
+            emitter->setLifeVar(1.0f);
+            emitter->setStartSize(20.0);
+            emitter->setStartSizeVar(5.0);
+            emitter->setEndSize(1.0);
+            emitter->setEndSizeVar(0.1);
+
+            emitter->setStartColor(Color4F(effect_color));
+            emitter->setStartColorVar(Color4F(effect_color));
+            emitter->setEndColor(Color4F(effect_color));
+            emitter->setEndColorVar(Color4F(effect_color));
+
+            emitter->setEmitterMode(ParticleSystem::Mode::RADIUS);
+            emitter->setStartRadius(10.0);
+            emitter->setStartRadiusVar(5.0);
+            emitter->setEndRadius(150.0);
+            emitter->setEndRadiusVar(20.0);
+            
+            object->addChild(emitter);
             Label* l = (Label*)object->getChildByName("hp");
             l->setString(std::to_string(health));
             if (e->getDuration() <= 0) {
