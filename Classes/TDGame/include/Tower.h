@@ -83,6 +83,9 @@ namespace TowerDefence {
 		\return true if enemy was attacked and false otherwise
 		*/
 		virtual bool fire(MySTL::List<Enemy*>& enemies);
+		virtual void setEffect(const Effect& e) override;
+	private:
+		void setEffectVisualization(Color3B effect_color);
 	};
 }
 #endif

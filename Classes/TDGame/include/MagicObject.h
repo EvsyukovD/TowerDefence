@@ -14,7 +14,7 @@ namespace TowerDefence {
 		/**
 		Set Object's effect
 		*/
-		void setEffect(const Effect&);
+		virtual void setEffect(const Effect&);
 	};
 }
 #endif // !__MAGIC_OBJECT_H__

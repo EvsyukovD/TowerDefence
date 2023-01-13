@@ -131,7 +131,31 @@ namespace TowerDefence {
     bool Enemy::isOnFinish()const {
         return currentPos == path.size() - 1;
     }
+    ParticleExplosion* Enemy::getEffectVisualization(Color3B effect_color) {
+        auto emitter = ParticleExplosion::create();
+        emitter->setAnchorPoint(Point(0, 1));
+        emitter->setPosition(object->getPosition());
+        emitter->setVisible(true);
+        emitter->setEmissionRate(100.0);
+        emitter->setLife(1.0f);
+        emitter->setLifeVar(1.0f);
+        emitter->setStartSize(20.0);
+        emitter->setStartSizeVar(5.0);
+        emitter->setEndSize(1.0);
+        emitter->setEndSizeVar(0.1);
 
+        emitter->setStartColor(Color4F(effect_color));
+        emitter->setStartColorVar(Color4F(effect_color));
+        emitter->setEndColor(Color4F(effect_color));
+        emitter->setEndColorVar(Color4F(effect_color));
+
+        emitter->setEmitterMode(ParticleSystem::Mode::RADIUS);
+        emitter->setStartRadius(10.0);
+        emitter->setStartRadiusVar(5.0);
+        emitter->setEndRadius(150.0);
+        emitter->setEndRadiusVar(20.0);
+        return emitter;
+    }
     void Enemy::tick() {
         if (health <= 0) {
             kill();
@@ -142,9 +166,9 @@ namespace TowerDefence {
             Effect* e = *iter;
             increment = true;
             e->apply(*this);
-            Color3B color = object->getColor();
+            //Color3B color = object->getColor();
             Color3B effect_color = Effect::getColorOfEffect(e->getType());
-     
+     /*
             auto emitter = ParticleExplosion::create();
             emitter->setAnchorPoint(Point(0,1));
             emitter->setPosition(object->getPosition());
@@ -166,8 +190,8 @@ namespace TowerDefence {
             emitter->setStartRadius(10.0);
             emitter->setStartRadiusVar(5.0);
             emitter->setEndRadius(150.0);
-            emitter->setEndRadiusVar(20.0);
-            
+            emitter->setEndRadiusVar(20.0);*/
+            auto emitter = getEffectVisualization(effect_color);
             object->addChild(emitter);
             Label* l = (Label*)object->getChildByName("hp");
             l->setString(std::to_string(health));

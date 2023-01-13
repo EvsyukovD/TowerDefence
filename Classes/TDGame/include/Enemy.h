@@ -86,8 +86,9 @@ namespace TowerDefence {
 		\return Enemy come to the finish
 		*/
 		bool isOnFinish() const;
-
 		virtual ~Enemy();
+	private:
+		ParticleExplosion* getEffectVisualization(Color3B effect_color);
 	};
 }
 #endif // !__ENEMY_H__

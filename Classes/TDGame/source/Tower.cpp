@@ -114,7 +114,7 @@ namespace TowerDefence {
     }
     bool Tower::updateLevel(unsigned int gold) {
         if (level == MAX_LEVEL) {
-            return false;//true
+            return false;
         }
         if (gold >= properties.at(level).updatingCost) {
             level++;
@@ -148,19 +148,53 @@ namespace TowerDefence {
         }
         return false;
     }
+    void MagicTower::setEffectVisualization(Color3B effect_color) {
+        ParticleSmoke* s = (ParticleSmoke*)object->getChildByName("effect_visualization");
+        if (s) {
+            s->removeFromParent();
+        }
+        auto emitter = ParticleSmoke::create();
+        emitter->setAnchorPoint(Point(0, 0));
+        emitter->setPosition(Vec2::ZERO);
+        emitter->setVisible(true);
+        emitter->setEmissionRate(100.0);
+        emitter->setLife(1.0f);
+        emitter->setLifeVar(1.0f);
+        emitter->setStartSize(20.0);
+        emitter->setStartSizeVar(5.0);
+        emitter->setEndSize(1.0);
+        emitter->setEndSizeVar(0.1);
+        emitter->setDuration(ParticleSystem::DURATION_INFINITY);
+        emitter->setRotation(-180.0);
+        emitter->setStartColor(Color4F(effect_color));
+        emitter->setStartColorVar(Color4F(effect_color));
+        emitter->setEndColor(Color4F(effect_color));
+        emitter->setEndColorVar(Color4F(effect_color));
+
+        emitter->setEmitterMode(ParticleSystem::Mode::RADIUS);
+        emitter->setStartRadius(10.0);
+        emitter->setStartRadiusVar(5.0);
+        emitter->setEndRadius(60.0);
+        emitter->setEndRadiusVar(20.0);
+        object->addChild(emitter, 1,"effect_visualization");
+    }
+    void MagicTower::setEffect(const Effect& e) {
+        MagicObject::setEffect(e);
+        setEffectVisualization(Effect::getColorOfEffect(e.getType()));
+    }
     MagicTower::MagicTower(const Effect& e, 
         const Point& palacePos,
         const Point& towerPos, 
         const std::string& jsonConfig):
         MagicObject(e),
         Tower(palacePos,towerPos,jsonConfig) {
-        object->setColor(Effect::getColorOfEffect(e.getType()));
+        setEffectVisualization(Effect::getColorOfEffect(e.getType()));
     }
     MagicTower::MagicTower(const Effect& e,
         const Point& palacePos,
         const Point& towerPos,
         const json& js) : MagicObject(e), Tower(palacePos, towerPos, js) {
-        object->setColor(Effect::getColorOfEffect(e.getType()));
+        setEffectVisualization(Effect::getColorOfEffect(e.getType()));
     }
     bool MagicTower::fire(MySTL::List<Enemy*>& enemies) {
         for (auto iter = enemies.begin(); iter != enemies.end(); ++iter) {
