@@ -34,8 +34,6 @@ namespace TowerDefence {
         object->setVisible(true);
 
         Animation* anim = Animation::create();
-        Vector<SpriteFrame*> animFrames;
-        animFrames.reserve(js["frames"].size());
         for (int i = 1; i < js["frames"].size(); i++) {
             anim->addSpriteFrameWithFile(js["frames"][i]);
         }

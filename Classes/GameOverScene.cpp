@@ -124,7 +124,7 @@ bool GameOver::init()
     }
     float x = origin.x + visibleSize.width / 2;
     float y = origin.y + visibleSize.height / 2;
-    std::string res = isVictory ? "You win!": "You lose!";
+    std::string res = isVictory ? "Victory!": "Fail!";
     Label* msg = Label::createWithSystemFont(res, "Arial", 20);
     msg->setPosition(x, y);
     this->addChild(msg, 1);
