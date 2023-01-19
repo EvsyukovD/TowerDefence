@@ -30,17 +30,19 @@ namespace TowerDefence {
         nativeSpeed = js["native_speed"];
         speed = nativeSpeed;
         object->initWithFile(js["frames"][0]);
-        object->setScale(js["enemy_scale"]);//0.65
+        object->setScale(js["enemy_scale"]);
         object->setVisible(true);
-        /*Vector<SpriteFrame*> animFrames;
+
+        Animation* anim = Animation::create();
+        Vector<SpriteFrame*> animFrames;
         animFrames.reserve(js["frames"].size());
-        Rect r = Rect(js["rect"][0], js["rect"][1], js["rect"][2], js["rect"][3]);
-        for (int i = 0; i < js["frames"].size(); i++) {
-            animFrames.pushBack(SpriteFrame::create(js["frames"][i], r));
+        for (int i = 1; i < js["frames"].size(); i++) {
+            anim->addSpriteFrameWithFile(js["frames"][i]);
         }
-        Animation* animation = Animation::createWithSpriteFrames(animFrames, 0.1f);
-        Animate* animate = Animate::create(animation);
-        object->runAction(RepeatForever::create(animate));*/
+        anim->setDelayPerUnit(0.1f);
+        Animate* animate = Animate::create(anim);
+        object->runAction(RepeatForever::create(animate));
+
         currentPos = 0;
         object->setPosition(path[currentPos]);
         Label* label = Label::createWithSystemFont(std::to_string(health), "Arial", 20);
@@ -75,7 +77,7 @@ namespace TowerDefence {
             Effect* e = *iter;
             if (e->getType() == Effect::EffectType::WEAKNESS) {
                 damage += d * (1.0 - e->getValue() / 100.0);
-                auto emitter = ParticleExplosion::create();
+                /*auto emitter = ParticleExplosion::create();
                 emitter->setAnchorPoint(Point(0, 1));
                 emitter->setPosition(object->getPosition());
                 emitter->setVisible(true);
@@ -96,8 +98,8 @@ namespace TowerDefence {
                 emitter->setStartRadius(10.0);
                 emitter->setStartRadiusVar(5.0);
                 emitter->setEndRadius(150.0);
-                emitter->setEndRadiusVar(20.0);
-
+                emitter->setEndRadiusVar(20.0);*/
+                auto emitter = getEffectVisualization(Effect::getColorOfEffect(Effect::WEAKNESS));
                 object->addChild(emitter);
             }
         }
