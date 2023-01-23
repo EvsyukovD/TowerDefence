@@ -55,6 +55,10 @@ bool HelloWorld::init()
     {
         return false;
     }
+    std::ifstream file("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/levels_config.json");
+    json config;
+    file >> config;
+    file.close();
     labelTouchInfo = Label::create();
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
@@ -144,11 +148,25 @@ bool HelloWorld::init()
     auto backgroundSprite = Sprite::create("Backgrounds/Background.png");
     backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     Point o = Point(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);*/
+    Vector<MenuItem*> MenuItems;
+    float factor = 0.2;
+    float deltaY = visibleSize.height * factor;
+    if (config["campaign_level"] > 1) {
+        auto changeItem = MenuItemImage::create("update_level.png", "update_level_clicked.png", CC_CALLBACK_1(HelloWorld::updateLevel, this));
+        float changeItemX = origin.x + visibleSize.width / 2;
+        float changeItemY = origin.y + visibleSize.height / 2 - deltaY;
+        changeItem->setPosition(changeItemX, changeItemY);
+        MenuItems.pushBack(changeItem);
+    }
     auto playItem = MenuItemImage::create("Play Button.png", "Play Button Clicked.png", CC_CALLBACK_1(HelloWorld::GoToGameScene, this));
     playItem->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    cocos2d::Menu* menu1 = Menu::create(playItem, NULL);
+    MenuItems.pushBack(playItem);
+    cocos2d::Menu* menu1 = Menu::createWithArray(MenuItems);
     menu1->setPosition(Point::ZERO);
     this->addChild(menu1);
+    Label* level = Label::createWithSystemFont("Current level: " + std::to_string(config["current_level"] + 1), "Arial", 20);
+    level->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 - 2 * deltaY);
+    this->addChild(level, 1, "current_level");
     /*
     // add "HelloWorld" splash screen"
     auto sprite = Sprite::create("Level_1.png");
@@ -208,12 +226,36 @@ bool HelloWorld::init()
 bool HelloWorld::onTouchBegan(cocos2d::Touch*, cocos2d::Event*) {
     return true;
 }
+void HelloWorld::updateLevel(Ref* sender) {
+    std::ifstream file("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/levels_config.json");
+    json config;
+    file >> config;
+    file.close();
+    config["current_level"] = (config["current_level"] + 1) % config["campaign_level"];
+    std::ofstream file1("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/levels_config.json");
+    file1 << config;
+    file1.close();
+    Label* level = (Label*)this->getChildByName("current_level");
+    level->setString("Current level: " + std::to_string((config["current_level"] + 1)));
+}
 void HelloWorld::GoToGameScene(cocos2d::Ref* sender)
-{
-    std::string landConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json";
+{   
+    std::ifstream file("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/levels_config.json");
+    json config;
+    file >> config;
+    file.close();
+    int current_level = config["current_level"];
+    std::string folder = config["levels"][current_level];
+  
+    std::string landConf = folder + "/landscape_config.json";
+    std::string trapConf = folder + "/Buildings/Traps/trap_config.json";
+    std::string simpleTowerConf = folder + "/Buildings/Towers/tower_config.json";
+    std::string magicTowerConf = folder + "/Buildings/Towers/magic_tower_config.json";
+
+    /*std::string landConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/landscape_config.json";
     std::string trapConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Traps/trap_config.json";
     std::string simpleTowerConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Towers/tower_config.json";
-    std::string magicTowerConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Towers/magic_tower_config.json";
+    std::string magicTowerConf = "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_1/Buildings/Towers/magic_tower_config.json";*/
     auto scene = TowerDefence::LandScape::createScene(landConf,trapConf, simpleTowerConf,magicTowerConf);
     Director::getInstance()->replaceScene(TransitionFade::create(1.5, scene));
 }

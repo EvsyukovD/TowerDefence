@@ -1,0 +1,25 @@
+{
+  "sprite": "C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/Level_2/Buildings/Towers/SimpleTower.png",
+  "tower_scale": 0.65,
+  "level_0": {
+    "damage": 10,
+    "cost": 20,
+    "radius": 50.0,
+    "rate_of_fire": 1,
+    "updating_cost": 25
+  },
+  "level_1": {
+    "damage": 30,
+    "cost": 0,
+    "radius": 60.0,
+    "rate_of_fire": 3,
+    "updating_cost": 35
+  },
+  "level_2": {
+    "damage": 50,
+    "cost": 0,
+    "radius": 70.0,
+    "rate_of_fire": 5,
+    "updating_cost": 0
+  }
+}

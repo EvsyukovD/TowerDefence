@@ -40,6 +40,9 @@ public:
     // implement the "static create()" method manually
     CREATE_FUNC(GameOver);
     bool isVictory = true;
+private:
+    void updateLevel(Ref* sender);
+    void GoToGameScene(cocos2d::Ref* sender);
 };
 
 #endif // __HELLOWORLD_SCENE_H__

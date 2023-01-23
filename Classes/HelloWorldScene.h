@@ -40,6 +40,7 @@ public:
     CREATE_FUNC(HelloWorld);
 private:
     void GoToGameScene(cocos2d::Ref* sender);
+    void updateLevel(Ref* sender);
     cocos2d::Label* labelTouchInfo;
 };
 

@@ -31,7 +31,7 @@ namespace TowerDefence {
 		bool currentTowerIsMagic = false;
 		Trap* createTrap(const Point& trapPos);
 		Tower* createTower(bool isMagic, const Point& towerPos);
-
+		bool running = false;
 		/**
 		 * \brief Display current palace params
 		 */

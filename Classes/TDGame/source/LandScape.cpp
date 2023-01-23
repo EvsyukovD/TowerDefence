@@ -394,13 +394,24 @@ namespace TowerDefence {
         l->setString("Tower eff.: " + str_type);
     }
     void LandScape::update(float dt) {
-        static bool running = false;
         if (!isEnd) {
             tick();
         }
         else {
+            std::ifstream file("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/levels_config.json");
+            json config;
+            file >> config;
+            file.close();
+            int campaign = config["campaign_level"], level = config["current_level"];
             if (!running) {
                 if (isVictory) {
+                    if (campaign - 1 == level && campaign < config["all_campaign"]) {
+                        config["campaign_level"] = campaign + 1;
+                        config["current_level"] = level + 1;
+                        std::ofstream file1("C:/Users/devsy/Desktop/GraphicsLib/my_tower_defence/Resources/Backgrounds/Levels/levels_config.json");
+                        file1 << config;
+                        file1.close();
+                    }
                     log("You have won!!!!!!");
 
                 }
