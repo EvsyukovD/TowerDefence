@@ -110,6 +110,7 @@ bool GameOver::init()
     // create menu, it's an autorelease object
     float factor = 0.1;
     float deltaY = visibleSize.height * factor;
+    float deltaX = visibleSize.width * factor;
     if (config["campaign_level"] > 1) {
         auto changeItem = MenuItemImage::create("update_level.png", "update_level_clicked.png", CC_CALLBACK_1(GameOver::updateLevel, this));
         float changeItemX = origin.x + visibleSize.width / 2;
@@ -149,10 +150,10 @@ bool GameOver::init()
     float y = origin.y + visibleSize.height / 2;
     std::string res = isVictory ? "Victory!": "Fail!";
     Label* msg = Label::createWithSystemFont(res, "Arial", 20);
-    msg->setPosition(x, y);
+    msg->setPosition(label->getPosition().x, label->getPosition().y - 2 * deltaY);
     this->addChild(msg, 1);
     Label* level = Label::createWithSystemFont("Current level: " + std::to_string(config["current_level"] + 1), "Arial", 20);
-    level->setPosition(x, y - 2 * deltaY);
+    level->setPosition(x, y + deltaY);
     this->addChild(level, 1, "current_level");
     return true;
 }

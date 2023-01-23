@@ -119,35 +119,7 @@ bool HelloWorld::init()
         // add the label as a child to this layer
         this->addChild(label, 1);
     }
-    /*auto ghost = Sprite::create("Backgrounds/Levels/Level_1/Enemies/Ghost/frame_1.png");
-    std::shared_ptr<Sprite> p(ghost);
-    ghost->setPosition(Vec2(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
-    auto move = MoveBy::create(1.0,Vec2(30, 30));
-    ghost->runAction(move);
-    auto backgroundSprite = Sprite::create("Level_1.png");
-    backgroundSprite->setScale(0.8);
-    backgroundSprite->setAnchorPoint(Vec2(0,1));
-    backgroundSprite->setPosition(Vec2(origin.x,origin.y + visibleSize.height));
-    float width = 5, height = 5;
-    this->addChild(backgroundSprite);
-    this->addChild(ghost,0,1);
-    auto vis = backgroundSprite->getContentSize();
-    for (int i = 0; i * height< vis.height; i++) {
-        nodes.push_back(std::vector<Point>());
-        for (int j = 0; j * width< vis.width; j++) {
-            DrawNode* node = DrawNode::create();
-            node->setAnchorPoint(Vec2(0,1));
-            Vec2 v = Vec2(origin.x + j * width, origin.y + visibleSize.height - i * height);
-            nodes[i].push_back(v);
-            node->drawRect(v, Vec2(origin.x + 5 + j * width, origin.y + visibleSize.height - 5 - i * height), Color4F::BLACK);
-            this->addChild(node);
-        }
-    }*/
-    /*Vec2 &v = Vec2(origin.x, origin.y + visibleSize.height);
-    Vec2& dest = Vec2(origin.x + 5, origin.y + visibleSize.height - 5);
-    auto backgroundSprite = Sprite::create("Backgrounds/Background.png");
-    backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-    Point o = Point(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);*/
+    
     Vector<MenuItem*> MenuItems;
     float factor = 0.2;
     float deltaY = visibleSize.height * factor;
@@ -165,7 +137,7 @@ bool HelloWorld::init()
     menu1->setPosition(Point::ZERO);
     this->addChild(menu1);
     Label* level = Label::createWithSystemFont("Current level: " + std::to_string(config["current_level"] + 1), "Arial", 20);
-    level->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 - 2 * deltaY);
+    level->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2 + deltaY);
     this->addChild(level, 1, "current_level");
     /*
     // add "HelloWorld" splash screen"
