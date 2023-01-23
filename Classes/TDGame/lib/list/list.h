@@ -133,16 +133,16 @@ namespace MySTL {
 			return *this;
 		}
 		List<T>& operator =(List<T>&& list) {
-			swap(list);
+			swap(std::move(list));
 			return *this;
 		}
-		List(const List<T>& list) {
+		List(const List<T>& list) : head(nullptr), tail(nullptr), _size(0) {
 			for (auto e : list) {
 				push_back(e);
 			}
 		}
 		List(List<T>&& list) {
-			move(list);
+			move(std::move(list));
 		}
 		~List() {
 			clear();
